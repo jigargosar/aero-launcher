@@ -2,8 +2,6 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { channels, ListItem } from '@shared/types'
 
-let mainWindow: BrowserWindow | null = null
-
 const helloItem: ListItem = {
   key: 'hello',
   name: 'Hello World',
@@ -14,8 +12,8 @@ const helloItem: ListItem = {
   actions: ['primary']
 }
 
-function createWindow(): void {
-  mainWindow = new BrowserWindow({
+app.whenReady().then(() => {
+  const mainWindow = new BrowserWindow({
     width: 600,
     height: 400,
     frame: false,
@@ -29,17 +27,13 @@ function createWindow(): void {
 
   if (process.env.NODE_ENV === 'development') {
     mainWindow.loadURL('http://localhost:5173')
-    mainWindow.webContents.openDevTools({ mode: 'detach' })
+    // mainWindow.webContents.openDevTools({ mode: 'detach' })
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
-}
-
-app.whenReady().then(() => {
-  createWindow()
 
   ipcMain.on(channels.requestListState, () => {
-    mainWindow?.webContents.send(channels.listState, [helloItem])
+    mainWindow.webContents.send(channels.listState, [helloItem])
   })
 })
 
