@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <!-- Deep gradient like v2 -->
+    <linearGradient id="baseGrad10" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="50%" stop-color="#1e3a5f"/>
+      <stop offset="100%" stop-color="#0c4a6e"/>
+    </linearGradient>
+    <!-- Glowing accent -->
+    <linearGradient id="cmdGlow10" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f0f9ff"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <!-- Soft glow filter -->
+    <filter id="glow10" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Base with depth -->
+  <rect width="64" height="64" rx="14" fill="url(#baseGrad10)"/>
+
+  <!-- Command prompt > with glow -->
+  <g filter="url(#glow10)">
+    <path d="M12 32 L26 20 L26 25 L17 32 L26 39 L26 44 Z" fill="url(#cmdGlow10)"/>
+  </g>
+
+  <!-- Cursor line with glow -->
+  <g filter="url(#glow10)">
+    <rect x="32" y="22" width="5" height="20" rx="2.5" fill="url(#cmdGlow10)"/>
+  </g>
+
+  <!-- Underscore trail -->
+  <rect x="42" y="37" width="14" height="5" rx="2.5" fill="#22d3ee" opacity="0.5"/>
+</svg>

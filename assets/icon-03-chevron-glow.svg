@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <!-- Dynamic gradient like v2 -->
+    <linearGradient id="baseGrad11" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="50%" stop-color="#1e3a5f"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
+    </linearGradient>
+    <!-- Bright accent glow -->
+    <linearGradient id="arrowGlow11" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#f0f9ff"/>
+    </linearGradient>
+    <!-- Glow filter -->
+    <filter id="glow11" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Base rounded square with depth -->
+  <rect width="64" height="64" rx="14" fill="url(#baseGrad11)"/>
+
+  <!-- Launch chevron with glow - BOLD -->
+  <g filter="url(#glow11)">
+    <path
+      d="M14 46 L32 14 L50 46"
+      fill="none"
+      stroke="url(#arrowGlow11)"
+      stroke-width="10"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+
+  <!-- Speed trail with glow -->
+  <g filter="url(#glow11)">
+    <path
+      d="M22 58 L32 44 L42 58"
+      fill="none"
+      stroke="#22d3ee"
+      stroke-width="6"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      opacity="0.6"
+    />
+  </g>
+</svg>

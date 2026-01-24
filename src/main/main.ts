@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, Tray, Menu, globalShortcut, nativeImage } from 'electron'
 import { join } from 'path'
 import { readFileSync, writeFileSync } from 'fs'
 import { channels, ListItem } from '@shared/types'
@@ -18,6 +18,8 @@ function loadBounds(): WindowBounds | null {
 function saveBounds(bounds: WindowBounds): void {
   writeFileSync(boundsFile, JSON.stringify(bounds))
 }
+
+const ICON_PATH = join(__dirname, '../../assets/icon.png')
 
 const mockItems: ListItem[] = [
   {
@@ -64,6 +66,9 @@ app.whenReady().then(() => {
     minHeight: 200,
     frame: false,
     resizable: true,
+    skipTaskbar: true,
+    show: false,
+    icon: ICON_PATH,
     webPreferences: {
       preload: join(__dirname, '../preload/preload.js'),
       contextIsolation: true,
@@ -74,12 +79,52 @@ app.whenReady().then(() => {
   mainWindow.on('resize', () => saveBounds(mainWindow.getBounds()))
   mainWindow.on('move', () => saveBounds(mainWindow.getBounds()))
 
+  // Hide instead of close
+  mainWindow.on('close', e => {
+    e.preventDefault()
+    mainWindow.hide()
+  })
+
   if (process.env.NODE_ENV === 'development') {
     mainWindow.loadURL('http://localhost:5173')
-    // mainWindow.webContents.openDevTools({ mode: 'detach' })
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  // System tray
+  const trayIcon = nativeImage.createFromPath(ICON_PATH)
+  const tray = new Tray(trayIcon)
+  tray.setToolTip('Launch Bar')
+  tray.setContextMenu(Menu.buildFromTemplate([
+    { label: 'Show', click: () => mainWindow.show() },
+    { label: 'Quit', click: () => { mainWindow.destroy(); app.quit() } }
+  ]))
+  tray.on('click', () => {
+    if (mainWindow.isVisible()) {
+      mainWindow.hide()
+    } else {
+      mainWindow.show()
+    }
+  })
+
+  // Global hotkey: Win+` to toggle
+  const registered = globalShortcut.register('Super+`', () => {
+    if (mainWindow.isVisible() && mainWindow.isFocused()) {
+      mainWindow.hide()
+    } else {
+      mainWindow.show()
+      mainWindow.focus()
+    }
+  })
+
+  if (!registered) {
+    console.error('Failed to register global shortcut: Super+`')
+  } else {
+    console.log('Global shortcut registered: Super+`')
+  }
+
+  // Show window initially
+  mainWindow.show()
 
   ipcMain.on(channels.requestListState, () => {
     mainWindow.webContents.send(channels.listState, mockItems)
@@ -87,5 +132,9 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', () => {
-  app.quit()
+  // Don't quit on window close
+})
+
+app.on('will-quit', () => {
+  globalShortcut.unregisterAll()
 })

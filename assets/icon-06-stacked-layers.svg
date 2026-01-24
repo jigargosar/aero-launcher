@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="baseGrad19" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="50%" stop-color="#1e3a5f"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
+    </linearGradient>
+    <linearGradient id="layer19" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#f0f9ff"/>
+    </linearGradient>
+    <filter id="glow19" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="64" height="64" rx="14" fill="url(#baseGrad19)"/>
+
+  <!-- Stacked layers - depth/dimensions -->
+  <g filter="url(#glow19)">
+    <polygon points="32,8 54,20 54,28 32,40 10,28 10,20" fill="none" stroke="url(#layer19)" stroke-width="3" opacity="0.5"/>
+    <polygon points="32,18 54,30 54,38 32,50 10,38 10,30" fill="none" stroke="url(#layer19)" stroke-width="3" opacity="0.75"/>
+    <polygon points="32,28 54,40 54,48 32,60 10,48 10,40" fill="url(#layer19)" opacity="0.2" stroke="url(#layer19)" stroke-width="3"/>
+
+    <!-- Center beacon -->
+    <circle cx="32" cy="44" r="5" fill="url(#layer19)"/>
+  </g>
+</svg>
