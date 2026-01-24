@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ListItem } from '@shared/types'
 
 export default function App() {
@@ -15,13 +15,12 @@ export default function App() {
       style={{ WebkitAppRegion: 'drag' } as React.CSSProperties}
     >
       <h1 className="text-lg font-bold mb-4">Launch Bar v2</h1>
-      <div className="space-y-2">
+      <div
+        className="space-y-2 overflow-auto"
+        style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+      >
         {items.map(item => (
-          <div
-            key={item.key}
-            className="p-3 bg-zinc-800 rounded"
-            style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}
-          >
+          <div key={item.key} className="p-3 bg-zinc-800 rounded">
             {item.name}
           </div>
         ))}
