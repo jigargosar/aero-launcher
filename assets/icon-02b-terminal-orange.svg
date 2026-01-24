@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <!-- Dark slate background -->
+    <linearGradient id="base02b" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="50%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+    <!-- Orange/amber glow -->
+    <linearGradient id="cmdGlow02b" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </linearGradient>
+    <filter id="glow02b" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="64" height="64" rx="14" fill="url(#base02b)"/>
+
+  <g filter="url(#glow02b)">
+    <!-- Taller command prompt > -->
+    <path d="M12 38 L28 18 L28 24 L17 38 L28 52 L28 58 Z" fill="url(#cmdGlow02b)"/>
+
+    <!-- Taller cursor line -->
+    <rect x="34" y="14" width="6" height="36" rx="3" fill="url(#cmdGlow02b)"/>
+
+    <!-- Underscore -->
+    <rect x="46" y="46" width="12" height="6" rx="3" fill="#f97316" opacity="0.5"/>
+  </g>
+</svg>
