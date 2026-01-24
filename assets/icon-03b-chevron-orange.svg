@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <!-- Orange/amber accent glow -->
+    <linearGradient id="arrowGlow3b" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </linearGradient>
+    <!-- Glow filter -->
+    <filter id="glow3b" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Launch chevron with glow - BOLD -->
+  <g filter="url(#glow3b)">
+    <path
+      d="M14 46 L32 14 L50 46"
+      fill="none"
+      stroke="url(#arrowGlow3b)"
+      stroke-width="10"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+
+  <!-- Speed trail with glow -->
+  <g filter="url(#glow3b)">
+    <path
+      d="M22 58 L32 44 L42 58"
+      fill="none"
+      stroke="#f97316"
+      stroke-width="6"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      opacity="0.6"
+    />
+  </g>
+</svg>
