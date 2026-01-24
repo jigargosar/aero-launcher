@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <!-- Dark violet background -->
+    <linearGradient id="base04c" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0c0a1d"/>
+      <stop offset="50%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#4c1d95"/>
+    </linearGradient>
+    <!-- Main ring color -->
+    <linearGradient id="ring04c" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <!-- Amber core -->
+    <linearGradient id="core04c" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <!-- Primary glow -->
+    <filter id="glow04c" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Secondary warm glow behind core -->
+    <filter id="warmGlow04c" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0.2  0 0.5 0 0 0  0 0 0.2 0 0  0 0 0 1 0"/>
+    </filter>
+  </defs>
+
+  <rect width="64" height="64" rx="14" fill="url(#base04c)"/>
+
+  <!-- Background warm glow -->
+  <circle cx="32" cy="32" r="16" fill="#fbbf24" filter="url(#warmGlow04c)" opacity="0.4"/>
+
+  <g filter="url(#glow04c)">
+    <!-- Outer ring - broken -->
+    <path d="M32 8 A24 24 0 0 1 56 32" fill="none" stroke="url(#ring04c)" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+    <path d="M56 32 A24 24 0 0 1 32 56" fill="none" stroke="url(#ring04c)" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
+    <path d="M32 56 A24 24 0 0 1 8 32" fill="none" stroke="url(#ring04c)" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+
+    <!-- Middle ring -->
+    <path d="M32 16 A16 16 0 0 1 48 32" fill="none" stroke="url(#ring04c)" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+    <path d="M48 32 A16 16 0 0 1 32 48" fill="none" stroke="url(#ring04c)" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+
+    <!-- Amber core -->
+    <circle cx="32" cy="32" r="8" fill="url(#core04c)"/>
+  </g>
+</svg>
