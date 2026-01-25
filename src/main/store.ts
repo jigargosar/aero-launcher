@@ -4,8 +4,14 @@ import {channels, ListItem} from '@shared/types'
 export const Store = {
     init(webContents: WebContents): void {
         const items: ListItem[] = [
-            {id: '1', name: 'Item 1'},
-            {id: '2', name: 'Item 2'},
+            {id: '1', name: 'Google Search'},
+            {id: '2', name: 'Calculator'},
+            {id: '3', name: 'Calendar'},
+            {id: '4', name: 'Notes'},
+            {id: '5', name: 'Settings'},
+            {id: '6', name: 'Terminal'},
+            {id: '7', name: 'Files'},
+            {id: '8', name: 'Music'},
         ]
 
         ipcMain.on(channels.requestListItems, () => {
