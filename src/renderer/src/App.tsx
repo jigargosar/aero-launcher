@@ -15,22 +15,19 @@ function useLauncher() {
     const [selectedIndex, setSelectedIndex] = useState(0)
     const lastKeyTime = useRef(0)
 
-    // Fetch items
+    // Subscribe to items and request initial data
     useEffect(() => {
         window.electron.onListItemsReceived(setItems)
         window.electron.requestListItems()
     }, [])
 
-    const filteredItems = query
-        ? items.filter(item => item.name.toLowerCase().includes(query.toLowerCase()))
-        : items
-
-    const selectedItem = filteredItems[selectedIndex]
-
-    // Reset selection on query change
+    // Send query to store on change
     useEffect(() => {
+        window.electron.setQuery(query)
         setSelectedIndex(0)
     }, [query])
+
+    const selectedItem = items[selectedIndex]
 
     // Keyboard handler with access to latest state
     const onKeyDown = useEffectEvent((e: KeyboardEvent) => {
@@ -41,7 +38,7 @@ function useLauncher() {
                 return
             case 'ArrowDown':
                 e.preventDefault()
-                setSelectedIndex(i => Math.min(i + 1, filteredItems.length - 1))
+                setSelectedIndex(i => Math.min(i + 1, items.length - 1))
                 return
             case 'ArrowUp':
                 e.preventDefault()
@@ -66,7 +63,7 @@ function useLauncher() {
 
     return {
         query,
-        filteredItems,
+        items,
         selectedItem,
         selectedIndex,
         setSelectedIndex,
@@ -76,7 +73,7 @@ function useLauncher() {
 export default function App() {
     const {
         query,
-        filteredItems,
+        items,
         selectedItem,
         selectedIndex,
         setSelectedIndex,
@@ -96,9 +93,9 @@ export default function App() {
                 {query && <span className="header-query">{query}</span>}
             </header>
 
-            {filteredItems.length > 0 ? (
+            {items.length > 0 ? (
                 <div className="launcher-list">
-                    {filteredItems.map((item, index) => (
+                    {items.map((item, index) => (
                         <div
                             key={item.id}
                             className={`item ${index === selectedIndex ? 'selected' : ''}`}

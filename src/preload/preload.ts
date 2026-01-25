@@ -11,6 +11,9 @@ const api: ElectronAPI = {
     hideWindow: () => {
         ipcRenderer.send(channels.hideWindow)
     },
+    setQuery: (query) => {
+        ipcRenderer.send(channels.setQuery, query)
+    },
 }
 
 contextBridge.exposeInMainWorld('electron', api)

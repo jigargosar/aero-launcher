@@ -8,12 +8,14 @@ export const channels = {
     listItems: 'list-items',
     requestListItems: 'request-list-items',
     hideWindow: 'hide-window',
+    setQuery: 'set-query',
 }
 
 export type ElectronAPI = {
     onListItemsReceived: (callback: (items: ListItem[]) => void) => void
     requestListItems: () => void
     hideWindow: () => void
+    setQuery: (query: string) => void
 }
 
 declare global {

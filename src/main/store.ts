@@ -15,8 +15,22 @@ export const Store = {
             {id: '8', name: 'Music', icon: Icons.music},
         ]
 
+        let query = ''
+
+        const sendFilteredItems = () => {
+            const filtered = query
+                ? items.filter(item => item.name.toLowerCase().includes(query.toLowerCase()))
+                : items
+            webContents.send(channels.listItems, filtered)
+        }
+
         ipcMain.on(channels.requestListItems, () => {
-            webContents.send(channels.listItems, items)
+            sendFilteredItems()
+        })
+
+        ipcMain.on(channels.setQuery, (_, q: string) => {
+            query = q
+            sendFilteredItems()
         })
     }
 }
