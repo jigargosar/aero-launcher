@@ -4,3 +4,11 @@ body {
     margin: 0;
     background: transparent;
 }
+
+.drag-region {
+    -webkit-app-region: drag;
+}
+
+.no-drag {
+    -webkit-app-region: no-drag;
+}
