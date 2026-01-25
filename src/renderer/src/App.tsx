@@ -1,35 +1,35 @@
-import { useEffect, useState } from 'react'
-import { ListItem, ElectronAPI } from '@shared/types'
+import {useEffect, useState} from 'react'
+import {ElectronAPI, ListItem} from '@shared/types'
 
 declare global {
-  interface Window {
-    electron: ElectronAPI
-  }
+    interface Window {
+        electron: ElectronAPI
+    }
 }
 
 export default function App() {
-  const [items, setItems] = useState<ListItem[]>([])
+    const [items, setItems] = useState<ListItem[]>([])
 
-  useEffect(() => {
-    window.electron.onListState(setItems)
-  }, [])
+    useEffect(() => {
+        window.electron.onListState(setItems)
+    }, [])
 
-  return (
-    <div
-      className="bg-zinc-900 text-zinc-100 min-h-screen p-4"
-      style={{ WebkitAppRegion: 'drag' } as React.CSSProperties}
-    >
-      <h1 className="text-lg font-bold mb-4">Launch Bar v2</h1>
-      <div
-        className="space-y-2 overflow-auto"
-        style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}
-      >
-        {items.map(item => (
-          <div key={item.id} className="p-2 bg-zinc-800 rounded">
-            {item.name}
-          </div>
-        ))}
-      </div>
-    </div>
-  )
+    return (
+        <div
+            className="bg-zinc-900 text-zinc-100 min-h-screen p-4"
+            style={{WebkitAppRegion: 'drag'} as React.CSSProperties}
+        >
+            <h1 className="text-lg font-bold mb-4">Launch Bar v2</h1>
+            <div
+                className="space-y-2 overflow-auto"
+                style={{WebkitAppRegion: 'no-drag'} as React.CSSProperties}
+            >
+                {items.map(item => (
+                    <div key={item.id} className="p-2 bg-zinc-800 rounded">
+                        {item.name}
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
 }

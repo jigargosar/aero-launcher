@@ -8,90 +8,95 @@ type WindowBounds = { x: number; y: number; width: number; height: number }
 const boundsFilePath = join(app.getPath('userData'), 'window-bounds.json')
 
 function loadBounds(): WindowBounds | null {
-  try {
-    return JSON.parse(readFileSync(boundsFilePath, 'utf-8'))
-  } catch {
-    return null
-  }
+    try {
+        return JSON.parse(readFileSync(boundsFilePath, 'utf-8'))
+    } catch {
+        return null
+    }
 }
 
 function saveBounds(bounds: WindowBounds): void {
-  writeFileSync(boundsFilePath, JSON.stringify(bounds))
+    writeFileSync(boundsFilePath, JSON.stringify(bounds))
 }
 
 const ICON_PATH = join(__dirname, '../../assets/icon.png')
 
 app.whenReady().then(() => {
-  const savedBounds = loadBounds()
+    const savedBounds = loadBounds()
 
-  const mainWindow = new BrowserWindow({
-    width: savedBounds?.width ?? 600,
-    height: savedBounds?.height ?? 400,
-    x: savedBounds?.x,
-    y: savedBounds?.y,
-    minWidth: 400,
-    minHeight: 200,
-    frame: false,
-    resizable: true,
-    skipTaskbar: true,
-    show: false,
-    icon: ICON_PATH,
-    webPreferences: {
-      preload: join(__dirname, '../preload/preload.js'),
-      contextIsolation: true,
-      nodeIntegration: false
-    }
-  })
+    const mainWindow = new BrowserWindow({
+        width: savedBounds?.width ?? 600,
+        height: savedBounds?.height ?? 400,
+        x: savedBounds?.x,
+        y: savedBounds?.y,
+        minWidth: 400,
+        minHeight: 200,
+        frame: false,
+        resizable: true,
+        skipTaskbar: true,
+        show: false,
+        icon: ICON_PATH,
+        webPreferences: {
+            preload: join(__dirname, '../preload/preload.js'),
+            contextIsolation: true,
+            nodeIntegration: false
+        }
+    })
 
-  mainWindow.on('resize', () => saveBounds(mainWindow.getBounds()))
-  mainWindow.on('move', () => saveBounds(mainWindow.getBounds()))
+    mainWindow.on('resize', () => saveBounds(mainWindow.getBounds()))
+    mainWindow.on('move', () => saveBounds(mainWindow.getBounds()))
 
-  // Hide instead of close
-  mainWindow.on('close', e => {
-    e.preventDefault()
-    mainWindow.hide()
-  })
+    // Hide instead of close
+    mainWindow.on('close', e => {
+        e.preventDefault()
+        mainWindow.hide()
+    })
 
-  if (process.env.NODE_ENV === 'development') {
-    mainWindow.loadURL('http://localhost:5173')
-  } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
-  }
-
-  // System tray
-  const trayIcon = nativeImage.createFromPath(ICON_PATH)
-  const tray = new Tray(trayIcon)
-  tray.setToolTip('Launch Bar')
-  tray.setContextMenu(Menu.buildFromTemplate([
-    { label: 'Show', click: () => mainWindow.show() },
-    { label: 'Quit', click: () => { mainWindow.destroy(); app.quit() } }
-  ]))
-  tray.on('click', () => {
-    if (mainWindow.isVisible()) {
-      mainWindow.hide()
+    if (process.env.NODE_ENV === 'development') {
+        mainWindow.loadURL('http://localhost:5173')
     } else {
-      mainWindow.show()
+        mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
     }
-  })
 
-  // Global hotkey: Win+` to toggle
-  const registered = globalShortcut.register('Super+`', () => {
-    if (mainWindow.isVisible() && mainWindow.isFocused()) {
-      mainWindow.hide()
+    // System tray
+    const trayIcon = nativeImage.createFromPath(ICON_PATH)
+    const tray = new Tray(trayIcon)
+    tray.setToolTip('Launch Bar')
+    tray.setContextMenu(Menu.buildFromTemplate([
+        {label: 'Show', click: () => mainWindow.show()},
+        {
+            label: 'Quit', click: () => {
+                mainWindow.destroy();
+                app.quit()
+            }
+        }
+    ]))
+    tray.on('click', () => {
+        if (mainWindow.isVisible()) {
+            mainWindow.hide()
+        } else {
+            mainWindow.show()
+        }
+    })
+
+    // Global hotkey: Win+` to toggle
+    const registered = globalShortcut.register('Super+`', () => {
+        if (mainWindow.isVisible() && mainWindow.isFocused()) {
+            mainWindow.hide()
+        } else {
+            mainWindow.show()
+            mainWindow.focus()
+        }
+    })
+
+    if (!registered) {
+        console.error('Failed to register global shortcut: Super+`')
     } else {
-      mainWindow.show()
-      mainWindow.focus()
+        console.log('Global shortcut registered: Super+`')
     }
-  })
 
-  if (!registered) {
-    console.error('Failed to register global shortcut: Super+`')
-  } else {
-    console.log('Global shortcut registered: Super+`')
-  }
-
-  // Show window initially
-  mainWindow.show()
+    // Show window initially
+    mainWindow.show()
 
     Store.init((items) => {
         mainWindow.webContents.send("list-state", items)
@@ -100,9 +105,9 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', () => {
-  // Don't quit on window close
+    // Don't quit on window close
 })
 
 app.on('will-quit', () => {
-  globalShortcut.unregisterAll()
+    globalShortcut.unregisterAll()
 })
