@@ -98,7 +98,7 @@ export default function App() {
 }
 
 function ItemIcon({name}: { name: string }) {
-    const size = 30
+    const size = 34
     const icons: Record<string, ReactNode> = {
         'Google Search': (
             <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
@@ -186,7 +186,7 @@ function ChevronIcon() {
 
 function LaunchBarIcon() {
     return (
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#d4872e" strokeWidth="2"
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#d4872e" strokeWidth="2"
              strokeLinecap="round" strokeLinejoin="round">
             <path d="m9 18 6-6-6-6"/>
         </svg>
