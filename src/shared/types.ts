@@ -10,3 +10,10 @@ export const channels = {
 export type ElectronAPI = {
     onListState: (callback: (items: ListItem[]) => void) => void
 }
+
+declare global {
+    // noinspection JSUnusedGlobalSymbols
+    interface Window {
+        electron: ElectronAPI
+    }
+}
