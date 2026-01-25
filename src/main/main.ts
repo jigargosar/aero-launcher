@@ -115,7 +115,7 @@ app.whenReady().then(() => {
     const mainWindow = createMainWindow()
     setupTray(mainWindow)
     registerHotkeys(mainWindow)
-    Store.init((items) => mainWindow.webContents.send('list-state', items))
+    Store.init(mainWindow.webContents)
     mainWindow.show()
 })
 

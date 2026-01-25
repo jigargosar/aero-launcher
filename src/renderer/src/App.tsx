@@ -5,7 +5,8 @@ export default function App() {
     const [items, setItems] = useState<ListItem[]>([])
 
     useEffect(() => {
-        window.electron.onListState(setItems)
+        window.electron.onListItemsReceived(setItems)
+        window.electron.requestListItems()
     }, [])
 
     return (

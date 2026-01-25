@@ -4,11 +4,13 @@ export type ListItem = {
 }
 
 export const channels = {
-    listState: 'list-state'
+    listItems: 'list-items',
+    requestListItems: 'request-list-items',
 }
 
 export type ElectronAPI = {
-    onListState: (callback: (items: ListItem[]) => void) => void
+    onListItemsReceived: (callback: (items: ListItem[]) => void) => void
+    requestListItems: () => void
 }
 
 declare global {
