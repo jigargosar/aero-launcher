@@ -1,4 +1,4 @@
-import {RefObject, useEffect, useRef, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {ListItem} from '@shared/types'
 import {Icons} from '@shared/icons'
 
@@ -8,8 +8,6 @@ function useLauncher() {
     const [items, setItems] = useState<ListItem[]>([])
     const [query, setQuery] = useState('')
     const [selectedIndex, setSelectedIndex] = useState(0)
-    const listRef = useRef<HTMLDivElement>(null)
-    const mouseY = useRef<number | null>(null)
 
     // Fetch items
     useEffect(() => {
@@ -48,31 +46,12 @@ function useLauncher() {
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [filteredItems.length])
 
-    // Mouse tracking handlers
-    const handleMouseMove = (e: React.MouseEvent) => {
-        mouseY.current = e.clientY
-    }
-
-    const handleScroll = () => {
-        if (mouseY.current === null || !listRef.current) return
-        const items = listRef.current.querySelectorAll('.item')
-        items.forEach((item, index) => {
-            const rect = item.getBoundingClientRect()
-            if (mouseY.current! >= rect.top && mouseY.current! < rect.bottom) {
-                setSelectedIndex(index)
-            }
-        })
-    }
-
     return {
         query,
         filteredItems,
         selectedItem,
         selectedIndex,
         setSelectedIndex,
-        listRef,
-        handleMouseMove,
-        handleScroll,
     }
 }
 
@@ -83,9 +62,6 @@ export default function App() {
         selectedItem,
         selectedIndex,
         setSelectedIndex,
-        listRef,
-        handleMouseMove,
-        handleScroll,
     } = useLauncher()
 
     return (
@@ -103,12 +79,7 @@ export default function App() {
             </header>
 
             {filteredItems.length > 0 ? (
-                <div
-                    ref={listRef}
-                    className="launcher-list"
-                    onMouseMove={handleMouseMove}
-                    onScroll={handleScroll}
-                >
+                <div className="launcher-list">
                     {filteredItems.map((item, index) => (
                         <div
                             key={item.id}
