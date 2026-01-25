@@ -8,6 +8,9 @@ const api: ElectronAPI = {
     requestListItems: () => {
         ipcRenderer.send(channels.requestListItems)
     },
+    hideWindow: () => {
+        ipcRenderer.send(channels.hideWindow)
+    },
 }
 
 contextBridge.exposeInMainWorld('electron', api)

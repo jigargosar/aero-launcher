@@ -1,7 +1,8 @@
-import {app, BrowserWindow, globalShortcut, Menu, nativeImage, Tray} from 'electron'
+import {app, BrowserWindow, globalShortcut, ipcMain, Menu, nativeImage, Tray} from 'electron'
 import {Store} from './store'
 import {join} from 'path'
 import {readFileSync, writeFileSync} from 'fs'
+import {channels} from '@shared/types'
 
 type WindowBounds = { x?: number; y?: number; width: number; height: number }
 
@@ -117,6 +118,11 @@ app.whenReady().then(() => {
     setupTray(mainWindow)
     registerHotkeys(mainWindow)
     Store.init(mainWindow.webContents)
+
+    ipcMain.on(channels.hideWindow, () => {
+        mainWindow.hide()
+    })
+
     mainWindow.show()
 })
 

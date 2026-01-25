@@ -1,13 +1,19 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import {ListItem} from '@shared/types'
 import {Icons} from '@shared/icons'
 
 import LAUNCHBAR_ICON from '@assets/icon.png'
 
+const config = {
+    queryTimeoutMs: 1000,
+    clearQueryOnEsc: true,
+}
+
 function useLauncher() {
     const [items, setItems] = useState<ListItem[]>([])
     const [query, setQuery] = useState('')
     const [selectedIndex, setSelectedIndex] = useState(0)
+    const lastKeyTime = useRef(0)
 
     // Fetch items
     useEffect(() => {
@@ -29,7 +35,16 @@ function useLauncher() {
     // Keyboard navigation
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'ArrowDown') {
+            const now = Date.now()
+            const shouldResetQuery = now - lastKeyTime.current > config.queryTimeoutMs
+
+            if (e.key === 'Escape') {
+                if (query) {
+                    if (config.clearQueryOnEsc) setQuery('')
+                } else {
+                    window.electron.hideWindow()
+                }
+            } else if (e.key === 'ArrowDown') {
                 e.preventDefault()
                 setSelectedIndex(i => Math.min(i + 1, filteredItems.length - 1))
             } else if (e.key === 'ArrowUp') {
@@ -37,14 +52,20 @@ function useLauncher() {
                 setSelectedIndex(i => Math.max(i - 1, 0))
             } else if (e.key === 'Backspace') {
                 setQuery(q => q.slice(0, -1))
+                lastKeyTime.current = now
             } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
-                setQuery(q => q + e.key)
+                if (shouldResetQuery) {
+                    setQuery(e.key)
+                } else {
+                    setQuery(q => q + e.key)
+                }
+                lastKeyTime.current = now
             }
         }
 
         window.addEventListener('keydown', handleKeyDown)
         return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [filteredItems.length])
+    }, [filteredItems.length, query])
 
     return {
         query,

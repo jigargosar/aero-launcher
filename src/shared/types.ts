@@ -7,11 +7,13 @@ export type ListItem = {
 export const channels = {
     listItems: 'list-items',
     requestListItems: 'request-list-items',
+    hideWindow: 'hide-window',
 }
 
 export type ElectronAPI = {
     onListItemsReceived: (callback: (items: ListItem[]) => void) => void
     requestListItems: () => void
+    hideWindow: () => void
 }
 
 declare global {
