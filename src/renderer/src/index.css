@@ -111,12 +111,12 @@ body {
     bottom: 0;
     left: 20px;
     right: 20px;
-    height: 2px;
+    height: 1.5px;
     background: linear-gradient(
         to right,
         transparent,
-        rgba(255, 255, 255, 0.15) 15%,
-        rgba(255, 255, 255, 0.15) 85%,
+        rgba(255, 255, 255, 0.12) 15%,
+        rgba(255, 255, 255, 0.12) 85%,
         transparent
     );
 }
