@@ -1,58 +1,25 @@
-import { app, BrowserWindow, ipcMain, Tray, Menu, globalShortcut, nativeImage } from 'electron'
-import { join } from 'path'
-import { readFileSync, writeFileSync } from 'fs'
-import { channels, ListItem } from '@shared/types'
+import {app, BrowserWindow, globalShortcut, Menu, nativeImage, Tray} from 'electron'
+import {Store} from './store'
+import {join} from 'path'
+import {readFileSync, writeFileSync} from 'fs'
 
 type WindowBounds = { x: number; y: number; width: number; height: number }
 
-const boundsFile = join(app.getPath('userData'), 'window-bounds.json')
+const boundsFilePath = join(app.getPath('userData'), 'window-bounds.json')
 
 function loadBounds(): WindowBounds | null {
   try {
-    return JSON.parse(readFileSync(boundsFile, 'utf-8'))
+    return JSON.parse(readFileSync(boundsFilePath, 'utf-8'))
   } catch {
     return null
   }
 }
 
 function saveBounds(bounds: WindowBounds): void {
-  writeFileSync(boundsFile, JSON.stringify(bounds))
+  writeFileSync(boundsFilePath, JSON.stringify(bounds))
 }
 
 const ICON_PATH = join(__dirname, '../../assets/icon.png')
-
-const mockItems: ListItem[] = [
-  {
-    key: 'ws:google',
-    name: 'Google Search',
-    icon: '',
-    provider: 'websearch',
-    typeLabel: 'Command',
-    subtypeLabel: 'Web Search',
-    meta: { url: 'https://google.com/search?q=' },
-    actions: ['primary', 'input', 'nav']
-  },
-  {
-    key: 'ws:youtube',
-    name: 'YouTube Search',
-    icon: '',
-    provider: 'websearch',
-    typeLabel: 'Command',
-    subtypeLabel: 'Web Search',
-    meta: { url: 'https://youtube.com/results?search_query=' },
-    actions: ['primary', 'input', 'nav']
-  },
-  {
-    key: 'ws:ddg',
-    name: 'DuckDuckGo Search',
-    icon: '',
-    provider: 'websearch',
-    typeLabel: 'Command',
-    subtypeLabel: 'Web Search',
-    meta: { url: 'https://duckduckgo.com/?q=' },
-    actions: ['primary', 'input', 'nav']
-  }
-]
 
 app.whenReady().then(() => {
   const savedBounds = loadBounds()
@@ -126,9 +93,10 @@ app.whenReady().then(() => {
   // Show window initially
   mainWindow.show()
 
-  ipcMain.on(channels.requestListState, () => {
-    mainWindow.webContents.send(channels.listState, mockItems)
-  })
+    Store.init((items) => {
+        mainWindow.webContents.send("list-state", items)
+    })
+
 })
 
 app.on('window-all-closed', () => {

@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import { ListItem } from '@shared/types'
+import { useEffect, useState } from 'react'
+import { ListItem, ElectronAPI } from '@shared/types'
+
+declare global {
+  interface Window {
+    electron: ElectronAPI
+  }
+}
 
 export default function App() {
   const [items, setItems] = useState<ListItem[]>([])
 
   useEffect(() => {
     window.electron.onListState(setItems)
-    window.electron.requestListState()
   }, [])
 
   return (
@@ -20,7 +25,7 @@ export default function App() {
         style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}
       >
         {items.map(item => (
-          <div key={item.key} className="p-3 bg-zinc-800 rounded">
+          <div key={item.id} className="p-2 bg-zinc-800 rounded">
             {item.name}
           </div>
         ))}
