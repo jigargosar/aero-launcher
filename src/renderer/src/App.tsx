@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react'
+import {useEffect, useEffectEvent, useRef, useState} from 'react'
 import {ListItem} from '@shared/types'
 import {Icons} from '@shared/icons'
 
@@ -32,40 +32,41 @@ function useLauncher() {
         setSelectedIndex(0)
     }, [query])
 
+    // Keyboard handler with access to latest state
+    const onKeyDown = useEffectEvent((e: KeyboardEvent) => {
+        const now = Date.now()
+        const shouldResetQuery = now - lastKeyTime.current > config.queryTimeoutMs
+
+        if (e.key === 'Escape') {
+            if (query) {
+                if (config.clearQueryOnEsc) setQuery('')
+            } else {
+                window.electron.hideWindow()
+            }
+        } else if (e.key === 'ArrowDown') {
+            e.preventDefault()
+            setSelectedIndex(i => Math.min(i + 1, filteredItems.length - 1))
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault()
+            setSelectedIndex(i => Math.max(i - 1, 0))
+        } else if (e.key === 'Backspace') {
+            setQuery(q => q.slice(0, -1))
+            lastKeyTime.current = now
+        } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+            if (shouldResetQuery) {
+                setQuery(e.key)
+            } else {
+                setQuery(q => q + e.key)
+            }
+            lastKeyTime.current = now
+        }
+    })
+
     // Keyboard navigation
     useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            const now = Date.now()
-            const shouldResetQuery = now - lastKeyTime.current > config.queryTimeoutMs
-
-            if (e.key === 'Escape') {
-                if (query) {
-                    if (config.clearQueryOnEsc) setQuery('')
-                } else {
-                    window.electron.hideWindow()
-                }
-            } else if (e.key === 'ArrowDown') {
-                e.preventDefault()
-                setSelectedIndex(i => Math.min(i + 1, filteredItems.length - 1))
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault()
-                setSelectedIndex(i => Math.max(i - 1, 0))
-            } else if (e.key === 'Backspace') {
-                setQuery(q => q.slice(0, -1))
-                lastKeyTime.current = now
-            } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
-                if (shouldResetQuery) {
-                    setQuery(e.key)
-                } else {
-                    setQuery(q => q + e.key)
-                }
-                lastKeyTime.current = now
-            }
-        }
-
-        window.addEventListener('keydown', handleKeyDown)
-        return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [filteredItems.length, query])
+        window.addEventListener('keydown', onKeyDown)
+        return () => window.removeEventListener('keydown', onKeyDown)
+    }, [])
 
     return {
         query,
