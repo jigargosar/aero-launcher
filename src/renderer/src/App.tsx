@@ -49,10 +49,7 @@ function useLauncher() {
         } else if (e.key === 'ArrowUp') {
             e.preventDefault()
             setSelectedIndex(i => Math.max(i - 1, 0))
-        } else if (e.key === 'Backspace') {
-            setQuery(q => q.slice(0, -1))
-            lastKeyTime.current = now
-        } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+        } else if (e.key.length === 1 && e.key !== ' ' && !e.ctrlKey && !e.metaKey) {
             if (shouldResetQuery) {
                 setQuery(e.key)
             } else {
