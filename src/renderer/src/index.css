@@ -62,10 +62,9 @@ body {
 .launcher-header .header-icon {
     width: 34px;
     height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
 }
 
 .launcher-header .header-title {
@@ -141,20 +140,11 @@ body {
 .item .item-icon {
     width: 34px;
     height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
 }
 
-.item .item-icon svg {
-    width: 34px;
-    height: 34px;
-    stroke: var(--icon-color);
-}
-
-.item.selected .item-icon svg {
-    stroke: var(--text-primary);
+.item.selected .item-icon {
+    filter: brightness(1.5);
 }
 
 .item .item-name {

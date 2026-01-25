@@ -1,6 +1,7 @@
 export type ListItem = {
     id: string
     name: string
+    icon: string  // base64 data URL
 }
 
 export const channels = {

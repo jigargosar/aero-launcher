@@ -8,6 +8,7 @@ type WindowBounds = { x?: number; y?: number; width: number; height: number }
 const DEFAULT_BOUNDS: WindowBounds = {width: 600, height: 400}
 const BOUNDS_FILE_PATH = join(app.getPath('userData'), 'window-bounds.json')
 const ICON_PATH = join(__dirname, '../../assets/icon.png')
+const TRAY_ICON_PATH = join(__dirname, '../../assets/icon.png')
 
 // === Bounds Persistence ===
 
@@ -62,7 +63,7 @@ function createMainWindow(): BrowserWindow {
 // === Tray ===
 
 function setupTray(window: BrowserWindow): Tray {
-    const trayIcon = nativeImage.createFromPath(ICON_PATH)
+    const trayIcon = nativeImage.createFromPath(TRAY_ICON_PATH)
     const tray = new Tray(trayIcon)
     tray.setToolTip('Launch Bar')
     tray.setContextMenu(
