@@ -7,7 +7,7 @@ const toBase64 = (svg: string): string =>
 const createSvg = (path: string, stroke = '#aaaaaa'): string =>
     `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="${stroke}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`
 
-export const icons = {
+export const Icons = {
     search: toBase64(createSvg('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>')),
     calculator: toBase64(createSvg('<rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="8" x2="8" y1="14" y2="14"/><line x1="8" x2="8" y1="18" y2="18"/><line x1="12" x2="12" y1="14" y2="14"/><line x1="12" x2="12" y1="18" y2="18"/><line x1="16" x2="16" y1="14" y2="18"/>')),
     calendar: toBase64(createSvg('<rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/>')),

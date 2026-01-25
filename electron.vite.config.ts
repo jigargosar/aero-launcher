@@ -1,18 +1,14 @@
 import { defineConfig } from 'electron-vite'
-import { resolve } from 'path'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import checker from 'vite-plugin-checker'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
-const alias = {
-  '@shared': resolve(__dirname, 'src/shared'),
-  '@assets': resolve(__dirname, 'assets')
-}
+const sharedPlugins = [tsconfigPaths(), checker({ typescript: true })]
 
 export default defineConfig({
   main: {
-    resolve: { alias },
-    plugins: [checker({ typescript: true })],
+    plugins: sharedPlugins,
     build: {
       rollupOptions: {
         input: 'src/main/main.ts',
@@ -21,7 +17,7 @@ export default defineConfig({
     }
   },
   preload: {
-    resolve: { alias },
+    plugins: sharedPlugins,
     build: {
       rollupOptions: {
         input: 'src/preload/preload.ts',
@@ -30,7 +26,6 @@ export default defineConfig({
     }
   },
   renderer: {
-    resolve: { alias },
-    plugins: [tailwindcss(), react(), checker({ typescript: true })]
+    plugins: [...sharedPlugins, tailwindcss(), react()]
   }
 })

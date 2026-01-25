@@ -1,8 +1,8 @@
 import {useEffect, useRef, useState} from 'react'
 import {ListItem} from '@shared/types'
-import {icons} from '@shared/icons'
+import {Icons} from '@shared/icons'
 
-import LAUNCHBAR_ICON from '../../../assets/icon.png'
+import LAUNCHBAR_ICON from '@assets/icon.png'
 
 export default function App() {
     const [items, setItems] = useState<ListItem[]>([])
@@ -87,7 +87,7 @@ export default function App() {
                         >
                             <img className="item-icon" src={item.icon} alt=""/>
                             <span className="item-name">{item.name}</span>
-                            <img className="item-chevron" src={icons.chevron} alt=""/>
+                            <img className="item-chevron" src={Icons.chevron} alt=""/>
                         </div>
                     ))}
                 </div>

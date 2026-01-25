@@ -10,7 +10,8 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@shared/*": ["src/shared/*"]
+      "@shared/*": ["src/shared/*"],
+      "@assets/*": ["assets/*"]
     }
   },
   "include": ["src/**/*"]
