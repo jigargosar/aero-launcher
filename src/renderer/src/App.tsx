@@ -1,10 +1,12 @@
-import {ReactNode, useEffect, useState} from 'react'
+import {ReactNode, useEffect, useRef, useState} from 'react'
 import {ListItem} from '@shared/types'
 
 export default function App() {
     const [items, setItems] = useState<ListItem[]>([])
     const [query, setQuery] = useState('')
     const [selectedIndex, setSelectedIndex] = useState(0)
+    const listRef = useRef<HTMLDivElement>(null)
+    const mouseY = useRef<number | null>(null)
 
     useEffect(() => {
         window.electron.onListItemsReceived(setItems)
@@ -45,7 +47,7 @@ export default function App() {
             {/* Header - shows selected item */}
             <header className="launcher-header drag-region">
                 <div className="header-icon">
-                    {selectedItem ? <ItemIcon name={selectedItem.name} large/> : <LaunchBarIcon/>}
+                    {selectedItem ? <ItemIcon name={selectedItem.name}/> : <LaunchBarIcon/>}
                 </div>
                 <span className="header-title">
                     {selectedItem ? selectedItem.name : 'Launch Bar'}
@@ -55,7 +57,23 @@ export default function App() {
 
             {/* List */}
             {filteredItems.length > 0 ? (
-                <div className="launcher-list">
+                <div
+                    ref={listRef}
+                    className="launcher-list"
+                    onMouseMove={(e) => {
+                        mouseY.current = e.clientY
+                    }}
+                    onScroll={() => {
+                        if (mouseY.current === null || !listRef.current) return
+                        const items = listRef.current.querySelectorAll('.item')
+                        items.forEach((item, index) => {
+                            const rect = item.getBoundingClientRect()
+                            if (mouseY.current! >= rect.top && mouseY.current! < rect.bottom) {
+                                setSelectedIndex(index)
+                            }
+                        })
+                    }}
+                >
                     {filteredItems.map((item, index) => (
                         <div
                             key={item.id}
@@ -79,8 +97,8 @@ export default function App() {
     )
 }
 
-function ItemIcon({name, large}: { name: string; large?: boolean }) {
-    const size = large ? 32 : 22
+function ItemIcon({name}: { name: string }) {
+    const size = 30
     const icons: Record<string, ReactNode> = {
         'Google Search': (
             <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
@@ -168,7 +186,7 @@ function ChevronIcon() {
 
 function LaunchBarIcon() {
     return (
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d4872e" strokeWidth="2"
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#d4872e" strokeWidth="2"
              strokeLinecap="round" strokeLinejoin="round">
             <path d="m9 18 6-6-6-6"/>
         </svg>

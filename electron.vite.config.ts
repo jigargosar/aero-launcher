@@ -4,7 +4,10 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import checker from 'vite-plugin-checker'
 
-const alias = { '@shared': resolve(__dirname, 'src/shared') }
+const alias = {
+  '@shared': resolve(__dirname, 'src/shared'),
+  '@assets': resolve(__dirname, 'assets')
+}
 
 export default defineConfig({
   main: {
