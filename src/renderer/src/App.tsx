@@ -1,16 +1,17 @@
-import {useEffect, useRef, useState} from 'react'
+import {RefObject, useEffect, useRef, useState} from 'react'
 import {ListItem} from '@shared/types'
 import {Icons} from '@shared/icons'
 
 import LAUNCHBAR_ICON from '@assets/icon.png'
 
-export default function App() {
+function useLauncher() {
     const [items, setItems] = useState<ListItem[]>([])
     const [query, setQuery] = useState('')
     const [selectedIndex, setSelectedIndex] = useState(0)
     const listRef = useRef<HTMLDivElement>(null)
     const mouseY = useRef<number | null>(null)
 
+    // Fetch items
     useEffect(() => {
         window.electron.onListItemsReceived(setItems)
         window.electron.requestListItems()
@@ -22,10 +23,12 @@ export default function App() {
 
     const selectedItem = filteredItems[selectedIndex]
 
+    // Reset selection on query change
     useEffect(() => {
         setSelectedIndex(0)
     }, [query])
 
+    // Keyboard navigation
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'ArrowDown') {
@@ -45,9 +48,48 @@ export default function App() {
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [filteredItems.length])
 
+    // Mouse tracking handlers
+    const handleMouseMove = (e: React.MouseEvent) => {
+        mouseY.current = e.clientY
+    }
+
+    const handleScroll = () => {
+        if (mouseY.current === null || !listRef.current) return
+        const items = listRef.current.querySelectorAll('.item')
+        items.forEach((item, index) => {
+            const rect = item.getBoundingClientRect()
+            if (mouseY.current! >= rect.top && mouseY.current! < rect.bottom) {
+                setSelectedIndex(index)
+            }
+        })
+    }
+
+    return {
+        query,
+        filteredItems,
+        selectedItem,
+        selectedIndex,
+        setSelectedIndex,
+        listRef,
+        handleMouseMove,
+        handleScroll,
+    }
+}
+
+export default function App() {
+    const {
+        query,
+        filteredItems,
+        selectedItem,
+        selectedIndex,
+        setSelectedIndex,
+        listRef,
+        handleMouseMove,
+        handleScroll,
+    } = useLauncher()
+
     return (
         <div className="launcher">
-            {/* Header - shows selected item */}
             <header className="launcher-header drag-region">
                 <img
                     className="header-icon"
@@ -60,24 +102,12 @@ export default function App() {
                 {query && <span className="header-query">{query}</span>}
             </header>
 
-            {/* List */}
             {filteredItems.length > 0 ? (
                 <div
                     ref={listRef}
                     className="launcher-list"
-                    onMouseMove={(e) => {
-                        mouseY.current = e.clientY
-                    }}
-                    onScroll={() => {
-                        if (mouseY.current === null || !listRef.current) return
-                        const items = listRef.current.querySelectorAll('.item')
-                        items.forEach((item, index) => {
-                            const rect = item.getBoundingClientRect()
-                            if (mouseY.current! >= rect.top && mouseY.current! < rect.bottom) {
-                                setSelectedIndex(index)
-                            }
-                        })
-                    }}
+                    onMouseMove={handleMouseMove}
+                    onScroll={handleScroll}
                 >
                     {filteredItems.map((item, index) => (
                         <div
