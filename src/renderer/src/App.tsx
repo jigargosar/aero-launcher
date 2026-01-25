@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from 'react'
 import {ListItem} from '@shared/types'
+import {icons} from '@shared/icons'
 
 import LAUNCHBAR_ICON from '../../../assets/icon.png'
 
@@ -86,9 +87,7 @@ export default function App() {
                         >
                             <img className="item-icon" src={item.icon} alt=""/>
                             <span className="item-name">{item.name}</span>
-                            <div className="item-chevron">
-                                <ChevronIcon/>
-                            </div>
+                            <img className="item-chevron" src={icons.chevron} alt=""/>
                         </div>
                     ))}
                 </div>
@@ -96,14 +95,5 @@ export default function App() {
                 <div className="empty">No results found</div>
             )}
         </div>
-    )
-}
-
-function ChevronIcon() {
-    return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-             strokeLinejoin="round">
-            <path d="m9 18 6-6-6-6"/>
-        </svg>
     )
 }

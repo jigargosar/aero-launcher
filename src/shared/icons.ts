@@ -17,7 +17,6 @@ export const icons = {
     folder: toBase64(createSvg('<path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>')),
     music: toBase64(createSvg('<circle cx="8" cy="18" r="4"/><path d="M12 18V2l7 4"/>')),
     launchbar: toBase64(createSvg('<path d="m9 18 6-6-6-6"/>', '#d4872e')),
+    chevron: toBase64(createSvg('<path d="m9 18 6-6-6-6"/>')),
     default: toBase64(createSvg('<rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/>')),
 }
-
-export type IconName = keyof typeof icons
