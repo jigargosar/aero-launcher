@@ -34,27 +34,26 @@ function useLauncher() {
 
     // Keyboard handler with access to latest state
     const onKeyDown = useEffectEvent((e: KeyboardEvent) => {
-        const now = Date.now()
-        const shouldResetQuery = now - lastKeyTime.current > config.queryTimeoutMs
+        switch (e.key) {
+            case 'Escape':
+                if (query && config.clearQueryOnEsc) setQuery('')
+                else if (!query) window.electron.hideWindow()
+                return
+            case 'ArrowDown':
+                e.preventDefault()
+                setSelectedIndex(i => Math.min(i + 1, filteredItems.length - 1))
+                return
+            case 'ArrowUp':
+                e.preventDefault()
+                setSelectedIndex(i => Math.max(i - 1, 0))
+                return
+        }
 
-        if (e.key === 'Escape') {
-            if (query) {
-                if (config.clearQueryOnEsc) setQuery('')
-            } else {
-                window.electron.hideWindow()
-            }
-        } else if (e.key === 'ArrowDown') {
-            e.preventDefault()
-            setSelectedIndex(i => Math.min(i + 1, filteredItems.length - 1))
-        } else if (e.key === 'ArrowUp') {
-            e.preventDefault()
-            setSelectedIndex(i => Math.max(i - 1, 0))
-        } else if (e.key.length === 1 && e.key !== ' ' && !e.ctrlKey && !e.metaKey) {
-            if (shouldResetQuery) {
-                setQuery(e.key)
-            } else {
-                setQuery(q => q + e.key)
-            }
+        // Typing (single char, not space, no modifiers)
+        if (e.key.length === 1 && e.key !== ' ' && !e.ctrlKey && !e.metaKey) {
+            const now = Date.now()
+            const shouldReset = now - lastKeyTime.current > config.queryTimeoutMs
+            setQuery(shouldReset ? e.key : q => q + e.key)
             lastKeyTime.current = now
         }
     })
