@@ -96,7 +96,7 @@ function createMainWindow(): BrowserWindow {
 function setupTray(window: BrowserWindow): Tray {
     const trayIcon = nativeImage.createFromPath(TRAY_ICON_PATH)
     const tray = new Tray(trayIcon)
-    tray.setToolTip('Aero Launcher')
+    tray.setToolTip(app.isPackaged ? 'Aero Launcher' : 'Aero Launcher (Dev)')
     tray.setContextMenu(
         Menu.buildFromTemplate([
             {
