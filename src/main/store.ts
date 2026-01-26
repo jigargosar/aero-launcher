@@ -3,7 +3,6 @@ import {channels, ListItem} from '@shared/types'
 import {config} from '@shared/config'
 import {Apps} from './apps-indexer'
 import {MockIndexer} from './mock-indexer'
-import {hideWindowAfter} from './utils'
 
 type Indexer = {
     id: string
@@ -75,8 +74,11 @@ export const Store = {
         ipcMain.on(channels.performPrimaryAction, (_, item: ListItem) => {
             const indexer = indexers.find(i => i.id === item.sourceId)
             if (indexer) {
+                setTimeout(() => {
+                    window.blur()
+                    window.hide()
+                }, 100)
                 indexer.performPrimaryAction(item)
-                hideWindowAfter(window, 10);
             } else {
                 console.error(`[Store] No indexer found for sourceId: ${item.sourceId}`)
             }

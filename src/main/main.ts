@@ -3,7 +3,6 @@ import {Store} from './store'
 import {join} from 'path'
 import {readFileSync, writeFileSync} from 'fs'
 import {channels} from '@shared/types'
-import {hideWindow} from './utils'
 
 type WindowBounds = { x?: number; y?: number; width: number; height: number }
 
@@ -50,7 +49,7 @@ function createMainWindow(): BrowserWindow {
 
     window.on('close', (e) => {
         e.preventDefault()
-        hideWindow(window)
+        window.hide()
     })
 
     if (process.env.NODE_ENV === 'development') {
@@ -85,7 +84,7 @@ function setupTray(window: BrowserWindow): Tray {
     )
     tray.on('click', () => {
         if (window.isVisible()) {
-            hideWindow(window)
+            window.hide()
         } else {
             window.show()
         }
@@ -96,9 +95,11 @@ function setupTray(window: BrowserWindow): Tray {
 // === Hotkeys ===
 
 function registerHotkeys(window: BrowserWindow): void {
+    console.log("register-hotkeys");
     const registered = globalShortcut.register('Super+`', () => {
-        if (window.isVisible()) {
-            hideWindow(window)
+        if (window.isVisible() && window.isFocused()) {
+            window.blur()
+            window.hide()
         } else {
             window.show()
         }
@@ -120,10 +121,11 @@ app.whenReady().then(() => {
     Store.init(mainWindow)
 
     ipcMain.on(channels.hideWindow, () => {
-        hideWindow(mainWindow)
+        mainWindow.blur()
+        mainWindow.hide()
     })
 
-    mainWindow.show()
+    // mainWindow.show()
 })
 
 app.on('window-all-closed', () => {
