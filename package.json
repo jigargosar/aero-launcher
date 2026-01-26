@@ -5,7 +5,21 @@
   "scripts": {
     "dev": "electron-vite dev --watch",
     "build": "tsc --noEmit && electron-vite build",
-    "preview": "electron-vite preview"
+    "preview": "electron-vite preview",
+    "release": "pnpm build && electron-builder"
+  },
+  "build": {
+    "appId": "com.launchbar.app",
+    "productName": "Launch Bar",
+    "win": {
+      "target": "portable"
+    },
+    "extraResources": [
+      {
+        "from": "src/main/ShellIcon.dll",
+        "to": "ShellIcon.dll"
+      }
+    ]
   },
   "packageManager": "pnpm@10.18.0",
   "devDependencies": {
@@ -13,7 +27,8 @@
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.2",
-    "electron": "^40.0.0",
+    "electron": "40.0.0",
+    "electron-builder": "^26.4.0",
     "electron-vite": "^5.0.0",
     "prettier": "^3.8.1",
     "sharp": "^0.34.5",

@@ -95,8 +95,8 @@ function setupTray(window: BrowserWindow): Tray {
 // === Hotkeys ===
 
 function registerHotkeys(window: BrowserWindow): void {
-    console.log("register-hotkeys");
-    const registered = globalShortcut.register('Super+`', () => {
+    const shortcut = app.isPackaged ? 'Super+/' : 'Super+`'
+    const registered = globalShortcut.register(shortcut, () => {
         if (window.isVisible() && window.isFocused()) {
             window.blur()
             window.hide()
@@ -106,9 +106,9 @@ function registerHotkeys(window: BrowserWindow): void {
     })
 
     if (!registered) {
-        console.error('Failed to register global shortcut: Super+`')
+        console.error(`Failed to register global shortcut: ${shortcut}`)
     } else {
-        console.log('Global shortcut registered: Super+`')
+        console.log(`Global shortcut registered: ${shortcut}`)
     }
 }
 

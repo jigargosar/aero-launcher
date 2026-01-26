@@ -8,7 +8,9 @@ import {ListItem} from '@shared/types'
 import {Icons} from '@shared/icons'
 
 const execAsync = promisify(exec)
-const SHELL_ICON_DLL = join(__dirname, 'ShellIcon.dll')
+const SHELL_ICON_DLL = app.isPackaged
+    ? join(process.resourcesPath, 'ShellIcon.dll')
+    : join(__dirname, 'ShellIcon.dll')
 const CACHE_DIR = join(app.getPath('userData'), 'cache')
 const CACHE_FILE = join(CACHE_DIR, 'apps.json')
 
