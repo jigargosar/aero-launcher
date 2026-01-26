@@ -3,12 +3,24 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import checker from 'vite-plugin-checker'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import { copyFileSync } from 'fs'
+import { resolve } from 'path'
 
 const sharedPlugins = [tsconfigPaths(), checker({ typescript: true })]
 
+const copyDll = () => ({
+  name: 'copy-dll',
+  closeBundle() {
+    copyFileSync(
+      resolve(__dirname, 'src/main/ShellIcon.dll'),
+      resolve(__dirname, 'out/main/ShellIcon.dll')
+    )
+  }
+})
+
 export default defineConfig({
   main: {
-    plugins: sharedPlugins,
+    plugins: [...sharedPlugins, copyDll()],
     build: {
       rollupOptions: {
         input: 'src/main/main.ts',
