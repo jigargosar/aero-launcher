@@ -108,22 +108,28 @@ function writeCache(items: ListItem[]): boolean {
 
 export const Apps = {
     id: 'apps',
-    readCache,
 
-    async index(onChanged: () => void): Promise<void> {
+    async load(onUpdate: (items: ListItem[]) => void): Promise<void> {
+        // Send cached items immediately
+        const cached = readCache()
+        if (cached.length > 0) {
+            onUpdate(cached)
+        }
+
+        // Index and update
         console.log('[Apps] Indexing...')
         const apps = await fetchApps()
         console.log('[Apps] Found:', apps.length)
 
-        // Write apps without icons first
+        // Send apps without icons first (if changed)
         if (writeCache(apps)) {
-            onChanged()
+            onUpdate(apps)
         }
 
-        // Load icons and write again
+        // Load icons and send again (if changed)
         const appsWithIcons = await loadIcons(apps)
         if (writeCache(appsWithIcons)) {
-            onChanged()
+            onUpdate(appsWithIcons)
         }
         console.log('[Apps] Indexing complete')
     }

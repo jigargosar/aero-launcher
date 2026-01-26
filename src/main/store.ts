@@ -4,8 +4,7 @@ import {Apps} from './apps'
 
 type Indexer = {
     id: string
-    readCache: () => ListItem[]
-    index: (onChanged: () => void) => Promise<void>
+    load: (onUpdate: (items: ListItem[]) => void) => Promise<void>
 }
 
 const indexers: Indexer[] = [Apps]
@@ -35,10 +34,9 @@ export const Store = {
             sendFilteredItems()
         }
 
-        // Load caches and run indexers
+        // Load indexers (each sends cached then fresh items)
         for (const indexer of indexers) {
-            updateSource(indexer.id, indexer.readCache())
-            indexer.index(() => updateSource(indexer.id, indexer.readCache()))
+            indexer.load((items) => updateSource(indexer.id, items))
         }
 
         ipcMain.on(channels.requestListItems, () => {
