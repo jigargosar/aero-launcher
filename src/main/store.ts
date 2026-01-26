@@ -1,5 +1,6 @@
 import {ipcMain, WebContents} from 'electron'
 import {channels, ListItem} from '@shared/types'
+import {config} from '@shared/config'
 import {Apps} from './apps-indexer'
 import {MockIndexer} from './mock-indexer'
 
@@ -26,12 +27,18 @@ export const Store = {
                 : list
             return filtered.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
         }
-
+        let firstTime = true
         const sendFilteredItems = () => {
-            setTimeout(() => {
-                webContents.send(channels.listItems, filterAndSort(getAllItems()))
-            }, 4 * 1000);
+            if (config.debugDelayFirstRender && firstTime) {
+                firstTime = false
+                setTimeout(sendItemsToRenderer, 4 * 1000)
+            } else {
+                sendItemsToRenderer()
+            }
 
+            function sendItemsToRenderer() {
+                webContents.send(channels.listItems, filterAndSort(getAllItems()))
+            }
         }
 
         let initialized = false

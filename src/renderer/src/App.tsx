@@ -1,13 +1,9 @@
 import {useEffect, useEffectEvent, useRef, useState} from 'react'
 import {ListItem} from '@shared/types'
 import {Icons} from '@shared/icons'
+import {config} from '@shared/config'
 
 import LAUNCHBAR_ICON from '@assets/icon.png'
-
-const config = {
-    queryTimeoutMs: 1000,
-    clearQueryOnEsc: true,
-}
 
 function LoadingBars() {
     return (
@@ -49,7 +45,7 @@ function useLauncher() {
         switch (e.key) {
             case 'Escape':
                 if (query && config.clearQueryOnEsc) setQuery('')
-                else if (!query) window.electron.hideWindow()
+                else window.electron.hideWindow()
                 return
             case 'Enter':
                 if (selectedItem) {
