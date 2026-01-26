@@ -119,6 +119,8 @@ export default function App() {
                     {items.map((item, index) => (
                         <div
                             key={item.id}
+                            // Scroll selected item into view (no-op if already visible)
+                            ref={index === selectedIndex ? el => el?.scrollIntoView({block: 'nearest'}) : undefined}
                             className={`item ${index === selectedIndex ? 'selected' : ''}`}
                             onMouseEnter={() => setSelectedIndex(index)}
                             onClick={() => performPrimaryAction(item)}
