@@ -4,6 +4,11 @@ import {join} from 'path'
 import {readFileSync, writeFileSync} from 'fs'
 import {spawn} from 'child_process'
 
+// Use separate userData for dev to avoid conflicts with prod
+if (!app.isPackaged) {
+    app.setPath('userData', app.getPath('userData') + '-dev')
+}
+
 // Handle Squirrel events (install/uninstall/update)
 if (process.platform === 'win32') {
     const squirrelEvent = process.argv[1]
