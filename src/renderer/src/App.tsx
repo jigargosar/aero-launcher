@@ -60,8 +60,11 @@ function useLauncher() {
 
     const selectedItem = items?.[selectedIndex]
 
-    const performPrimaryAction = (item: ListItem) => {
-        // window.electron.performPrimaryAction(item)
+    const launchItem = (item: ListItem) => {
+        window.electron.performPrimaryAction(item)
+    }
+
+    const showItemInfo = (item: ListItem) => {
         setDialogItem(item)
     }
 
@@ -75,7 +78,8 @@ function useLauncher() {
                 return
             case 'Enter':
                 if (selectedItem) {
-                    performPrimaryAction(selectedItem)
+                    if (e.shiftKey) launchItem(selectedItem)
+                    else showItemInfo(selectedItem)
                 }
                 return
             case 'ArrowDown':
@@ -111,7 +115,8 @@ function useLauncher() {
         selectedItem,
         selectedIndex,
         setSelectedIndex,
-        performPrimaryAction,
+        launchItem,
+        showItemInfo,
         dialogItem,
         closeDialog: () => setDialogItem(null),
         shouldScrollRef,
@@ -125,7 +130,8 @@ export default function App() {
         selectedItem,
         selectedIndex,
         setSelectedIndex,
-        performPrimaryAction,
+        launchItem,
+        showItemInfo,
         dialogItem,
         closeDialog,
         shouldScrollRef,
@@ -134,7 +140,7 @@ export default function App() {
     const loading = items === null
 
     return (
-        <div className="launcher">
+        <div className="launcher select-none">
             {dialogItem && <ItemDialog item={dialogItem} onClose={closeDialog} />}
             <header className={`launcher-header drag-region ${loading ? 'loading' : ''}`}>
                 <img
@@ -163,7 +169,7 @@ export default function App() {
                             } : undefined}
                             className={`item ${index === selectedIndex ? 'selected' : ''}`}
                             onMouseEnter={() => setSelectedIndex(index)}
-                            onClick={() => performPrimaryAction(item)}
+                            onClick={(e) => e.shiftKey ? launchItem(item) : showItemInfo(item)}
                         >
                             <img className="item-icon" src={item.icon} alt=""/>
                             <span className="item-name">{item.name}</span>
