@@ -2,10 +2,22 @@ import {ipcMain, WebContents} from 'electron'
 import {channels, ListItem} from '@shared/types'
 import {Apps} from './apps'
 
+type Indexer = {
+    id: string
+    readCache: () => ListItem[]
+    index: (onChanged: () => void) => Promise<void>
+}
+
+const indexers: Indexer[] = [Apps]
+
 export const Store = {
     init(webContents: WebContents): void {
-        let items: ListItem[] = []
+        const sources = new Map<string, ListItem[]>()
         let query = ''
+
+        const getAllItems = (): ListItem[] => {
+            return [...sources.values()].flat()
+        }
 
         const filterAndSort = (list: ListItem[]): ListItem[] => {
             const filtered = query
@@ -15,19 +27,19 @@ export const Store = {
         }
 
         const sendFilteredItems = () => {
-            webContents.send(channels.listItems, filterAndSort(items))
+            webContents.send(channels.listItems, filterAndSort(getAllItems()))
         }
 
-        const refreshFromCache = () => {
-            items = Apps.readCache()
+        const updateSource = (id: string, items: ListItem[]) => {
+            sources.set(id, items)
             sendFilteredItems()
         }
 
-        // Load from cache immediately
-        refreshFromCache()
-
-        // Run indexer in background
-        Apps.index(refreshFromCache)
+        // Load caches and run indexers
+        for (const indexer of indexers) {
+            updateSource(indexer.id, indexer.readCache())
+            indexer.index(() => updateSource(indexer.id, indexer.readCache()))
+        }
 
         ipcMain.on(channels.requestListItems, () => {
             sendFilteredItems()

@@ -107,6 +107,7 @@ function writeCache(items: ListItem[]): boolean {
 }
 
 export const Apps = {
+    id: 'apps',
     readCache,
 
     async index(onChanged: () => void): Promise<void> {
