@@ -2,11 +2,15 @@ import {spawn} from 'child_process'
 import {promisify} from 'util'
 import {exec} from 'child_process'
 import {join} from 'path'
+import {existsSync, readFileSync, writeFileSync, mkdirSync} from 'fs'
+import {app} from 'electron'
 import {ListItem} from '@shared/types'
 import {Icons} from '@shared/icons'
 
 const execAsync = promisify(exec)
 const SHELL_ICON_DLL = join(__dirname, 'ShellIcon.dll')
+const CACHE_DIR = join(app.getPath('userData'), 'cache')
+const CACHE_FILE = join(CACHE_DIR, 'apps.json')
 
 type AppEntry = {
     Name: string
@@ -78,18 +82,48 @@ async function loadIcons(apps: RawApp[]): Promise<RawApp[]> {
     }))
 }
 
+function readCache(): ListItem[] {
+    try {
+        if (existsSync(CACHE_FILE)) {
+            return JSON.parse(readFileSync(CACHE_FILE, 'utf-8'))
+        }
+    } catch (err) {
+        console.log('[Apps] Cache read error:', err)
+    }
+    return []
+}
+
+function writeCache(items: ListItem[]): boolean {
+    const oldCache = JSON.stringify(readCache())
+    const newCache = JSON.stringify(items)
+
+    if (oldCache === newCache) {
+        return false // No change
+    }
+
+    mkdirSync(CACHE_DIR, {recursive: true})
+    writeFileSync(CACHE_FILE, newCache)
+    return true // Changed
+}
+
 export const Apps = {
-    async load(onUpdate: (items: ListItem[]) => void): Promise<void> {
-        console.log('[Apps] Loading...')
+    readCache,
+
+    async index(onChanged: () => void): Promise<void> {
+        console.log('[Apps] Indexing...')
         const apps = await fetchApps()
         console.log('[Apps] Found:', apps.length)
 
-        // Emit with default icons first
-        onUpdate(apps)
+        // Write apps without icons first
+        if (writeCache(apps)) {
+            onChanged()
+        }
 
-        // Load icons and emit again
+        // Load icons and write again
         const appsWithIcons = await loadIcons(apps)
-        onUpdate(appsWithIcons)
-        console.log('[Apps] Icons loaded')
+        if (writeCache(appsWithIcons)) {
+            onChanged()
+        }
+        console.log('[Apps] Indexing complete')
     }
 }

@@ -18,13 +18,16 @@ export const Store = {
             webContents.send(channels.listItems, filterAndSort(items))
         }
 
-        const updateItems = (newItems: ListItem[]) => {
-            items = newItems
+        const refreshFromCache = () => {
+            items = Apps.readCache()
             sendFilteredItems()
         }
 
-        // Load apps
-        Apps.load(updateItems)
+        // Load from cache immediately
+        refreshFromCache()
+
+        // Run indexer in background
+        Apps.index(refreshFromCache)
 
         ipcMain.on(channels.requestListItems, () => {
             sendFilteredItems()
