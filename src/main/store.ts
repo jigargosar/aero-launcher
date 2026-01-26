@@ -35,12 +35,13 @@ export const Store = {
             sendFilteredItems()
         }
 
-        // Load indexers (each deferred to not block others)
-        for (const indexer of indexers) {
-            setImmediate(() => {
+        // Load indexers
+        Promise.all(
+            indexers.map(indexer =>
                 indexer.load((items) => updateSource(indexer.id, items))
-            })
-        }
+                    .catch(err => console.error(`[Store] ${indexer.id} failed:`, err))
+            )
+        ).catch(err => console.error('[Store] Indexers failed:', err))
 
         ipcMain.on(channels.requestListItems, () => {
             sendFilteredItems()

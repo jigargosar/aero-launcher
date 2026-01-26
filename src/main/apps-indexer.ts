@@ -2,7 +2,7 @@ import {spawn} from 'child_process'
 import {promisify} from 'util'
 import {exec} from 'child_process'
 import {join} from 'path'
-import {existsSync, readFileSync, writeFileSync, mkdirSync} from 'fs'
+import {readFile, writeFile, mkdir} from 'fs/promises'
 import {app} from 'electron'
 import {ListItem} from '@shared/types'
 import {Icons} from '@shared/icons'
@@ -82,27 +82,25 @@ async function loadIcons(apps: RawApp[]): Promise<RawApp[]> {
     }))
 }
 
-function readCache(): ListItem[] {
+async function readCache(): Promise<ListItem[]> {
     try {
-        if (existsSync(CACHE_FILE)) {
-            return JSON.parse(readFileSync(CACHE_FILE, 'utf-8'))
-        }
-    } catch (err) {
-        console.log('[Apps] Cache read error:', err)
+        const data = await readFile(CACHE_FILE, 'utf-8')
+        return JSON.parse(data)
+    } catch {
+        return []
     }
-    return []
 }
 
-function writeCache(items: ListItem[]): boolean {
-    const oldCache = JSON.stringify(readCache())
+async function writeCache(items: ListItem[]): Promise<boolean> {
+    const oldCache = JSON.stringify(await readCache())
     const newCache = JSON.stringify(items)
 
     if (oldCache === newCache) {
         return false // No change
     }
 
-    mkdirSync(CACHE_DIR, {recursive: true})
-    writeFileSync(CACHE_FILE, newCache)
+    await mkdir(CACHE_DIR, {recursive: true})
+    await writeFile(CACHE_FILE, newCache)
     return true // Changed
 }
 
@@ -111,7 +109,7 @@ export const Apps = {
 
     async load(onUpdate: (items: ListItem[]) => void): Promise<void> {
         // Send cached items immediately
-        const cached = readCache()
+        const cached = await readCache()
         if (cached.length > 0) {
             onUpdate(cached)
         }
@@ -127,7 +125,7 @@ export const Apps = {
         }
 
         const appsWithIcons = await loadIcons(apps)
-        if (writeCache(appsWithIcons)) {
+        if (await writeCache(appsWithIcons)) {
             onUpdate(appsWithIcons)
         }
         console.log('[Apps] Indexing complete')
