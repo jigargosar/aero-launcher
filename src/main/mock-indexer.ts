@@ -4,7 +4,7 @@ import {Icons} from '@shared/icons'
 export const MockIndexer = {
     id: 'mock',
 
-    async load(onUpdate: (items: ListItem[]) => void): Promise<void> {
+    async start(onUpdate: (items: ListItem[]) => void): Promise<void> {
         onUpdate([
             {id: 'mock:search', name: 'Google Search', icon: Icons.search},
             {id: 'mock:calculator', name: 'Calculator', icon: Icons.calculator},

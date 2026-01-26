@@ -9,8 +9,19 @@ const config = {
     clearQueryOnEsc: true,
 }
 
+function LoadingBars() {
+    return (
+        <span className="loading-bars">
+            <span className="bar"></span>
+            <span className="bar"></span>
+            <span className="bar"></span>
+            <span className="bar"></span>
+        </span>
+    )
+}
+
 function useLauncher() {
-    const [items, setItems] = useState<ListItem[]>([])
+    const [items, setItems] = useState<ListItem[] | null>(null)
     const [query, setQuery] = useState('')
     const [selectedIndex, setSelectedIndex] = useState(0)
     const lastKeyTime = useRef(0)
@@ -27,7 +38,7 @@ function useLauncher() {
         setSelectedIndex(0)
     }, [query])
 
-    const selectedItem = items[selectedIndex]
+    const selectedItem = items?.[selectedIndex]
 
     // Keyboard handler with access to latest state
     const onKeyDown = useEffectEvent((e: KeyboardEvent) => {
@@ -38,7 +49,7 @@ function useLauncher() {
                 return
             case 'ArrowDown':
                 e.preventDefault()
-                setSelectedIndex(i => Math.min(i + 1, items.length - 1))
+                setSelectedIndex(i => Math.min(i + 1, (items?.length ?? 1) - 1))
                 return
             case 'ArrowUp':
                 e.preventDefault()
@@ -79,9 +90,11 @@ export default function App() {
         setSelectedIndex,
     } = useLauncher()
 
+    const loading = items === null
+
     return (
         <div className="launcher">
-            <header className="launcher-header drag-region">
+            <header className={`launcher-header drag-region ${loading ? 'loading' : ''}`}>
                 <img
                     className="header-icon"
                     src={selectedItem?.icon ?? LAUNCHBAR_ICON}
@@ -89,11 +102,12 @@ export default function App() {
                 />
                 <span className="header-title">
                     {selectedItem?.name ?? 'Launch Bar'}
+                    {loading && <LoadingBars />}
                 </span>
-                {query && <span className="header-query">{query}</span>}
+                {!loading && query && <span className="header-query">{query}</span>}
             </header>
 
-            {items.length > 0 ? (
+            {!loading && items.length > 0 && (
                 <div className="launcher-list">
                     {items.map((item, index) => (
                         <div
@@ -107,7 +121,8 @@ export default function App() {
                         </div>
                     ))}
                 </div>
-            ) : (
+            )}
+            {!loading && items.length === 0 && (
                 <div className="empty">No results found</div>
             )}
         </div>

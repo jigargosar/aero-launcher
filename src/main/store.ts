@@ -5,7 +5,7 @@ import {MockIndexer} from './mock-indexer'
 
 type Indexer = {
     id: string
-    load: (onUpdate: (items: ListItem[]) => void) => Promise<void>
+    start: (onUpdate: (items: ListItem[]) => void) => Promise<void>
 }
 
 const indexers: Indexer[] = [Apps, MockIndexer]
@@ -27,21 +27,28 @@ export const Store = {
         }
 
         const sendFilteredItems = () => {
-            webContents.send(channels.listItems, filterAndSort(getAllItems()))
+            // webContents.send(channels.listItems, filterAndSort(getAllItems()))
         }
+
+        let initialized = false
 
         const updateSource = (id: string, items: ListItem[]) => {
             sources.set(id, items)
-            sendFilteredItems()
+            if (initialized) {
+                sendFilteredItems()
+            }
         }
 
-        // Load indexers
+        // Start indexers
         Promise.all(
             indexers.map(indexer =>
-                indexer.load((items) => updateSource(indexer.id, items))
+                indexer.start((items) => updateSource(indexer.id, items))
                     .catch(err => console.error(`[Store] ${indexer.id} failed:`, err))
             )
-        ).catch(err => console.error('[Store] Indexers failed:', err))
+        ).then(() => {
+            initialized = true
+            sendFilteredItems()
+        }).catch(err => console.error('[Store] Indexers failed:', err))
 
         ipcMain.on(channels.requestListItems, () => {
             sendFilteredItems()

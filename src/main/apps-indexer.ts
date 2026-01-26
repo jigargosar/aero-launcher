@@ -107,7 +107,7 @@ async function writeCache(items: ListItem[]): Promise<boolean> {
 export const Apps = {
     id: 'apps',
 
-    async load(onUpdate: (items: ListItem[]) => void): Promise<void> {
+    async start(onUpdate: (items: ListItem[]) => void): Promise<void> {
         // Send cached items immediately
         const cached = await readCache()
         if (cached.length > 0) {
