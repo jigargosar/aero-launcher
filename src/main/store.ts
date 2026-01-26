@@ -1,8 +1,9 @@
-import {ipcMain, WebContents} from 'electron'
+import {BrowserWindow, ipcMain} from 'electron'
 import {channels, ListItem} from '@shared/types'
 import {config} from '@shared/config'
 import {Apps} from './apps-indexer'
 import {MockIndexer} from './mock-indexer'
+import {hideWindowAfter} from './utils'
 
 type Indexer = {
     id: string
@@ -13,7 +14,8 @@ type Indexer = {
 const indexers: Indexer[] = [Apps, MockIndexer]
 
 export const Store = {
-    init(webContents: WebContents): void {
+    init(window: BrowserWindow): void {
+        const webContents = window.webContents
         const sources = new Map<string, ListItem[]>()
         let query = ''
 
@@ -74,6 +76,7 @@ export const Store = {
             const indexer = indexers.find(i => i.id === item.sourceId)
             if (indexer) {
                 indexer.performPrimaryAction(item)
+                hideWindowAfter(window, 10);
             } else {
                 console.error(`[Store] No indexer found for sourceId: ${item.sourceId}`)
             }

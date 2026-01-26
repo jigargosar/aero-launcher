@@ -3,10 +3,9 @@ import {promisify} from 'util'
 import {exec} from 'child_process'
 import {join} from 'path'
 import {readFile, writeFile, mkdir} from 'fs/promises'
-import {app} from 'electron'
+import {app, shell} from 'electron'
 import {ListItem} from '@shared/types'
 import {Icons} from '@shared/icons'
-import {showItemDialog} from './utils'
 
 const execAsync = promisify(exec)
 const SHELL_ICON_DLL = join(__dirname, 'ShellIcon.dll')
@@ -110,7 +109,10 @@ export const Apps = {
     id: 'apps',
 
     performPrimaryAction(item: ListItem): void {
-        showItemDialog(item)
+        const appId = item.metadata?.appId
+        if (appId) {
+            exec(`start "" "shell:AppsFolder\\${appId}"`)
+        }
     },
 
     async start(onUpdate: (items: ListItem[]) => void): Promise<void> {
