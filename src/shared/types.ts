@@ -3,6 +3,7 @@ export type ListItem = {
     id: string
     name: string
     icon: string  // base64 data URL
+    metadata?: Record<string, string>
 }
 
 export const channels = {

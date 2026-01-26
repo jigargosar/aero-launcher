@@ -18,7 +18,7 @@ type AppEntry = {
     AppID: string
 }
 
-type RawApp = ListItem & {appId: string}
+type RawApp = ListItem & {metadata: {appId: string}}
 
 async function runPs(script: string): Promise<string> {
     const encoded = Buffer.from(script, 'utf16le').toString('base64')
@@ -35,16 +35,16 @@ async function fetchApps(): Promise<RawApp[]> {
     return rawApps.map(a => ({
         sourceId: 'apps',
         id: `app:${a.AppID}`,
-        appId: a.AppID,
         name: a.Name,
         icon: Icons.default,
+        metadata: {appId: a.AppID},
     }))
 }
 
 async function loadIcons(apps: RawApp[]): Promise<RawApp[]> {
     if (apps.length === 0) return []
 
-    const shellPaths = apps.map(a => `shell:AppsFolder\\${a.appId}`)
+    const shellPaths = apps.map(a => `shell:AppsFolder\\${a.metadata.appId}`)
     const pathsDelimited = shellPaths.join('|')
 
     const icons = await new Promise<Map<string, string>>((resolve) => {
