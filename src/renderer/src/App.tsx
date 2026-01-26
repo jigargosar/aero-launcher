@@ -16,11 +16,35 @@ function LoadingBars() {
     )
 }
 
+function ItemDialog({item, onClose}: {item: ListItem; onClose: () => void}) {
+    const rows = [
+        ['name', item.name],
+        ['id', item.id],
+        ['sourceId', item.sourceId],
+        ...Object.entries(item.metadata ?? {}),
+    ]
+
+    return (
+        <div className="dialog-overlay" onClick={onClose}>
+            <div className="dialog" onClick={e => e.stopPropagation()}>
+                {rows.map(([k, v]) => (
+                    <div key={k} className="dialog-row">
+                        <span className="dialog-label">{k}</span>
+                        <span className="dialog-value">{v}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
+}
+
 function useLauncher() {
     const [items, setItems] = useState<ListItem[] | null>(null)
     const [query, setQuery] = useState('')
     const [selectedIndex, setSelectedIndex] = useState(0)
+    const [dialogItem, setDialogItem] = useState<ListItem | null>(null)
     const lastKeyTime = useRef(0)
+    const shouldScrollRef = useRef(false)
 
     // Subscribe to items and request initial data
     useEffect(() => {
@@ -37,14 +61,16 @@ function useLauncher() {
     const selectedItem = items?.[selectedIndex]
 
     const performPrimaryAction = (item: ListItem) => {
-        window.electron.performPrimaryAction(item)
+        // window.electron.performPrimaryAction(item)
+        setDialogItem(item)
     }
 
     // Keyboard handler with access to latest state
     const onKeyDown = useEffectEvent((e: KeyboardEvent) => {
         switch (e.key) {
             case 'Escape':
-                if (query && config.clearQueryOnEsc) setQuery('')
+                if (dialogItem) setDialogItem(null)
+                else if (query && config.clearQueryOnEsc) setQuery('')
                 else window.electron.hideWindow()
                 return
             case 'Enter':
@@ -54,10 +80,12 @@ function useLauncher() {
                 return
             case 'ArrowDown':
                 e.preventDefault()
+                shouldScrollRef.current = true
                 setSelectedIndex(i => Math.min(i + 1, (items?.length ?? 1) - 1))
                 return
             case 'ArrowUp':
                 e.preventDefault()
+                shouldScrollRef.current = true
                 setSelectedIndex(i => Math.max(i - 1, 0))
                 return
         }
@@ -84,6 +112,9 @@ function useLauncher() {
         selectedIndex,
         setSelectedIndex,
         performPrimaryAction,
+        dialogItem,
+        closeDialog: () => setDialogItem(null),
+        shouldScrollRef,
     }
 }
 
@@ -95,12 +126,16 @@ export default function App() {
         selectedIndex,
         setSelectedIndex,
         performPrimaryAction,
+        dialogItem,
+        closeDialog,
+        shouldScrollRef,
     } = useLauncher()
 
     const loading = items === null
 
     return (
         <div className="launcher">
+            {dialogItem && <ItemDialog item={dialogItem} onClose={closeDialog} />}
             <header className={`launcher-header drag-region ${loading ? 'loading' : ''}`}>
                 <img
                     className="header-icon"
@@ -119,8 +154,13 @@ export default function App() {
                     {items.map((item, index) => (
                         <div
                             key={item.id}
-                            // Scroll selected item into view (no-op if already visible)
-                            ref={index === selectedIndex ? el => el?.scrollIntoView({block: 'nearest'}) : undefined}
+                            // Scroll into view only on keyboard navigation
+                            ref={index === selectedIndex ? el => {
+                                if (shouldScrollRef.current && el) {
+                                    el.scrollIntoView({block: 'nearest'})
+                                    shouldScrollRef.current = false
+                                }
+                            } : undefined}
                             className={`item ${index === selectedIndex ? 'selected' : ''}`}
                             onMouseEnter={() => setSelectedIndex(index)}
                             onClick={() => performPrimaryAction(item)}
