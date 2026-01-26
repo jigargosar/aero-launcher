@@ -27,14 +27,12 @@ async function fetchApps(): Promise<RawApp[]> {
     const stdout = await runPs('Get-StartApps | ConvertTo-Json')
     const rawApps = JSON.parse(stdout) as AppEntry[]
 
-    return rawApps
-        .map(a => ({
-            id: `app:${a.AppID}`,
-            appId: a.AppID,
-            name: a.Name,
-            icon: Icons.default,
-        }))
-        .sort((a, b) => a.name.localeCompare(b.name))
+    return rawApps.map(a => ({
+        id: `app:${a.AppID}`,
+        appId: a.AppID,
+        name: a.Name,
+        icon: Icons.default,
+    }))
 }
 
 async function loadIcons(apps: RawApp[]): Promise<RawApp[]> {

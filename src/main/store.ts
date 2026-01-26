@@ -7,11 +7,15 @@ export const Store = {
         let items: ListItem[] = []
         let query = ''
 
-        const sendFilteredItems = () => {
+        const filterAndSort = (list: ListItem[]): ListItem[] => {
             const filtered = query
-                ? items.filter(item => item.name.toLowerCase().includes(query.toLowerCase()))
-                : items
-            webContents.send(channels.listItems, filtered)
+                ? list.filter(item => item.name.toLowerCase().includes(query.toLowerCase()))
+                : list
+            return filtered.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+        }
+
+        const sendFilteredItems = () => {
+            webContents.send(channels.listItems, filterAndSort(items))
         }
 
         const updateItems = (newItems: ListItem[]) => {
