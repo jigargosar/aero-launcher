@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "author": "Jigar Gosar",
   "description": "Fast keyboard-driven app launcher for Windows",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jigargosar/aero-launcher"
+  },
+  "homepage": "https://github.com/jigargosar/aero-launcher",
   "main": "out/main/index.js",
   "scripts": {
     "dev": "electron-vite dev --watch",
@@ -20,6 +26,7 @@
     "squirrelWindows": {
       "iconUrl": "https://raw.githubusercontent.com/jigargosar/aero-launcher/main/assets/icon.ico"
     },
+    "artifactName": "${name}-setup-${version}.${ext}",
     "extraResources": [
       {
         "from": "src/main/ShellIcon.dll",
