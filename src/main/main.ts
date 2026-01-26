@@ -49,7 +49,7 @@ function createMainWindow(): BrowserWindow {
 
     window.on('close', (e) => {
         e.preventDefault()
-        window.hide()
+        hideWindow(window)
     })
 
     if (process.env.NODE_ENV === 'development') {
@@ -84,7 +84,7 @@ function setupTray(window: BrowserWindow): Tray {
     )
     tray.on('click', () => {
         if (window.isVisible()) {
-            window.hide()
+            hideWindow(window)
         } else {
             window.show()
         }
@@ -97,7 +97,7 @@ function setupTray(window: BrowserWindow): Tray {
 function registerHotkeys(window: BrowserWindow): void {
     const registered = globalShortcut.register('Super+`', () => {
         if (window.isVisible() && window.isFocused()) {
-            window.hide()
+            hideWindow(window)
         } else {
             window.show()
             window.focus()
@@ -120,7 +120,7 @@ app.whenReady().then(() => {
     Store.init(mainWindow.webContents)
 
     ipcMain.on(channels.hideWindow, () => {
-        mainWindow.hide()
+        hideWindow(mainWindow)
     })
 
     mainWindow.show()
@@ -132,3 +132,9 @@ app.on('window-all-closed', () => {
 app.on('will-quit', () => {
     globalShortcut.unregisterAll()
 })
+
+
+function hideWindow(window: BrowserWindow) {
+    window.blur()
+    window.hide()
+}
