@@ -27,7 +27,10 @@ export const Store = {
         }
 
         const sendFilteredItems = () => {
-            // webContents.send(channels.listItems, filterAndSort(getAllItems()))
+            setTimeout(() => {
+                webContents.send(channels.listItems, filterAndSort(getAllItems()))
+            }, 4 * 1000);
+
         }
 
         let initialized = false
