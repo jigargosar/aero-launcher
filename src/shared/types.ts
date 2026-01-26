@@ -1,4 +1,5 @@
 export type ListItem = {
+    sourceId: string  // matches indexer.id
     id: string
     name: string
     icon: string  // base64 data URL
@@ -9,6 +10,7 @@ export const channels = {
     requestListItems: 'request-list-items',
     hideWindow: 'hide-window',
     setQuery: 'set-query',
+    performPrimaryAction: 'perform-primary-action',
 }
 
 export type ElectronAPI = {
@@ -16,6 +18,7 @@ export type ElectronAPI = {
     requestListItems: () => void
     hideWindow: () => void
     setQuery: (query: string) => void
+    performPrimaryAction: (item: ListItem) => void
 }
 
 declare global {

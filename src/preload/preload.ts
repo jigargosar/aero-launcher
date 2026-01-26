@@ -14,6 +14,9 @@ const api: ElectronAPI = {
     setQuery: (query) => {
         ipcRenderer.send(channels.setQuery, query)
     },
+    performPrimaryAction: (item) => {
+        ipcRenderer.send(channels.performPrimaryAction, item)
+    },
 }
 
 contextBridge.exposeInMainWorld('electron', api)

@@ -40,12 +40,21 @@ function useLauncher() {
 
     const selectedItem = items?.[selectedIndex]
 
+    const performPrimaryAction = (item: ListItem) => {
+        window.electron.performPrimaryAction(item)
+    }
+
     // Keyboard handler with access to latest state
     const onKeyDown = useEffectEvent((e: KeyboardEvent) => {
         switch (e.key) {
             case 'Escape':
                 if (query && config.clearQueryOnEsc) setQuery('')
                 else if (!query) window.electron.hideWindow()
+                return
+            case 'Enter':
+                if (selectedItem) {
+                    performPrimaryAction(selectedItem)
+                }
                 return
             case 'ArrowDown':
                 e.preventDefault()
@@ -78,6 +87,7 @@ function useLauncher() {
         selectedItem,
         selectedIndex,
         setSelectedIndex,
+        performPrimaryAction,
     }
 }
 
@@ -88,6 +98,7 @@ export default function App() {
         selectedItem,
         selectedIndex,
         setSelectedIndex,
+        performPrimaryAction,
     } = useLauncher()
 
     const loading = items === null
@@ -114,6 +125,7 @@ export default function App() {
                             key={item.id}
                             className={`item ${index === selectedIndex ? 'selected' : ''}`}
                             onMouseEnter={() => setSelectedIndex(index)}
+                            onClick={() => performPrimaryAction(item)}
                         >
                             <img className="item-icon" src={item.icon} alt=""/>
                             <span className="item-name">{item.name}</span>

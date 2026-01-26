@@ -6,6 +6,7 @@ import {readFile, writeFile, mkdir} from 'fs/promises'
 import {app} from 'electron'
 import {ListItem} from '@shared/types'
 import {Icons} from '@shared/icons'
+import {showItemDialog} from './utils'
 
 const execAsync = promisify(exec)
 const SHELL_ICON_DLL = join(__dirname, 'ShellIcon.dll')
@@ -32,6 +33,7 @@ async function fetchApps(): Promise<RawApp[]> {
     const rawApps = JSON.parse(stdout) as AppEntry[]
 
     return rawApps.map(a => ({
+        sourceId: 'apps',
         id: `app:${a.AppID}`,
         appId: a.AppID,
         name: a.Name,
@@ -106,6 +108,10 @@ async function writeCache(items: ListItem[]): Promise<boolean> {
 
 export const Apps = {
     id: 'apps',
+
+    performPrimaryAction(item: ListItem): void {
+        showItemDialog(item)
+    },
 
     async start(onUpdate: (items: ListItem[]) => void): Promise<void> {
         // Send cached items immediately

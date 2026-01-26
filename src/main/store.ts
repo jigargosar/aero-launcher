@@ -6,6 +6,7 @@ import {MockIndexer} from './mock-indexer'
 type Indexer = {
     id: string
     start: (onUpdate: (items: ListItem[]) => void) => Promise<void>
+    performPrimaryAction: (item: ListItem) => void
 }
 
 const indexers: Indexer[] = [Apps, MockIndexer]
@@ -60,6 +61,15 @@ export const Store = {
         ipcMain.on(channels.setQuery, (_, q: string) => {
             query = q
             sendFilteredItems()
+        })
+
+        ipcMain.on(channels.performPrimaryAction, (_, item: ListItem) => {
+            const indexer = indexers.find(i => i.id === item.sourceId)
+            if (indexer) {
+                indexer.performPrimaryAction(item)
+            } else {
+                console.error(`[Store] No indexer found for sourceId: ${item.sourceId}`)
+            }
         })
     }
 }
