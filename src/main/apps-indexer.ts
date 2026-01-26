@@ -116,17 +116,16 @@ export const Apps = {
             onUpdate(cached)
         }
 
-        // Index and update
+        // Index with icons and update
         console.log('[Apps] Indexing...')
         const apps = await fetchApps()
         console.log('[Apps] Found:', apps.length)
 
-        // Send apps without icons first (if changed)
-        if (writeCache(apps)) {
+        // Show with default icons if cache was empty
+        if (cached.length === 0) {
             onUpdate(apps)
         }
 
-        // Load icons and send again (if changed)
         const appsWithIcons = await loadIcons(apps)
         if (writeCache(appsWithIcons)) {
             onUpdate(appsWithIcons)

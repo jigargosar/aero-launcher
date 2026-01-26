@@ -1,13 +1,14 @@
 import {ipcMain, WebContents} from 'electron'
 import {channels, ListItem} from '@shared/types'
-import {Apps} from './apps'
+import {Apps} from './apps-indexer'
+import {MockIndexer} from './mock-indexer'
 
 type Indexer = {
     id: string
     load: (onUpdate: (items: ListItem[]) => void) => Promise<void>
 }
 
-const indexers: Indexer[] = [Apps]
+const indexers: Indexer[] = [Apps, MockIndexer]
 
 export const Store = {
     init(webContents: WebContents): void {
@@ -34,9 +35,11 @@ export const Store = {
             sendFilteredItems()
         }
 
-        // Load indexers (each sends cached then fresh items)
+        // Load indexers (each deferred to not block others)
         for (const indexer of indexers) {
-            indexer.load((items) => updateSource(indexer.id, items))
+            setImmediate(() => {
+                indexer.load((items) => updateSource(indexer.id, items))
+            })
         }
 
         ipcMain.on(channels.requestListItems, () => {
