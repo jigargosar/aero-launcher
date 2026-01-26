@@ -1,8 +1,7 @@
-import {app, BrowserWindow, globalShortcut, ipcMain, Menu, nativeImage, Tray} from 'electron'
+import {app, BrowserWindow, globalShortcut, Menu, nativeImage, Tray} from 'electron'
 import {Store} from './store'
 import {join} from 'path'
 import {readFileSync, writeFileSync} from 'fs'
-import {channels} from '@shared/types'
 
 type WindowBounds = { x?: number; y?: number; width: number; height: number }
 
@@ -114,25 +113,28 @@ function registerHotkeys(window: BrowserWindow): void {
 
 // === App Lifecycle ===
 
-app.whenReady().then(() => {
-    const mainWindow = createMainWindow()
-    setupTray(mainWindow)
-    registerHotkeys(mainWindow)
-    Store.init(mainWindow)
+if (!app.requestSingleInstanceLock()) {
+    app.quit()
+} else {
+    app.whenReady().then(() => {
+        const mainWindow = createMainWindow()
 
-    ipcMain.on(channels.hideWindow, () => {
-        mainWindow.blur()
-        mainWindow.hide()
+        app.on('second-instance', () => {
+            mainWindow.show()
+            mainWindow.focus()
+        })
+
+        setupTray(mainWindow)
+        registerHotkeys(mainWindow)
+        Store.init(mainWindow)
     })
 
-    // mainWindow.show()
-})
+    app.on('window-all-closed', () => {
+    })
 
-app.on('window-all-closed', () => {
-})
-
-app.on('will-quit', () => {
-    globalShortcut.unregisterAll()
-})
+    app.on('will-quit', () => {
+        globalShortcut.unregisterAll()
+    })
+}
 
 

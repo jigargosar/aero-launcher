@@ -83,5 +83,10 @@ export const Store = {
                 console.error(`[Store] No indexer found for sourceId: ${item.sourceId}`)
             }
         })
+
+        ipcMain.on(channels.hideWindow, () => {
+            window.blur()
+            window.hide()
+        })
     }
 }

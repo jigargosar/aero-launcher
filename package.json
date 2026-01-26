@@ -12,7 +12,10 @@
     "appId": "com.launchbar.app",
     "productName": "Launch Bar",
     "win": {
-      "target": "portable"
+      "target": "squirrel"
+    },
+    "squirrelWindows": {
+      "iconUrl": "https://raw.githubusercontent.com/electron/electron/main/shell/browser/resources/win/electron.ico"
     },
     "extraResources": [
       {
@@ -29,6 +32,7 @@
     "@vitejs/plugin-react": "^5.1.2",
     "electron": "40.0.0",
     "electron-builder": "^26.4.0",
+    "electron-builder-squirrel-windows": "^26.4.0",
     "electron-vite": "^5.0.0",
     "prettier": "^3.8.1",
     "sharp": "^0.34.5",
