@@ -1,6 +1,8 @@
 {
-  "name": "launch-bar-v2",
+  "name": "aero-launcher",
   "version": "1.0.0",
+  "author": "Jigar Gosar",
+  "description": "Fast keyboard-driven app launcher for Windows",
   "main": "out/main/index.js",
   "scripts": {
     "dev": "electron-vite dev --watch",
@@ -9,13 +11,14 @@
     "release": "pnpm build && electron-builder"
   },
   "build": {
-    "appId": "com.launchbar.app",
-    "productName": "Launch Bar",
+    "appId": "com.aero-launcher.app",
+    "productName": "Aero Launcher",
     "win": {
-      "target": "squirrel"
+      "target": "squirrel",
+      "icon": "assets/icon.ico"
     },
     "squirrelWindows": {
-      "iconUrl": "https://raw.githubusercontent.com/electron/electron/main/shell/browser/resources/win/electron.ico"
+      "iconUrl": "https://raw.githubusercontent.com/jigargosar/aero-launcher/main/assets/icon.ico"
     },
     "extraResources": [
       {
@@ -34,6 +37,7 @@
     "electron-builder": "^26.4.0",
     "electron-builder-squirrel-windows": "^26.4.0",
     "electron-vite": "^5.0.0",
+    "png-to-ico": "^3.0.1",
     "prettier": "^3.8.1",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.1.18",

@@ -2,6 +2,37 @@ import {app, BrowserWindow, globalShortcut, Menu, nativeImage, Tray} from 'elect
 import {Store} from './store'
 import {join} from 'path'
 import {readFileSync, writeFileSync} from 'fs'
+import {spawn} from 'child_process'
+
+// Handle Squirrel events (install/uninstall/update)
+if (process.platform === 'win32') {
+    const squirrelEvent = process.argv[1]
+    if (squirrelEvent) {
+        const appFolder = join(process.execPath, '..')
+        const rootFolder = join(appFolder, '..')
+        const updateExe = join(rootFolder, 'Update.exe')
+        const exeName = 'Aero Launcher.exe'
+
+        const spawnUpdate = (args: string[]) => {
+            spawn(updateExe, args, {detached: true}).unref()
+        }
+
+        switch (squirrelEvent) {
+            case '--squirrel-install':
+            case '--squirrel-updated':
+                spawnUpdate(['--createShortcut', exeName])
+                app.quit()
+                break
+            case '--squirrel-uninstall':
+                spawnUpdate(['--removeShortcut', exeName])
+                app.quit()
+                break
+            case '--squirrel-obsolete':
+                app.quit()
+                break
+        }
+    }
+}
 
 type WindowBounds = { x?: number; y?: number; width: number; height: number }
 
@@ -65,7 +96,7 @@ function createMainWindow(): BrowserWindow {
 function setupTray(window: BrowserWindow): Tray {
     const trayIcon = nativeImage.createFromPath(TRAY_ICON_PATH)
     const tray = new Tray(trayIcon)
-    tray.setToolTip('Launch Bar')
+    tray.setToolTip('Aero Launcher')
     tray.setContextMenu(
         Menu.buildFromTemplate([
             {

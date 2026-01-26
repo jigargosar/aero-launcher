@@ -3,7 +3,7 @@ import {ListItem} from '@shared/types'
 import {Icons} from '@shared/icons'
 import {config} from '@shared/config'
 
-import LAUNCHBAR_ICON from '@assets/icon.png'
+import AERO_ICON from '@assets/icon.png'
 
 function LoadingBars() {
     return (
@@ -145,11 +145,11 @@ export default function App() {
             <header className={`launcher-header drag-region ${loading ? 'loading' : ''}`}>
                 <img
                     className="header-icon"
-                    src={selectedItem?.icon ?? LAUNCHBAR_ICON}
+                    src={selectedItem?.icon ?? AERO_ICON}
                     alt=""
                 />
                 <span className="header-title">
-                    {selectedItem?.name ?? 'Launch Bar'}
+                    {selectedItem?.name ?? 'Aero Launcher'}
                     {loading && <LoadingBars />}
                 </span>
                 {!loading && query && <span className="header-query">{query}</span>}
