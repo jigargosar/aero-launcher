@@ -78,8 +78,8 @@ function useLauncher() {
                 return
             case 'Enter':
                 if (selectedItem) {
-                    if (e.shiftKey) launchItem(selectedItem)
-                    else showItemInfo(selectedItem)
+                    if (e.shiftKey) showItemInfo(selectedItem)
+                    else launchItem(selectedItem)
                 }
                 return
             case 'ArrowDown':
@@ -169,7 +169,7 @@ export default function App() {
                             } : undefined}
                             className={`item ${index === selectedIndex ? 'selected' : ''}`}
                             onMouseEnter={() => setSelectedIndex(index)}
-                            onClick={(e) => e.shiftKey ? launchItem(item) : showItemInfo(item)}
+                            onClick={(e) => e.shiftKey ? showItemInfo(item) : launchItem(item)}
                         >
                             <img className="item-icon" src={item.icon} alt=""/>
                             <span className="item-name">{item.name}</span>
