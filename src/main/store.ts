@@ -1,9 +1,9 @@
-import {BrowserWindow, ipcMain} from 'electron'
-import {channels, ListItem, ListMode} from '@shared/types'
-import {config} from '@shared/config'
-import {Apps} from './apps-indexer'
-import {MockIndexer} from './mock-indexer'
-import {createRankingContext, filterAndSort, recordSelection} from './ranking'
+import { BrowserWindow, ipcMain } from 'electron'
+import { channels, ListItem, ListMode } from '@shared/types'
+import { config } from '@shared/config'
+import { Apps } from './apps-indexer'
+import { WebSearch } from './websearch-indexer'
+import { createRankingContext, filterAndSort, recordSelection } from './ranking' // === Handler Types ===
 
 // === Handler Types ===
 
@@ -32,11 +32,15 @@ type Indexer = {
 
 type StoreMode =
     | { tag: 'normal' }
-    | { tag: 'input', item: ListItem, text: string, suggestions: ListItem[] }
+    | { tag: 'input'; item: ListItem; text: string; suggestions: ListItem[] }
 
 // === Indexers ===
 
-const indexers: Indexer[] = [Apps, MockIndexer]
+const indexers: Indexer[] = [
+    Apps,
+    // MockIndexer,
+    WebSearch,
+]
 
 // === Store ===
 
@@ -55,7 +59,7 @@ export const Store = {
             },
             registerInputHandler: (sourceId, handler) => {
                 inputHandlers.set(sourceId, handler)
-            }
+            },
         }
 
         // State
@@ -63,7 +67,7 @@ export const Store = {
         let query = ''
         let selectedIndex = 0
         let lastTopItemId: string | null = null
-        let mode: StoreMode = {tag: 'normal'}
+        let mode: StoreMode = { tag: 'normal' }
 
         const rankingContext = createRankingContext()
 
@@ -88,7 +92,7 @@ export const Store = {
                 let listMode: ListMode
 
                 if (mode.tag === 'input') {
-                    const inputAction = mode.item.actions.find(a => a.type === 'input')
+                    const inputAction = mode.item.actions.find((a) => a.type === 'input')
                     const placeholder = inputAction?.type === 'input' ? inputAction.placeholder : ''
                     listMode = {
                         tag: 'input',
@@ -96,7 +100,7 @@ export const Store = {
                         text: mode.text,
                         placeholder,
                         suggestions: mode.suggestions,
-                        selectedIndex
+                        selectedIndex,
                     }
                 } else {
                     const items = getFilteredItems()
@@ -106,7 +110,7 @@ export const Store = {
                     listMode = {
                         tag: 'normal',
                         items,
-                        selectedIndex
+                        selectedIndex,
                     }
                 }
 
@@ -125,14 +129,17 @@ export const Store = {
 
         // Start indexers
         Promise.all(
-            indexers.map(indexer =>
-                indexer.start((items) => updateSource(indexer.id, items), storeAPI)
-                    .catch(err => console.error(`[Store] ${indexer.id} failed:`, err))
-            )
-        ).then(() => {
-            initialized = true
-            sendMode()
-        }).catch(err => console.error('[Store] Indexers failed:', err))
+            indexers.map((indexer) =>
+                indexer
+                    .start((items) => updateSource(indexer.id, items), storeAPI)
+                    .catch((err) => console.error(`[Store] ${indexer.id} failed:`, err)),
+            ),
+        )
+            .then(() => {
+                initialized = true
+                sendMode()
+            })
+            .catch((err) => console.error('[Store] Indexers failed:', err))
 
         // === IPC Handlers ===
 
@@ -174,9 +181,9 @@ export const Store = {
         })
 
         ipcMain.on(channels.enterInputMode, (_, item: ListItem) => {
-            const hasInputAction = item.actions.some(a => a.type === 'input')
+            const hasInputAction = item.actions.some((a) => a.type === 'input')
             if (hasInputAction) {
-                mode = {tag: 'input', item, text: '', suggestions: []}
+                mode = { tag: 'input', item, text: '', suggestions: [] }
                 selectedIndex = 0
                 sendMode()
             }
@@ -184,12 +191,12 @@ export const Store = {
 
         ipcMain.on(channels.setInputText, (_, text: string) => {
             if (mode.tag === 'input') {
-                mode = {...mode, text}
+                mode = { ...mode, text }
                 const handler = inputHandlers.get(mode.item.sourceId)
                 if (handler) {
                     handler.onQuery(mode.item, text, (suggestions) => {
                         if (mode.tag === 'input') {
-                            mode = {...mode, suggestions}
+                            mode = { ...mode, suggestions }
                             sendMode()
                         }
                     })
@@ -206,14 +213,14 @@ export const Store = {
                     window.hide()
                     handler.onSubmit(mode.item, mode.text)
                 }
-                mode = {tag: 'normal'}
+                mode = { tag: 'normal' }
                 sendMode()
             }
         })
 
         ipcMain.on(channels.exitInputMode, () => {
             if (mode.tag === 'input') {
-                mode = {tag: 'normal'}
+                mode = { tag: 'normal' }
                 sendMode()
             }
         })
@@ -222,5 +229,5 @@ export const Store = {
             window.blur()
             window.hide()
         })
-    }
+    },
 }
