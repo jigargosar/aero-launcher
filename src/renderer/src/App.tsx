@@ -208,7 +208,7 @@ export default function App() {
                                 }
                             } : undefined}
                             className={`item ${index === selectedIndex ? 'selected' : ''}`}
-                            onMouseEnter={() => window.electron.setSelectedIndex(index)}
+                            // onMouseEnter={() => window.electron.setSelectedIndex(index)}
                             onClick={(e) => e.shiftKey ? showItemInfo(item) : executeItem(item)}
                         >
                             <img className="item-icon" src={item.icon} alt=""/>
