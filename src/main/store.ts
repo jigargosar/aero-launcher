@@ -74,10 +74,8 @@ export const Store = {
         ipcMain.on(channels.performPrimaryAction, (_, item: ListItem) => {
             const indexer = indexers.find(i => i.id === item.sourceId)
             if (indexer) {
-                setTimeout(() => {
-                    window.blur()
-                    window.hide()
-                }, 100)
+                console.log('[Store] performPrimaryAction - hiding window')
+                window.hide()
                 indexer.performPrimaryAction(item)
             } else {
                 console.error(`[Store] No indexer found for sourceId: ${item.sourceId}`)
@@ -85,7 +83,6 @@ export const Store = {
         })
 
         ipcMain.on(channels.hideWindow, () => {
-            window.blur()
             window.hide()
         })
     }
