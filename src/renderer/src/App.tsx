@@ -45,12 +45,6 @@ function useLauncher() {
     const lastKeyTime = useRef(0)
     const shouldScrollRef = useRef(false)
 
-    // Derive state based on mode
-    const isNormalMode = mode?.tag === 'normal'
-    const isInputMode = mode?.tag === 'input'
-    const items = isNormalMode ? mode.items : null
-    const selectedIndex = mode?.selectedIndex ?? 0
-
     // Subscribe to mode and request initial data
     useEffect(() => {
         window.electron.onListMode(setMode)
@@ -62,7 +56,12 @@ function useLauncher() {
         window.electron.setQuery(query)
     }, [query])
 
-    const selectedItem = items?.[selectedIndex]
+    // Unified: derive current list from mode
+    const currentItems = mode?.tag === 'input' ? mode.suggestions
+                       : mode?.tag === 'normal' ? mode.items
+                       : []
+    const selectedIndex = mode?.selectedIndex ?? 0
+    const selectedItem = currentItems[selectedIndex]
 
     const executeItem = (item: ListItem) => {
         window.electron.executeItem(item)
@@ -72,71 +71,55 @@ function useLauncher() {
         setDialogItem(item)
     }
 
-    // Keyboard handler with access to latest state
+    // Keyboard handler
     const onKeyDown = useEffectEvent((e: KeyboardEvent) => {
-        // Input mode handling
-        if (mode?.tag === 'input') {
-            const suggestions = mode.suggestions
-            const suggestIndex = mode.selectedIndex
+        // Arrow keys - unified for all modes
+        if (e.key === 'ArrowDown') {
+            e.preventDefault()
+            shouldScrollRef.current = true
+            window.electron.setSelectedIndex(Math.min(selectedIndex + 1, currentItems.length - 1))
+            return
+        }
+        if (e.key === 'ArrowUp') {
+            e.preventDefault()
+            shouldScrollRef.current = true
+            window.electron.setSelectedIndex(Math.max(selectedIndex - 1, 0))
+            return
+        }
 
+        // Input mode: Escape/Enter only
+        if (mode?.tag === 'input') {
             if (e.key === 'Escape') {
                 e.preventDefault()
                 window.electron.exitInputMode()
             } else if (e.key === 'Enter') {
                 e.preventDefault()
-                if (suggestions.length > 0 && suggestIndex >= 0) {
-                    window.electron.executeItem(suggestions[suggestIndex])
-                } else {
-                    window.electron.submitInput()
-                }
-            } else if (e.key === 'ArrowDown') {
-                e.preventDefault()
-                if (suggestions.length > 0) {
-                    window.electron.setSelectedIndex(Math.min(suggestIndex + 1, suggestions.length - 1))
-                }
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault()
-                if (suggestions.length > 0) {
-                    window.electron.setSelectedIndex(Math.max(suggestIndex - 1, 0))
-                }
+                if (selectedItem) executeItem(selectedItem)
+                else window.electron.submitInput()
             }
             return
         }
 
-        // Normal mode handling
-        switch (e.key) {
-            case 'Escape':
-                if (dialogItem) setDialogItem(null)
-                else if (query && config.clearQueryOnEsc) setQuery('')
-                else window.electron.hideWindow()
-                return
-            case 'Enter':
-                if (selectedItem) {
-                    if (e.shiftKey) showItemInfo(selectedItem)
-                    else if (selectedItem.actions.some(a => a.type === 'input')) {
-                        window.electron.enterInputMode(selectedItem)
-                    } else {
-                        executeItem(selectedItem)
-                    }
-                }
-                return
-            case ' ':
-                // Space - enter input mode if item supports it
-                if (selectedItem?.actions.some(a => a.type === 'input')) {
-                    e.preventDefault()
-                    window.electron.enterInputMode(selectedItem)
-                }
-                return
-            case 'ArrowDown':
-                e.preventDefault()
-                shouldScrollRef.current = true
-                window.electron.setSelectedIndex(Math.min(selectedIndex + 1, (items?.length ?? 1) - 1))
-                return
-            case 'ArrowUp':
-                e.preventDefault()
-                shouldScrollRef.current = true
-                window.electron.setSelectedIndex(Math.max(selectedIndex - 1, 0))
-                return
+        // Normal mode
+        if (e.key === 'Escape') {
+            if (dialogItem) setDialogItem(null)
+            else if (query && config.clearQueryOnEsc) setQuery('')
+            else window.electron.hideWindow()
+            return
+        }
+        if (e.key === 'Enter' && selectedItem) {
+            if (e.shiftKey) showItemInfo(selectedItem)
+            else if (selectedItem.actions.some(a => a.type === 'input')) {
+                window.electron.enterInputMode(selectedItem)
+            } else {
+                executeItem(selectedItem)
+            }
+            return
+        }
+        if (e.key === ' ' && selectedItem?.actions.some(a => a.type === 'input')) {
+            e.preventDefault()
+            window.electron.enterInputMode(selectedItem)
+            return
         }
 
         // Typing (single char, not space, no modifiers)
@@ -157,7 +140,7 @@ function useLauncher() {
     return {
         mode,
         query,
-        items,
+        currentItems,
         selectedItem,
         selectedIndex,
         executeItem,
@@ -168,11 +151,47 @@ function useLauncher() {
     }
 }
 
+function ItemList({
+    items,
+    selectedIndex,
+    shouldScrollRef,
+    onItemClick,
+}: {
+    items: ListItem[]
+    selectedIndex: number
+    shouldScrollRef: React.RefObject<boolean>
+    onItemClick: (item: ListItem, e: React.MouseEvent) => void
+}) {
+    if (items.length === 0) return null
+
+    return (
+        <div className="launcher-list">
+            {items.map((item, index) => (
+                <div
+                    key={item.id}
+                    ref={index === selectedIndex ? el => {
+                        if (shouldScrollRef.current && el) {
+                            el.scrollIntoView({block: 'nearest'})
+                            shouldScrollRef.current = false
+                        }
+                    } : undefined}
+                    className={`item ${index === selectedIndex ? 'selected' : ''}`}
+                    onClick={(e) => onItemClick(item, e)}
+                >
+                    <img className="item-icon" src={item.icon} alt=""/>
+                    <span className="item-name">{item.name}</span>
+                    <img className="item-chevron" src={Icons.chevron} alt=""/>
+                </div>
+            ))}
+        </div>
+    )
+}
+
 export default function App() {
     const {
         mode,
         query,
-        items,
+        currentItems,
         selectedItem,
         selectedIndex,
         executeItem,
@@ -183,6 +202,11 @@ export default function App() {
     } = useLauncher()
 
     const loading = mode === null
+
+    const handleItemClick = (item: ListItem, e: React.MouseEvent) => {
+        if (e.shiftKey) showItemInfo(item)
+        else executeItem(item)
+    }
 
     // Input mode UI
     if (mode?.tag === 'input') {
@@ -199,20 +223,12 @@ export default function App() {
                         autoFocus
                     />
                 </header>
-                {mode.suggestions.length > 0 && (
-                    <div className="launcher-list">
-                        {mode.suggestions.map((item, index) => (
-                            <div
-                                key={item.id}
-                                className={`item ${index === mode.selectedIndex ? 'selected' : ''}`}
-                                onClick={() => executeItem(item)}
-                            >
-                                <img className="item-icon" src={item.icon} alt=""/>
-                                <span className="item-name">{item.name}</span>
-                            </div>
-                        ))}
-                    </div>
-                )}
+                <ItemList
+                    items={currentItems}
+                    selectedIndex={selectedIndex}
+                    shouldScrollRef={shouldScrollRef}
+                    onItemClick={handleItemClick}
+                />
             </div>
         )
     }
@@ -234,30 +250,15 @@ export default function App() {
                 {!loading && query && <span className="header-query">{query}</span>}
             </header>
 
-            {!loading && items && items.length > 0 && (
-                <div className="launcher-list">
-                    {items.map((item, index) => (
-                        <div
-                            key={item.id}
-                            ref={index === selectedIndex ? el => {
-                                if (shouldScrollRef.current && el) {
-                                    el.scrollIntoView({block: 'nearest'})
-                                    shouldScrollRef.current = false
-                                }
-                            } : undefined}
-                            className={`item ${index === selectedIndex ? 'selected' : ''}`}
-                            // onMouseEnter={() => window.electron.setSelectedIndex(index)}
-                            onClick={(e) => e.shiftKey ? showItemInfo(item) : executeItem(item)}
-                        >
-                            <img className="item-icon" src={item.icon} alt=""/>
-                            <span className="item-name">{item.name}</span>
-                            <img className="item-chevron" src={Icons.chevron} alt=""/>
-                        </div>
-                    ))}
-                </div>
-            )}
-            {!loading && items && items.length === 0 && (
-                <div className="empty">No results found</div>
+            {!loading && (
+                currentItems.length > 0
+                    ? <ItemList
+                        items={currentItems}
+                        selectedIndex={selectedIndex}
+                        shouldScrollRef={shouldScrollRef}
+                        onItemClick={handleItemClick}
+                    />
+                    : <div className="empty">No results found</div>
             )}
         </div>
     )

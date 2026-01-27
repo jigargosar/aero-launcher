@@ -183,6 +183,7 @@ export const Store = {
         ipcMain.on(channels.enterInputMode, (_, item: ListItem) => {
             const hasInputAction = item.actions.some((a) => a.type === 'input')
             if (hasInputAction) {
+                recordSelection(rankingContext, query, item.id)
                 mode = { tag: 'input', item, text: '', suggestions: [] }
                 selectedIndex = 0
                 sendMode()
