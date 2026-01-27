@@ -95,12 +95,13 @@ export const Store = {
                 if (newTopId !== lastTopItemId) {
                     selectedIndex = 0
                 }
+                // Hide first to avoid layout shift, then update state
+                window.blur()
+                window.hide()
                 sendState()
-                setTimeout(() => {
-                    window.blur()
-                    window.hide()
-                }, 100)
                 indexer.performPrimaryAction(item)
+                // TODO: If launched apps don't get focus, try delaying hide:
+                // setTimeout(() => { window.blur(); window.hide() }, 100)
             } else {
                 console.error(`[Store] No indexer found for sourceId: ${item.sourceId}`)
             }
