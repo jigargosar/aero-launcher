@@ -201,6 +201,8 @@ export const Store = {
                             sendMode()
                         }
                     })
+                } else {
+                    console.error(`[Store] No input handler for sourceId: ${mode.item.sourceId}`)
                 }
                 sendMode()
             }
@@ -213,6 +215,8 @@ export const Store = {
                     window.blur()
                     window.hide()
                     handler.onSubmit(mode.item, mode.text)
+                } else {
+                    console.error(`[Store] No input handler for sourceId: ${mode.item.sourceId}`)
                 }
                 mode = { tag: 'normal' }
                 sendMode()

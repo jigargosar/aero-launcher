@@ -5,6 +5,10 @@ import {StoreAPI} from './store'
 
 const SUGGEST_URL = 'https://suggestqueries.google.com/complete/search?client=chrome&q='
 
+function searchGoogle(query: string) {
+    shell.openExternal(`https://google.com/search?q=${encodeURIComponent(query)}`)
+}
+
 async function fetchSuggestions(query: string): Promise<string[]> {
     if (!query.trim()) return []
 
@@ -31,25 +35,18 @@ export const WebSearch = {
     id: 'websearch',
 
     async start(onUpdate: (items: ListItem[]) => void, store: StoreAPI): Promise<void> {
+        // Only suggestions reach execute handler (main item has no execute action)
         store.registerExecuteHandler('websearch', (item) => {
-            const suggestion = item.metadata?.suggestion
-            if (suggestion) {
-                shell.openExternal(`https://google.com/search?q=${encodeURIComponent(suggestion)}`)
-            } else {
-                shell.openExternal('https://google.com')
-            }
+            searchGoogle(item.name)
         })
 
         store.registerInputHandler('websearch', {
             onQuery: async (_item, text, emit) => {
                 const suggestions = await fetchSuggestions(text)
-                emit(suggestions.map(s => ({
-                    ...suggestionToItem(s),
-                    metadata: {suggestion: s}
-                })))
+                emit(suggestions.map(suggestionToItem))
             },
             onSubmit: (_item, text) => {
-                shell.openExternal(`https://google.com/search?q=${encodeURIComponent(text)}`)
+                searchGoogle(text)
             }
         })
 
@@ -59,10 +56,7 @@ export const WebSearch = {
                 id: 'websearch:google',
                 name: 'Google Search',
                 icon: Icons.search,
-                actions: [
-                    {type: 'execute'},
-                    {type: 'input', placeholder: 'Search Google...'}
-                ]
+                actions: [{type: 'input', placeholder: 'Search Google...'}]
             }
         ])
     }
