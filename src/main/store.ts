@@ -14,58 +14,52 @@ const indexers: Indexer[] = [Apps, MockIndexer]
 
 export const Store = {
     init(window: BrowserWindow): void {
-        const webContents = window.webContents
-        const sources = new Map<string, ListItem[]>()
-        let query = ''
-
-        const rankingContext = createRankingContext()
-
-        const getAllItems = (): ListItem[] => {
-            return [...sources.values()].flat()
-        }
-        const sendFilteredItems = () => {
-            webContents.send(channels.listItems, filterAndSort(getAllItems(), query, rankingContext))
+        // State
+        const state = {
+            sources: new Map<string, ListItem[]>(),
+            query: '',
+            initialized: false,
+            ranking: createRankingContext(),
         }
 
-        let initialized = false
+        // Derived
+        const getItems = () => filterAndSort([...state.sources.values()].flat(), state.query, state.ranking)
 
-        const updateSource = (id: string, items: ListItem[]) => {
-            sources.set(id, items)
-            if (initialized) {
-                sendFilteredItems()
+        // Commit state to renderer
+        const commit = () => {
+            if (state.initialized) {
+                window.webContents.send(channels.listItems, getItems())
             }
         }
 
         // Start indexers
         Promise.all(
             indexers.map(indexer =>
-                indexer.start((items) => updateSource(indexer.id, items))
-                    .catch(err => console.error(`[Store] ${indexer.id} failed:`, err))
+                indexer.start(items => {
+                    state.sources.set(indexer.id, items)
+                    commit()
+                }).catch(err => console.error(`[Store] ${indexer.id} failed:`, err))
             )
         ).then(() => {
-            initialized = true
-            sendFilteredItems()
-        }).catch(err => console.error('[Store] Indexers failed:', err))
-
-        ipcMain.on(channels.requestListItems, () => {
-            sendFilteredItems()
+            state.initialized = true
+            commit()
         })
 
+        // IPC
+        ipcMain.on(channels.requestListItems, commit)
+
         ipcMain.on(channels.setQuery, (_, q: string) => {
-            query = q
-            sendFilteredItems()
+            state.query = q
+            commit()
         })
 
         ipcMain.on(channels.performPrimaryAction, (_, item: ListItem) => {
             const indexer = indexers.find(i => i.id === item.sourceId)
-            if (indexer) {
-                recordSelection(rankingContext, query, item.id)
-                window.blur()
-                window.hide()
-                indexer.performPrimaryAction(item)
-            } else {
-                console.error(`[Store] No indexer found for sourceId: ${item.sourceId}`)
-            }
+            if (!indexer) return
+            recordSelection(state.ranking, state.query, item.id)
+            window.blur()
+            window.hide()
+            indexer.performPrimaryAction(item)
         })
 
         ipcMain.on(channels.hideWindow, () => {
