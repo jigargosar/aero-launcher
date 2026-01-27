@@ -1,6 +1,5 @@
 import {BrowserWindow, ipcMain} from 'electron'
 import {channels, ListItem} from '@shared/types'
-import {config} from '@shared/config'
 import {Apps} from './apps-indexer'
 import {MockIndexer} from './mock-indexer'
 import {createRankingContext, filterAndSort, recordSelection} from './ranking'
@@ -24,18 +23,8 @@ export const Store = {
         const getAllItems = (): ListItem[] => {
             return [...sources.values()].flat()
         }
-        let firstTime = true
         const sendFilteredItems = () => {
-            if (config.debugDelayFirstRender && firstTime) {
-                firstTime = false
-                setTimeout(sendItemsToRenderer, 4 * 1000)
-            } else {
-                sendItemsToRenderer()
-            }
-
-            function sendItemsToRenderer() {
-                webContents.send(channels.listItems, filterAndSort(getAllItems(), query, rankingContext))
-            }
+            webContents.send(channels.listItems, filterAndSort(getAllItems(), query, rankingContext))
         }
 
         let initialized = false
@@ -71,10 +60,8 @@ export const Store = {
             const indexer = indexers.find(i => i.id === item.sourceId)
             if (indexer) {
                 recordSelection(rankingContext, query, item.id)
-                setTimeout(() => {
-                    window.blur()
-                    window.hide()
-                }, 100)
+                window.blur()
+                window.hide()
                 indexer.performPrimaryAction(item)
             } else {
                 console.error(`[Store] No indexer found for sourceId: ${item.sourceId}`)
