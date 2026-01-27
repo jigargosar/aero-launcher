@@ -1,5 +1,5 @@
 import {useEffect, useEffectEvent, useRef, useState} from 'react'
-import {ListItem, ListMode} from '@shared/types'
+import {ListItem, UIState} from '@shared/types'
 import {Icons} from '@shared/icons'
 import {config} from '@shared/config'
 
@@ -39,32 +39,25 @@ function ItemDialog({item, onClose}: {item: ListItem; onClose: () => void}) {
 }
 
 function useLauncher() {
-    const [mode, setMode] = useState<ListMode | null>(null)
-    const [query, setQuery] = useState('')
+    const [state, setState] = useState<UIState | null>(null)
     const [dialogItem, setDialogItem] = useState<ListItem | null>(null)
     const lastKeyTime = useRef(0)
     const shouldScrollRef = useRef(false)
 
-    // Subscribe to mode and request initial data
+    // Subscribe to state and request initial data
     useEffect(() => {
-        window.electron.onListMode(setMode)
-        window.electron.requestListMode()
+        window.electron.onState(setState)
+        window.electron.requestState()
     }, [])
 
-    // Send query to store on change
-    useEffect(() => {
-        window.electron.setQuery(query)
-    }, [query])
-
-    // Unified: derive current list from mode
-    const currentItems = mode?.tag === 'input' ? mode.suggestions
-                       : mode?.tag === 'normal' ? mode.items
-                       : []
-    const selectedIndex = mode?.selectedIndex ?? 0
+    // Derive current list from state
+    const currentItems = state?.items ?? []
+    const selectedIndex = state?.selectedIndex ?? 0
     const selectedItem = currentItems[selectedIndex]
+    const filterQuery = state?.tag === 'root' ? state.filterQuery : ''
 
     const executeItem = (item: ListItem) => {
-        window.electron.executeItem(item)
+        window.electron.execute(item)
     }
 
     const showItemInfo = (item: ListItem) => {
@@ -87,38 +80,35 @@ function useLauncher() {
             return
         }
 
-        // Input mode: Escape/Enter only
-        if (mode?.tag === 'input') {
+        // Input mode
+        if (state?.tag === 'input') {
             if (e.key === 'Escape') {
                 e.preventDefault()
-                window.electron.exitInputMode()
-            } else if (e.key === 'Enter') {
+                window.electron.back()
+            } else if (e.key === 'Enter' && selectedItem) {
                 e.preventDefault()
-                if (selectedItem) executeItem(selectedItem)
-                else window.electron.submitInput()
+                executeItem(selectedItem)
             }
             return
         }
 
-        // Normal mode
+        // Root mode
         if (e.key === 'Escape') {
             if (dialogItem) setDialogItem(null)
-            else if (query && config.clearQueryOnEsc) setQuery('')
+            else if (filterQuery && config.clearQueryOnEsc) {
+                window.electron.setFilterQuery('')
+            }
             else window.electron.hideWindow()
             return
         }
         if (e.key === 'Enter' && selectedItem) {
             if (e.shiftKey) showItemInfo(selectedItem)
-            else if (selectedItem.actions.some(a => a.type === 'input')) {
-                window.electron.enterInputMode(selectedItem)
-            } else {
-                executeItem(selectedItem)
-            }
+            else executeItem(selectedItem)
             return
         }
-        if (e.key === ' ' && selectedItem?.actions.some(a => a.type === 'input')) {
+        if (e.key === ' ' && selectedItem) {
             e.preventDefault()
-            window.electron.enterInputMode(selectedItem)
+            window.electron.navigate('input', selectedItem)
             return
         }
 
@@ -126,7 +116,8 @@ function useLauncher() {
         if (e.key.length === 1 && e.key !== ' ' && !e.ctrlKey && !e.metaKey) {
             const now = Date.now()
             const shouldReset = now - lastKeyTime.current > config.queryTimeoutMs
-            setQuery(shouldReset ? e.key : q => q + e.key)
+            const newQuery = shouldReset ? e.key : filterQuery + e.key
+            window.electron.setFilterQuery(newQuery)
             lastKeyTime.current = now
         }
     })
@@ -138,8 +129,8 @@ function useLauncher() {
     }, [])
 
     return {
-        mode,
-        query,
+        state,
+        filterQuery,
         currentItems,
         selectedItem,
         selectedIndex,
@@ -189,8 +180,8 @@ function ItemList({
 
 export default function App() {
     const {
-        mode,
-        query,
+        state,
+        filterQuery,
         currentItems,
         selectedItem,
         selectedIndex,
@@ -201,7 +192,7 @@ export default function App() {
         shouldScrollRef,
     } = useLauncher()
 
-    const loading = mode === null
+    const loading = state === null
 
     const handleItemClick = (item: ListItem, e: React.MouseEvent) => {
         if (e.shiftKey) showItemInfo(item)
@@ -209,16 +200,16 @@ export default function App() {
     }
 
     // Input mode UI
-    if (mode?.tag === 'input') {
+    if (state?.tag === 'input') {
         return (
             <div className="launcher select-none">
                 <header className="launcher-header input-mode">
-                    <img className="header-icon" src={mode.item.icon} alt=""/>
+                    <img className="header-icon" src={state.parent.icon} alt=""/>
                     <input
                         className="header-input"
                         type="text"
-                        value={mode.text}
-                        placeholder={mode.placeholder}
+                        value={state.text}
+                        placeholder={state.placeholder}
                         onChange={e => window.electron.setInputText(e.target.value)}
                         autoFocus
                     />
@@ -233,7 +224,7 @@ export default function App() {
         )
     }
 
-    // Normal mode UI
+    // Root mode UI
     return (
         <div className="launcher select-none">
             {dialogItem && <ItemDialog item={dialogItem} onClose={closeDialog} />}
@@ -247,7 +238,7 @@ export default function App() {
                     {selectedItem?.name ?? 'Aero Launcher'}
                     {loading && <LoadingBars />}
                 </span>
-                {!loading && query && <span className="header-query">{query}</span>}
+                {!loading && filterQuery && <span className="header-query">{filterQuery}</span>}
             </header>
 
             {!loading && (

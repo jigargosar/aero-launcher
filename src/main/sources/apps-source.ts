@@ -4,9 +4,8 @@ import {exec} from 'child_process'
 import {join} from 'path'
 import {readFile, writeFile, mkdir} from 'fs/promises'
 import {app} from 'electron'
-import {ListItem} from '@shared/types'
+import {ListItem, AppsSource} from '@shared/types'
 import {Icons} from '@shared/icons'
-import {StoreAPI} from './store'
 
 const execAsync = promisify(exec)
 const SHELL_ICON_DLL = app.isPackaged
@@ -39,7 +38,6 @@ async function fetchApps(): Promise<RawApp[]> {
         id: `app:${a.AppID}`,
         name: a.Name,
         icon: Icons.default,
-        actions: [{type: 'execute' as const}],
         metadata: {appId: a.AppID},
     }))
 }
@@ -101,29 +99,22 @@ async function writeCache(items: ListItem[]): Promise<boolean> {
     const newCache = JSON.stringify(items)
 
     if (oldCache === newCache) {
-        return false // No change
+        return false
     }
 
     await mkdir(CACHE_DIR, {recursive: true})
     await writeFile(CACHE_FILE, newCache)
-    return true // Changed
+    return true
 }
 
-export const Apps = {
+export const appsSource: AppsSource = {
     id: 'apps',
 
-    async start(onUpdate: (items: ListItem[]) => void, store: StoreAPI): Promise<void> {
-        // Register execute handler
-        store.registerExecuteHandler('apps', (item) => {
-            const appId = item.metadata?.appId
-            if (appId) {
-                exec(`start "" "shell:AppsFolder\\${appId}"`)
-            }
-        })
+    onStart: async (emit) => {
         // Send cached items immediately
         const cached = await readCache()
         if (cached.length > 0) {
-            onUpdate(cached)
+            emit(cached)
         }
 
         // Index with icons and update
@@ -133,13 +124,22 @@ export const Apps = {
 
         // Show with default icons if cache was empty
         if (cached.length === 0) {
-            onUpdate(apps)
+            emit(apps)
         }
 
         const appsWithIcons = await loadIcons(apps)
         if (await writeCache(appsWithIcons)) {
-            onUpdate(appsWithIcons)
+            emit(appsWithIcons)
         }
         console.log('[Apps] Indexing complete')
+    },
+
+    handlers: {
+        execute: (item) => {
+            const appId = item.metadata?.appId
+            if (appId) {
+                exec(`start "" "shell:AppsFolder\\${appId}"`)
+            }
+        }
     }
 }

@@ -2,35 +2,32 @@ import {contextBridge, ipcRenderer} from 'electron'
 import {channels, ElectronAPI} from '@shared/types'
 
 const api: ElectronAPI = {
-    onListMode: (callback) => {
-        ipcRenderer.on(channels.listMode, (_, mode) => callback(mode))
+    onState: (callback) => {
+        ipcRenderer.on(channels.state, (_, state) => callback(state))
     },
-    requestListMode: () => {
-        ipcRenderer.send(channels.requestListMode)
+    requestState: () => {
+        ipcRenderer.send(channels.requestState)
     },
-    hideWindow: () => {
-        ipcRenderer.send(channels.hideWindow)
+    navigate: (type, item) => {
+        ipcRenderer.send(channels.navigate, type, item)
     },
-    setQuery: (query) => {
-        ipcRenderer.send(channels.setQuery, query)
+    back: () => {
+        ipcRenderer.send(channels.back)
     },
-    setSelectedIndex: (index) => {
-        ipcRenderer.send(channels.setSelectedIndex, index)
+    execute: (item) => {
+        ipcRenderer.send(channels.execute, item)
     },
-    executeItem: (item) => {
-        ipcRenderer.send(channels.executeItem, item)
-    },
-    enterInputMode: (item) => {
-        ipcRenderer.send(channels.enterInputMode, item)
+    setFilterQuery: (query) => {
+        ipcRenderer.send(channels.setFilterQuery, query)
     },
     setInputText: (text) => {
         ipcRenderer.send(channels.setInputText, text)
     },
-    submitInput: () => {
-        ipcRenderer.send(channels.submitInput)
+    setSelectedIndex: (index) => {
+        ipcRenderer.send(channels.setSelectedIndex, index)
     },
-    exitInputMode: () => {
-        ipcRenderer.send(channels.exitInputMode)
+    hideWindow: () => {
+        ipcRenderer.send(channels.hideWindow)
     },
 }
 

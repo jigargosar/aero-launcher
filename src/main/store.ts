@@ -1,46 +1,19 @@
-import { BrowserWindow, ipcMain } from 'electron'
-import { channels, ListItem, ListMode } from '@shared/types'
-import { config } from '@shared/config'
-import { Apps } from './apps-indexer'
-import { WebSearch } from './websearch-indexer'
-import { createRankingContext, filterAndSort, recordSelection } from './ranking' // === Handler Types ===
+import {BrowserWindow, ipcMain} from 'electron'
+import {channels, ListItem, UIState, Source} from '@shared/types'
+import {config} from '@shared/config'
+import {appsSource} from './sources/apps-source'
+import {websearchSource} from './sources/websearch-source'
+import {createRankingContext, filterAndSort, recordSelection} from './ranking'
 
-// === Handler Types ===
+// === Store Context (internal state) ===
 
-type ExecuteHandler = (item: ListItem) => void
+type StoreContext =
+    | {tag: 'root'; filterQuery: string}
+    | {tag: 'input'; parent: ListItem; text: string; items: ListItem[]}
 
-type InputHandler = {
-    onQuery: (item: ListItem, text: string, emit: (suggestions: ListItem[]) => void) => void
-    onSubmit: (item: ListItem, text: string) => void
-}
+// === Sources ===
 
-// === Store API (passed to indexers) ===
-
-export type StoreAPI = {
-    registerExecuteHandler: (sourceId: string, handler: ExecuteHandler) => void
-    registerInputHandler: (sourceId: string, handler: InputHandler) => void
-}
-
-// === Indexer Type ===
-
-type Indexer = {
-    id: string
-    start: (onUpdate: (items: ListItem[]) => void, store: StoreAPI) => Promise<void>
-}
-
-// === Store Mode (internal state) ===
-
-type StoreMode =
-    | { tag: 'normal' }
-    | { tag: 'input'; item: ListItem; text: string; suggestions: ListItem[] }
-
-// === Indexers ===
-
-const indexers: Indexer[] = [
-    Apps,
-    // MockIndexer,
-    WebSearch,
-]
+const sources: Source[] = [appsSource, websearchSource]
 
 // === Store ===
 
@@ -48,185 +21,167 @@ export const Store = {
     init(window: BrowserWindow): void {
         const webContents = window.webContents
 
-        // Handler registries
-        const executeHandlers = new Map<string, ExecuteHandler>()
-        const inputHandlers = new Map<string, InputHandler>()
+        // Source lookup by id
+        const sourceMap = new Map<string, Source>(sources.map(s => [s.id, s]))
 
-        // Store API for indexers
-        const storeAPI: StoreAPI = {
-            registerExecuteHandler: (sourceId, handler) => {
-                executeHandlers.set(sourceId, handler)
-            },
-            registerInputHandler: (sourceId, handler) => {
-                inputHandlers.set(sourceId, handler)
-            },
-        }
+        // Root items from each source
+        const rootItems = new Map<string, ListItem[]>()
 
         // State
-        const sources = new Map<string, ListItem[]>()
-        let query = ''
+        let context: StoreContext = {tag: 'root', filterQuery: ''}
         let selectedIndex = 0
         let lastTopItemId: string | null = null
-        let mode: StoreMode = { tag: 'normal' }
 
         const rankingContext = createRankingContext()
 
-        const getAllItems = (): ListItem[] => {
-            return [...sources.values()].flat()
+        const getAllRootItems = (): ListItem[] => {
+            return [...rootItems.values()].flat()
         }
 
-        const getFilteredItems = (): ListItem[] => {
-            return filterAndSort(getAllItems(), query, rankingContext)
+        const getFilteredRootItems = (): ListItem[] => {
+            return filterAndSort(getAllRootItems(), context.tag === 'root' ? context.filterQuery : '', rankingContext)
         }
 
         let firstTime = true
-        const sendMode = () => {
+        const sendState = () => {
             if (config.debugDelayFirstRender && firstTime) {
                 firstTime = false
-                setTimeout(sendModeToRenderer, 4 * 1000)
+                setTimeout(sendStateToRenderer, 4 * 1000)
             } else {
-                sendModeToRenderer()
+                sendStateToRenderer()
             }
 
-            function sendModeToRenderer() {
-                let listMode: ListMode
+            function sendStateToRenderer() {
+                let state: UIState
 
-                if (mode.tag === 'input') {
-                    const inputAction = mode.item.actions.find((a) => a.type === 'input')
-                    const placeholder = inputAction?.type === 'input' ? inputAction.placeholder : ''
-                    listMode = {
+                if (context.tag === 'input') {
+                    const placeholder = context.parent.metadata?.placeholder ?? 'Type to search...'
+                    state = {
                         tag: 'input',
-                        item: mode.item,
-                        text: mode.text,
+                        parent: context.parent,
                         placeholder,
-                        suggestions: mode.suggestions,
+                        text: context.text,
+                        items: context.items,
                         selectedIndex,
                     }
                 } else {
-                    const items = getFilteredItems()
-                    // Keep selectedIndex in bounds
+                    const items = getFilteredRootItems()
                     selectedIndex = Math.min(selectedIndex, Math.max(0, items.length - 1))
                     lastTopItemId = items[0]?.id ?? null
-                    listMode = {
-                        tag: 'normal',
+                    state = {
+                        tag: 'root',
                         items,
                         selectedIndex,
+                        filterQuery: context.filterQuery,
                     }
                 }
 
-                webContents.send(channels.listMode, listMode)
+                webContents.send(channels.state, state)
             }
         }
 
         let initialized = false
 
-        const updateSource = (id: string, items: ListItem[]) => {
-            sources.set(id, items)
-            if (initialized) {
-                sendMode()
+        const updateRootItems = (sourceId: string, items: ListItem[]) => {
+            rootItems.set(sourceId, items)
+            if (initialized && context.tag === 'root') {
+                sendState()
             }
         }
 
-        // Start indexers
+        // Start sources
         Promise.all(
-            indexers.map((indexer) =>
-                indexer
-                    .start((items) => updateSource(indexer.id, items), storeAPI)
-                    .catch((err) => console.error(`[Store] ${indexer.id} failed:`, err)),
-            ),
+            sources.map(source =>
+                Promise.resolve(source.onStart(items => updateRootItems(source.id, items)))
+                    .catch(err => console.error(`[Store] ${source.id} failed:`, err))
+            )
         )
             .then(() => {
                 initialized = true
-                sendMode()
+                sendState()
             })
-            .catch((err) => console.error('[Store] Indexers failed:', err))
+            .catch(err => console.error('[Store] Sources failed:', err))
 
         // === IPC Handlers ===
 
-        ipcMain.on(channels.requestListMode, () => {
-            sendMode()
+        ipcMain.on(channels.requestState, () => {
+            sendState()
         })
 
-        ipcMain.on(channels.setQuery, (_, q: string) => {
-            query = q
-            selectedIndex = 0
-            sendMode()
+        ipcMain.on(channels.setFilterQuery, (_, query: string) => {
+            if (context.tag === 'root') {
+                context = {tag: 'root', filterQuery: query}
+                selectedIndex = 0
+                sendState()
+            }
         })
 
         ipcMain.on(channels.setSelectedIndex, (_, index: number) => {
             selectedIndex = index
-            sendMode()
+            sendState()
         })
 
-        ipcMain.on(channels.executeItem, (_, item: ListItem) => {
-            const handler = executeHandlers.get(item.sourceId)
-            if (handler) {
-                recordSelection(rankingContext, query, item.id)
-                // Check if priority changed
-                const newItems = getFilteredItems()
-                const newTopId = newItems[0]?.id ?? null
-                if (newTopId !== lastTopItemId) {
-                    selectedIndex = 0
+        ipcMain.on(channels.execute, (_, item: ListItem) => {
+            const source = sourceMap.get(item.sourceId)
+            if (source) {
+                if (context.tag === 'root') {
+                    recordSelection(rankingContext, context.filterQuery, item.id)
+                    const newItems = getFilteredRootItems()
+                    const newTopId = newItems[0]?.id ?? null
+                    if (newTopId !== lastTopItemId) {
+                        selectedIndex = 0
+                    }
                 }
-                // Hide first to avoid layout shift
                 window.blur()
                 window.hide()
-                sendMode()
-                handler(item)
-                // TODO: If launched apps don't get focus, try delaying hide:
-                // setTimeout(() => { window.blur(); window.hide() }, 100)
+                context = {tag: 'root', filterQuery: context.tag === 'root' ? context.filterQuery : ''}
+                sendState()
+                source.handlers.execute(item)
             } else {
-                console.error(`[Store] No execute handler for sourceId: ${item.sourceId}`)
+                console.error(`[Store] No source for sourceId: ${item.sourceId}`)
             }
         })
 
-        ipcMain.on(channels.enterInputMode, (_, item: ListItem) => {
-            const hasInputAction = item.actions.some((a) => a.type === 'input')
-            if (hasInputAction) {
-                recordSelection(rankingContext, query, item.id)
-                mode = { tag: 'input', item, text: '', suggestions: [] }
-                selectedIndex = 0
-                sendMode()
+        ipcMain.on(channels.navigate, (_, type: 'input', item: ListItem) => {
+            if (type === 'input') {
+                const source = sourceMap.get(item.sourceId)
+                if (source && 'navigate' in source) {
+                    if (context.tag === 'root') {
+                        recordSelection(rankingContext, context.filterQuery, item.id)
+                    }
+                    context = {tag: 'input', parent: item, text: '', items: []}
+                    selectedIndex = 0
+                    sendState()
+                } else {
+                    console.log(`[Store] Source ${item.sourceId} doesn't support input navigation`)
+                }
             }
         })
 
         ipcMain.on(channels.setInputText, (_, text: string) => {
-            if (mode.tag === 'input') {
-                mode = { ...mode, text }
-                const handler = inputHandlers.get(mode.item.sourceId)
-                if (handler) {
-                    handler.onQuery(mode.item, text, (suggestions) => {
-                        if (mode.tag === 'input') {
-                            mode = { ...mode, suggestions }
-                            sendMode()
+            if (context.tag === 'input') {
+                context = {...context, text}
+                const source = sourceMap.get(context.parent.sourceId)
+                if (source && 'navigate' in source) {
+                    source.navigate.input({parent: context.parent, text}, (items) => {
+                        if (context.tag === 'input') {
+                            context = {...context, items}
+                            sendState()
                         }
                     })
-                } else {
-                    console.error(`[Store] No input handler for sourceId: ${mode.item.sourceId}`)
                 }
-                sendMode()
+                sendState()
             }
         })
 
-        ipcMain.on(channels.submitInput, () => {
-            if (mode.tag === 'input') {
-                const handler = inputHandlers.get(mode.item.sourceId)
-                if (handler) {
-                    window.blur()
-                    window.hide()
-                    handler.onSubmit(mode.item, mode.text)
-                } else {
-                    console.error(`[Store] No input handler for sourceId: ${mode.item.sourceId}`)
-                }
-                mode = { tag: 'normal' }
-                sendMode()
-            }
-        })
-
-        ipcMain.on(channels.exitInputMode, () => {
-            if (mode.tag === 'input') {
-                mode = { tag: 'normal' }
-                sendMode()
+        ipcMain.on(channels.back, () => {
+            if (context.tag === 'input') {
+                context = {tag: 'root', filterQuery: ''}
+                selectedIndex = 0
+                sendState()
+            } else {
+                window.blur()
+                window.hide()
             }
         })
 
