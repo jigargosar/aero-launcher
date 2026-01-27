@@ -3,8 +3,8 @@ import {promisify} from 'util'
 import {exec} from 'child_process'
 import {join} from 'path'
 import {readFile, writeFile, mkdir} from 'fs/promises'
-import {app} from 'electron'
-import {ListItem, AppsSource} from '@shared/types'
+import {app, shell} from 'electron'
+import {ListItem} from '@shared/types'
 import {Icons} from '@shared/icons'
 
 const execAsync = promisify(exec)
@@ -99,22 +99,29 @@ async function writeCache(items: ListItem[]): Promise<boolean> {
     const newCache = JSON.stringify(items)
 
     if (oldCache === newCache) {
-        return false
+        return false // No change
     }
 
     await mkdir(CACHE_DIR, {recursive: true})
     await writeFile(CACHE_FILE, newCache)
-    return true
+    return true // Changed
 }
 
-export const appsSource: AppsSource = {
+export const Apps = {
     id: 'apps',
 
-    onStart: async (emit) => {
+    performPrimaryAction(item: ListItem): void {
+        const appId = item.metadata?.appId
+        if (appId) {
+            exec(`start "" "shell:AppsFolder\\${appId}"`)
+        }
+    },
+
+    async start(onUpdate: (items: ListItem[]) => void): Promise<void> {
         // Send cached items immediately
         const cached = await readCache()
         if (cached.length > 0) {
-            emit(cached)
+            onUpdate(cached)
         }
 
         // Index with icons and update
@@ -124,22 +131,13 @@ export const appsSource: AppsSource = {
 
         // Show with default icons if cache was empty
         if (cached.length === 0) {
-            emit(apps)
+            onUpdate(apps)
         }
 
         const appsWithIcons = await loadIcons(apps)
         if (await writeCache(appsWithIcons)) {
-            emit(appsWithIcons)
+            onUpdate(appsWithIcons)
         }
         console.log('[Apps] Indexing complete')
-    },
-
-    handlers: {
-        execute: (item) => {
-            const appId = item.metadata?.appId
-            if (appId) {
-                exec(`start "" "shell:AppsFolder\\${appId}"`)
-            }
-        }
     }
 }

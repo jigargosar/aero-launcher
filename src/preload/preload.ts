@@ -2,32 +2,20 @@ import {contextBridge, ipcRenderer} from 'electron'
 import {channels, ElectronAPI} from '@shared/types'
 
 const api: ElectronAPI = {
-    onState: (callback) => {
-        ipcRenderer.on(channels.state, (_, state) => callback(state))
+    onListItemsReceived: (callback) => {
+        ipcRenderer.on(channels.listItems, (_, items) => callback(items))
     },
-    requestState: () => {
-        ipcRenderer.send(channels.requestState)
-    },
-    navigate: (type, item) => {
-        ipcRenderer.send(channels.navigate, type, item)
-    },
-    back: () => {
-        ipcRenderer.send(channels.back)
-    },
-    execute: (item) => {
-        ipcRenderer.send(channels.execute, item)
-    },
-    setFilterQuery: (query) => {
-        ipcRenderer.send(channels.setFilterQuery, query)
-    },
-    setInputText: (text) => {
-        ipcRenderer.send(channels.setInputText, text)
-    },
-    setSelectedIndex: (index) => {
-        ipcRenderer.send(channels.setSelectedIndex, index)
+    requestListItems: () => {
+        ipcRenderer.send(channels.requestListItems)
     },
     hideWindow: () => {
         ipcRenderer.send(channels.hideWindow)
+    },
+    setQuery: (query) => {
+        ipcRenderer.send(channels.setQuery, query)
+    },
+    performPrimaryAction: (item) => {
+        ipcRenderer.send(channels.performPrimaryAction, item)
     },
 }
 

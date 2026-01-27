@@ -84,28 +84,6 @@ body {
     color: var(--text-secondary);
 }
 
-/* Input mode */
-.launcher-header.input-mode {
-    -webkit-app-region: no-drag;
-}
-
-.launcher-header .header-input {
-    flex: 1;
-    font-size: 28px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--text-header);
-    background: transparent;
-    border: none;
-    outline: none;
-    padding: 0;
-}
-
-.launcher-header .header-input::placeholder {
-    color: var(--text-secondary);
-    font-weight: 400;
-}
-
 /* List */
 .launcher-list {
     flex: 1;
