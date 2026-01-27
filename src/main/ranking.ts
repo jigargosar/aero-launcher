@@ -24,7 +24,8 @@ export function createRankingContext(): RankingContext {
 export function recordSelection(context: RankingContext, query: string, itemId: string): void {
     if (!query) return
 
-    const counts = context.learned.get(query) ?? new Map<string, number>()
+    const q = query.toLowerCase()
+    const counts = context.learned.get(q) ?? new Map<string, number>()
 
     // Find current winner
     let winnerId = ''
@@ -44,7 +45,7 @@ export function recordSelection(context: RankingContext, query: string, itemId: 
     // Increment selected (max 3)
     counts.set(itemId, Math.min(MAX_COUNT, (counts.get(itemId) ?? 0) + 1))
 
-    context.learned.set(query, counts)
+    context.learned.set(q, counts)
 }
 
 type SearchableItem = {

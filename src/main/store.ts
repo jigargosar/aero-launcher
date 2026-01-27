@@ -1,5 +1,5 @@
 import {BrowserWindow, ipcMain} from 'electron'
-import {channels, ListItem} from '@shared/types'
+import {channels, ListItem, ListState} from '@shared/types'
 import {config} from '@shared/config'
 import {Apps} from './apps-indexer'
 import {MockIndexer} from './mock-indexer'
@@ -18,23 +18,35 @@ export const Store = {
         const webContents = window.webContents
         const sources = new Map<string, ListItem[]>()
         let query = ''
+        let selectedIndex = 0
+        let lastTopItemId: string | null = null
 
         const rankingContext = createRankingContext()
 
         const getAllItems = (): ListItem[] => {
             return [...sources.values()].flat()
         }
+
+        const getFilteredItems = (): ListItem[] => {
+            return filterAndSort(getAllItems(), query, rankingContext)
+        }
+
         let firstTime = true
-        const sendFilteredItems = () => {
+        const sendState = () => {
             if (config.debugDelayFirstRender && firstTime) {
                 firstTime = false
-                setTimeout(sendItemsToRenderer, 4 * 1000)
+                setTimeout(sendStateToRenderer, 4 * 1000)
             } else {
-                sendItemsToRenderer()
+                sendStateToRenderer()
             }
 
-            function sendItemsToRenderer() {
-                webContents.send(channels.listItems, filterAndSort(getAllItems(), query, rankingContext))
+            function sendStateToRenderer() {
+                const items = getFilteredItems()
+                // Keep selectedIndex in bounds
+                selectedIndex = Math.min(selectedIndex, Math.max(0, items.length - 1))
+                lastTopItemId = items[0]?.id ?? null
+                const state: ListState = {items, selectedIndex}
+                webContents.send(channels.listState, state)
             }
         }
 
@@ -43,7 +55,7 @@ export const Store = {
         const updateSource = (id: string, items: ListItem[]) => {
             sources.set(id, items)
             if (initialized) {
-                sendFilteredItems()
+                sendState()
             }
         }
 
@@ -55,22 +67,35 @@ export const Store = {
             )
         ).then(() => {
             initialized = true
-            sendFilteredItems()
+            sendState()
         }).catch(err => console.error('[Store] Indexers failed:', err))
 
-        ipcMain.on(channels.requestListItems, () => {
-            sendFilteredItems()
+        ipcMain.on(channels.requestListState, () => {
+            sendState()
         })
 
         ipcMain.on(channels.setQuery, (_, q: string) => {
             query = q
-            sendFilteredItems()
+            selectedIndex = 0
+            sendState()
+        })
+
+        ipcMain.on(channels.setSelectedIndex, (_, index: number) => {
+            selectedIndex = index
+            sendState()
         })
 
         ipcMain.on(channels.performPrimaryAction, (_, item: ListItem) => {
             const indexer = indexers.find(i => i.id === item.sourceId)
             if (indexer) {
                 recordSelection(rankingContext, query, item.id)
+                // Check if priority changed (top item will be different)
+                const newItems = getFilteredItems()
+                const newTopId = newItems[0]?.id ?? null
+                if (newTopId !== lastTopItemId) {
+                    selectedIndex = 0
+                }
+                sendState()
                 setTimeout(() => {
                     window.blur()
                     window.hide()

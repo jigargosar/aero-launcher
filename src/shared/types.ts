@@ -6,19 +6,26 @@ export type ListItem = {
     metadata?: Record<string, string>
 }
 
+export type ListState = {
+    items: ListItem[]
+    selectedIndex: number
+}
+
 export const channels = {
-    listItems: 'list-items',
-    requestListItems: 'request-list-items',
+    listState: 'list-state',
+    requestListState: 'request-list-state',
     hideWindow: 'hide-window',
     setQuery: 'set-query',
+    setSelectedIndex: 'set-selected-index',
     performPrimaryAction: 'perform-primary-action',
 }
 
 export type ElectronAPI = {
-    onListItemsReceived: (callback: (items: ListItem[]) => void) => void
-    requestListItems: () => void
+    onListState: (callback: (state: ListState) => void) => void
+    requestListState: () => void
     hideWindow: () => void
     setQuery: (query: string) => void
+    setSelectedIndex: (index: number) => void
     performPrimaryAction: (item: ListItem) => void
 }
 

@@ -1,5 +1,5 @@
 import {useEffect, useEffectEvent, useRef, useState} from 'react'
-import {ListItem} from '@shared/types'
+import {ListItem, ListState} from '@shared/types'
 import {Icons} from '@shared/icons'
 import {config} from '@shared/config'
 
@@ -39,23 +39,24 @@ function ItemDialog({item, onClose}: {item: ListItem; onClose: () => void}) {
 }
 
 function useLauncher() {
-    const [items, setItems] = useState<ListItem[] | null>(null)
+    const [state, setState] = useState<ListState | null>(null)
     const [query, setQuery] = useState('')
-    const [selectedIndex, setSelectedIndex] = useState(0)
     const [dialogItem, setDialogItem] = useState<ListItem | null>(null)
     const lastKeyTime = useRef(0)
     const shouldScrollRef = useRef(false)
 
-    // Subscribe to items and request initial data
+    const items = state?.items ?? null
+    const selectedIndex = state?.selectedIndex ?? 0
+
+    // Subscribe to state and request initial data
     useEffect(() => {
-        window.electron.onListItemsReceived(setItems)
-        window.electron.requestListItems()
+        window.electron.onListState(setState)
+        window.electron.requestListState()
     }, [])
 
     // Send query to store on change
     useEffect(() => {
         window.electron.setQuery(query)
-        setSelectedIndex(0)
     }, [query])
 
     const selectedItem = items?.[selectedIndex]
@@ -85,12 +86,12 @@ function useLauncher() {
             case 'ArrowDown':
                 e.preventDefault()
                 shouldScrollRef.current = true
-                setSelectedIndex(i => Math.min(i + 1, (items?.length ?? 1) - 1))
+                window.electron.setSelectedIndex(Math.min(selectedIndex + 1, (items?.length ?? 1) - 1))
                 return
             case 'ArrowUp':
                 e.preventDefault()
                 shouldScrollRef.current = true
-                setSelectedIndex(i => Math.max(i - 1, 0))
+                window.electron.setSelectedIndex(Math.max(selectedIndex - 1, 0))
                 return
         }
 
@@ -114,7 +115,6 @@ function useLauncher() {
         items,
         selectedItem,
         selectedIndex,
-        setSelectedIndex,
         launchItem,
         showItemInfo,
         dialogItem,
@@ -129,7 +129,6 @@ export default function App() {
         items,
         selectedItem,
         selectedIndex,
-        setSelectedIndex,
         launchItem,
         showItemInfo,
         dialogItem,
@@ -168,7 +167,7 @@ export default function App() {
                                 }
                             } : undefined}
                             className={`item ${index === selectedIndex ? 'selected' : ''}`}
-                            onMouseEnter={() => setSelectedIndex(index)}
+                            onMouseEnter={() => window.electron.setSelectedIndex(index)}
                             onClick={(e) => e.shiftKey ? showItemInfo(item) : launchItem(item)}
                         >
                             <img className="item-icon" src={item.icon} alt=""/>
