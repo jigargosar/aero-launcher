@@ -7,8 +7,44 @@ import {ListItem} from '@shared/types'
 // --- Types ---
 
 export type RankingContext = {
-    learned: Map<string, string> // query → itemId
+    learned: Map<string, Map<string, number>> // query → (itemId → count)
     history: string[] // itemIds ordered by recency, most recent first
+}
+
+const MAX_COUNT = 3
+const MIN_COUNT_FOR_BOOST = 2
+
+export function createRankingContext(): RankingContext {
+    return {
+        learned: new Map(),
+        history: []
+    }
+}
+
+export function recordSelection(context: RankingContext, query: string, itemId: string): void {
+    if (!query) return
+
+    const counts = context.learned.get(query) ?? new Map<string, number>()
+
+    // Find current winner
+    let winnerId = ''
+    let winnerCount = 0
+    for (const [id, count] of counts) {
+        if (count > winnerCount) {
+            winnerId = id
+            winnerCount = count
+        }
+    }
+
+    // Decrement winner if different from selected
+    if (winnerId && winnerId !== itemId) {
+        counts.set(winnerId, Math.max(0, winnerCount - 1))
+    }
+
+    // Increment selected (max 3)
+    counts.set(itemId, Math.min(MAX_COUNT, (counts.get(itemId) ?? 0) + 1))
+
+    context.learned.set(query, counts)
 }
 
 type SearchableItem = {
@@ -124,9 +160,23 @@ const byHistory = (context: RankingContext): Order.Order<UnifiedScored> => {
 // --- Matchers ---
 
 const matchLearned: Matcher = (items, query, context) => {
-    const learnedId = context.learned.get(query)
-    if (!learnedId) return []
-    const item = items.find(si => si.id === learnedId)
+    const counts = context.learned.get(query)
+    if (!counts) return []
+
+    // Find winner (highest count)
+    let winnerId = ''
+    let winnerCount = 0
+    for (const [id, count] of counts) {
+        if (count > winnerCount) {
+            winnerId = id
+            winnerCount = count
+        }
+    }
+
+    // Only boost if count >= MIN_COUNT_FOR_BOOST
+    if (winnerCount < MIN_COUNT_FOR_BOOST) return []
+
+    const item = items.find(si => si.id === winnerId)
     return item ? [item] : []
 }
 

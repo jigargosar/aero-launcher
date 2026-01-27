@@ -3,7 +3,7 @@ import {channels, ListItem} from '@shared/types'
 import {config} from '@shared/config'
 import {Apps} from './apps-indexer'
 import {MockIndexer} from './mock-indexer'
-import {filterAndSort, RankingContext} from './ranking'
+import {createRankingContext, filterAndSort, recordSelection} from './ranking'
 
 type Indexer = {
     id: string
@@ -19,10 +19,7 @@ export const Store = {
         const sources = new Map<string, ListItem[]>()
         let query = ''
 
-        const rankingContext: RankingContext = {
-            learned: new Map(),
-            history: []
-        }
+        const rankingContext = createRankingContext()
 
         const getAllItems = (): ListItem[] => {
             return [...sources.values()].flat()
@@ -73,6 +70,7 @@ export const Store = {
         ipcMain.on(channels.performPrimaryAction, (_, item: ListItem) => {
             const indexer = indexers.find(i => i.id === item.sourceId)
             if (indexer) {
+                recordSelection(rankingContext, query, item.id)
                 setTimeout(() => {
                     window.blur()
                     window.hide()
