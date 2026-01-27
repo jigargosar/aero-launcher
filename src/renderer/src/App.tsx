@@ -75,16 +75,31 @@ function useLauncher() {
     // Keyboard handler with access to latest state
     const onKeyDown = useEffectEvent((e: KeyboardEvent) => {
         // Input mode handling
-        if (isInputMode) {
-            switch (e.key) {
-                case 'Escape':
-                    window.electron.exitInputMode()
-                    return
-                case 'Enter':
+        if (mode?.tag === 'input') {
+            const suggestions = mode.suggestions
+            const suggestIndex = mode.selectedIndex
+
+            if (e.key === 'Escape') {
+                e.preventDefault()
+                window.electron.exitInputMode()
+            } else if (e.key === 'Enter') {
+                e.preventDefault()
+                if (suggestions.length > 0 && suggestIndex >= 0) {
+                    window.electron.executeItem(suggestions[suggestIndex])
+                } else {
                     window.electron.submitInput()
-                    return
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault()
+                if (suggestions.length > 0) {
+                    window.electron.setSelectedIndex(Math.min(suggestIndex + 1, suggestions.length - 1))
+                }
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault()
+                if (suggestions.length > 0) {
+                    window.electron.setSelectedIndex(Math.max(suggestIndex - 1, 0))
+                }
             }
-            // TODO: handle typing in input mode
             return
         }
 
@@ -98,7 +113,11 @@ function useLauncher() {
             case 'Enter':
                 if (selectedItem) {
                     if (e.shiftKey) showItemInfo(selectedItem)
-                    else executeItem(selectedItem)
+                    else if (selectedItem.actions.some(a => a.type === 'input')) {
+                        window.electron.enterInputMode(selectedItem)
+                    } else {
+                        executeItem(selectedItem)
+                    }
                 }
                 return
             case ' ':
@@ -165,16 +184,35 @@ export default function App() {
 
     const loading = mode === null
 
-    // Input mode UI (placeholder for now)
+    // Input mode UI
     if (mode?.tag === 'input') {
         return (
             <div className="launcher select-none">
-                <header className="launcher-header drag-region">
+                <header className="launcher-header input-mode">
                     <img className="header-icon" src={mode.item.icon} alt=""/>
-                    <span className="header-title">{mode.item.name}</span>
-                    <span className="header-query">{mode.text || mode.placeholder}</span>
+                    <input
+                        className="header-input"
+                        type="text"
+                        value={mode.text}
+                        placeholder={mode.placeholder}
+                        onChange={e => window.electron.setInputText(e.target.value)}
+                        autoFocus
+                    />
                 </header>
-                <div className="empty">Input mode - TODO</div>
+                {mode.suggestions.length > 0 && (
+                    <div className="launcher-list">
+                        {mode.suggestions.map((item, index) => (
+                            <div
+                                key={item.id}
+                                className={`item ${index === mode.selectedIndex ? 'selected' : ''}`}
+                                onClick={() => executeItem(item)}
+                            >
+                                <img className="item-icon" src={item.icon} alt=""/>
+                                <span className="item-name">{item.name}</span>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         )
     }
