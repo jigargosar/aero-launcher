@@ -3,9 +3,10 @@ import {promisify} from 'util'
 import {exec} from 'child_process'
 import {join} from 'path'
 import {readFile, writeFile, mkdir} from 'fs/promises'
-import {app, shell} from 'electron'
+import {app} from 'electron'
 import {ListItem} from '@shared/types'
 import {Icons} from '@shared/icons'
+import {StoreAPI} from './store'
 
 const execAsync = promisify(exec)
 const SHELL_ICON_DLL = app.isPackaged
@@ -38,6 +39,7 @@ async function fetchApps(): Promise<RawApp[]> {
         id: `app:${a.AppID}`,
         name: a.Name,
         icon: Icons.default,
+        actions: [{type: 'execute' as const}],
         metadata: {appId: a.AppID},
     }))
 }
@@ -110,14 +112,14 @@ async function writeCache(items: ListItem[]): Promise<boolean> {
 export const Apps = {
     id: 'apps',
 
-    performPrimaryAction(item: ListItem): void {
-        const appId = item.metadata?.appId
-        if (appId) {
-            exec(`start "" "shell:AppsFolder\\${appId}"`)
-        }
-    },
-
-    async start(onUpdate: (items: ListItem[]) => void): Promise<void> {
+    async start(onUpdate: (items: ListItem[]) => void, store: StoreAPI): Promise<void> {
+        // Register execute handler
+        store.registerExecuteHandler('apps', (item) => {
+            const appId = item.metadata?.appId
+            if (appId) {
+                exec(`start "" "shell:AppsFolder\\${appId}"`)
+            }
+        })
         // Send cached items immediately
         const cached = await readCache()
         if (cached.length > 0) {

@@ -1,5 +1,5 @@
 import {useEffect, useEffectEvent, useRef, useState} from 'react'
-import {ListItem, ListState} from '@shared/types'
+import {ListItem, ListMode} from '@shared/types'
 import {Icons} from '@shared/icons'
 import {config} from '@shared/config'
 
@@ -39,19 +39,22 @@ function ItemDialog({item, onClose}: {item: ListItem; onClose: () => void}) {
 }
 
 function useLauncher() {
-    const [state, setState] = useState<ListState | null>(null)
+    const [mode, setMode] = useState<ListMode | null>(null)
     const [query, setQuery] = useState('')
     const [dialogItem, setDialogItem] = useState<ListItem | null>(null)
     const lastKeyTime = useRef(0)
     const shouldScrollRef = useRef(false)
 
-    const items = state?.items ?? null
-    const selectedIndex = state?.selectedIndex ?? 0
+    // Derive state based on mode
+    const isNormalMode = mode?.tag === 'normal'
+    const isInputMode = mode?.tag === 'input'
+    const items = isNormalMode ? mode.items : null
+    const selectedIndex = mode?.selectedIndex ?? 0
 
-    // Subscribe to state and request initial data
+    // Subscribe to mode and request initial data
     useEffect(() => {
-        window.electron.onListState(setState)
-        window.electron.requestListState()
+        window.electron.onListMode(setMode)
+        window.electron.requestListMode()
     }, [])
 
     // Send query to store on change
@@ -61,8 +64,8 @@ function useLauncher() {
 
     const selectedItem = items?.[selectedIndex]
 
-    const launchItem = (item: ListItem) => {
-        window.electron.performPrimaryAction(item)
+    const executeItem = (item: ListItem) => {
+        window.electron.executeItem(item)
     }
 
     const showItemInfo = (item: ListItem) => {
@@ -71,6 +74,21 @@ function useLauncher() {
 
     // Keyboard handler with access to latest state
     const onKeyDown = useEffectEvent((e: KeyboardEvent) => {
+        // Input mode handling
+        if (isInputMode) {
+            switch (e.key) {
+                case 'Escape':
+                    window.electron.exitInputMode()
+                    return
+                case 'Enter':
+                    window.electron.submitInput()
+                    return
+            }
+            // TODO: handle typing in input mode
+            return
+        }
+
+        // Normal mode handling
         switch (e.key) {
             case 'Escape':
                 if (dialogItem) setDialogItem(null)
@@ -80,7 +98,14 @@ function useLauncher() {
             case 'Enter':
                 if (selectedItem) {
                     if (e.shiftKey) showItemInfo(selectedItem)
-                    else launchItem(selectedItem)
+                    else executeItem(selectedItem)
+                }
+                return
+            case ' ':
+                // Space - enter input mode if item supports it
+                if (selectedItem?.actions.some(a => a.type === 'input')) {
+                    e.preventDefault()
+                    window.electron.enterInputMode(selectedItem)
                 }
                 return
             case 'ArrowDown':
@@ -111,11 +136,12 @@ function useLauncher() {
     }, [])
 
     return {
+        mode,
         query,
         items,
         selectedItem,
         selectedIndex,
-        launchItem,
+        executeItem,
         showItemInfo,
         dialogItem,
         closeDialog: () => setDialogItem(null),
@@ -125,19 +151,35 @@ function useLauncher() {
 
 export default function App() {
     const {
+        mode,
         query,
         items,
         selectedItem,
         selectedIndex,
-        launchItem,
+        executeItem,
         showItemInfo,
         dialogItem,
         closeDialog,
         shouldScrollRef,
     } = useLauncher()
 
-    const loading = items === null
+    const loading = mode === null
 
+    // Input mode UI (placeholder for now)
+    if (mode?.tag === 'input') {
+        return (
+            <div className="launcher select-none">
+                <header className="launcher-header drag-region">
+                    <img className="header-icon" src={mode.item.icon} alt=""/>
+                    <span className="header-title">{mode.item.name}</span>
+                    <span className="header-query">{mode.text || mode.placeholder}</span>
+                </header>
+                <div className="empty">Input mode - TODO</div>
+            </div>
+        )
+    }
+
+    // Normal mode UI
     return (
         <div className="launcher select-none">
             {dialogItem && <ItemDialog item={dialogItem} onClose={closeDialog} />}
@@ -154,12 +196,11 @@ export default function App() {
                 {!loading && query && <span className="header-query">{query}</span>}
             </header>
 
-            {!loading && items.length > 0 && (
+            {!loading && items && items.length > 0 && (
                 <div className="launcher-list">
                     {items.map((item, index) => (
                         <div
                             key={item.id}
-                            // Scroll into view only on keyboard navigation
                             ref={index === selectedIndex ? el => {
                                 if (shouldScrollRef.current && el) {
                                     el.scrollIntoView({block: 'nearest'})
@@ -168,7 +209,7 @@ export default function App() {
                             } : undefined}
                             className={`item ${index === selectedIndex ? 'selected' : ''}`}
                             onMouseEnter={() => window.electron.setSelectedIndex(index)}
-                            onClick={(e) => e.shiftKey ? showItemInfo(item) : launchItem(item)}
+                            onClick={(e) => e.shiftKey ? showItemInfo(item) : executeItem(item)}
                         >
                             <img className="item-icon" src={item.icon} alt=""/>
                             <span className="item-name">{item.name}</span>
@@ -177,7 +218,7 @@ export default function App() {
                     ))}
                 </div>
             )}
-            {!loading && items.length === 0 && (
+            {!loading && items && items.length === 0 && (
                 <div className="empty">No results found</div>
             )}
         </div>
