@@ -178,11 +178,6 @@ type Source = {
         actionMenu?: BrowseHandler
     }
 
-    // Input mode configuration (required if navigate.input is defined)
-    inputConfig?: {
-        placeholder: string  // e.g., "Search Google..."
-    }
-
     // Action handlers for items from this source
     handlers: Partial<Record<ActionType, (item: ListItem) => void>>
 }
@@ -199,9 +194,9 @@ type InputHandler = (
     emit: EmitFn
 ) => void
 
+// Simple - just the parent item. Store handles filtering.
 type BrowseContext = {
     parent: ListItem
-    filterQuery: string
 }
 
 type InputContext = {
@@ -218,28 +213,19 @@ interface StoreAPI {
 ```
 
 ### How Placeholder is Determined
-When entering input mode:
-1. Store looks up source by `item.sourceId`
-2. Gets `source.inputConfig.placeholder`
-3. Sends to renderer in UIState
+Placeholder comes from the parent item's metadata (not source config):
 
 ```ts
-// In store, when navigating to input
-const source = sources.get(item.sourceId)
-const placeholder = source.inputConfig?.placeholder ?? ''
-// UIState includes: { tag: 'input', placeholder, ... }
-```
-
-### Source Validation (at registration)
-```ts
-function registerSource(source: Source) {
-    // Validate: if navigate.input exists, inputConfig.placeholder must exist
-    if (source.navigate?.input && !source.inputConfig?.placeholder) {
-        throw new Error(`Source ${source.id}: input navigation requires inputConfig.placeholder`)
-    }
-
-    sources.set(source.id, source)
+// Item carries its own placeholder
+{
+    id: 'websearch:google',
+    name: 'Google Search',
+    metadata: { placeholder: 'Search Google...' }
 }
+
+// In store, when navigating to input
+const placeholder = item.metadata?.placeholder ?? 'Type to search...'
+// UIState includes: { tag: 'input', placeholder, ... }
 ```
 
 ### Source Lookup Flow
@@ -1663,3 +1649,65 @@ export const websearchSource: Source = {
 - **Custom actions** - User-defined actions
 - **Themes** - Customizable appearance
 - **Keyboard shortcuts** - Configurable bindings
+
+
+-------------- Incomplete Changes discussed but not applied to document ----------
+----------------------------------------------------------------------------------
+
+Found unnecessary complexity:
+
+1. filterQuery in BrowseContext - Unnecessary
+   // Current
+   type BrowseContext = { parent: ListItem, filterQuery: string }
+
+// Simpler - store handles filtering, source doesn't need it
+type BrowseContext = { parent: ListItem }
+Source emits all children. Store filters.
+
+2. inputConfig on Source - Can be removed
+   // Current - source has inputConfig
+   inputConfig: { placeholder: 'Search...' }
+
+// Simpler - item carries its placeholder
+{ id: 'websearch:google', metadata: { placeholder: 'Search Google...' } }
+Store reads parent.metadata?.placeholder. One less field on Source.
+
+3. currentItems in Store - Can be computed
+   // Current - stored separately
+   currentItems: ListItem[]
+
+// Simpler - derive when building UIState
+// Root: flatten rootItems
+// Other: source emits into callback that updates state
+
+4. Two websearch sources - Could be one
+   But keeping two is actually cleaner (clear responsibility). Not changing.
+
+  ---
+Recommended changes:
+
+// BrowseContext (simpler)
+type BrowseContext = { parent: ListItem }
+
+// InputContext (unchanged)
+type InputContext = { parent: ListItem, text: string }
+
+// Source (simpler - no inputConfig)
+type Source = {
+id: string
+onStart?: (emit: EmitFn) => void
+navigate?: {
+browse?: (context: BrowseContext, emit: EmitFn) => void
+input?: (context: InputContext, emit: EmitFn) => void
+sendTo?: (context: BrowseContext, emit: EmitFn) => void
+actionMenu?: (context: BrowseContext, emit: EmitFn) => void
+}
+handlers: Partial<Record<ActionType, (item: ListItem) => void>>
+}
+
+// Placeholder from item metadata
+{ metadata: { placeholder: 'Search Google...' } }
+
+Want me to update the document with these simplifications?
+
+✻ Churned for 59s
