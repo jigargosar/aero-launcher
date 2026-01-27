@@ -245,10 +245,6 @@ type Store = {
     // Context stack (current = last element, minimum 1 = root)
     contextStack: StoreContext[]
 
-    // Items for current context (unfiltered)
-    // Filtering is computed on demand when building UIState
-    currentItems: ListItem[]
-
     // Selection
     selectedIndex: number
 
@@ -257,6 +253,9 @@ type Store = {
 
     // Root items cache (from all sources with onStart)
     rootItems: Map<string, ListItem[]>  // sourceId → items
+
+    // Non-root items (emitted by navigate handlers)
+    emittedItems: ListItem[]
 
     // Ranking context (for learning user preferences)
     rankingContext: RankingContext
@@ -269,21 +268,25 @@ Filtering is computed when building UIState, not stored:
 ```ts
 function buildUIState(): UIState {
     const ctx = currentContext()
-    const query = ctx.tag === 'input' ? '' : ctx.filterQuery
 
-    // Compute filtered items on demand
+    // Get items based on context
+    const rawItems = ctx.tag === 'root'
+        ? [...rootItems.values()].flat()
+        : emittedItems
+
+    // Apply filtering (not for input mode - source handles that)
+    const query = ctx.tag === 'input' ? '' : ctx.filterQuery
     const items = query
-        ? filterAndRank(currentItems, query, rankingContext)
-        : currentItems
+        ? filterAndRank(rawItems, query, rankingContext)
+        : rawItems
 
     return { ...ctx, items, selectedIndex }
 }
 ```
 
-**Why `currentItems` separate from context?**
-- Context is immutable (for back navigation)
-- Items can be re-emitted by source without changing context
-- Separation of concerns: context = navigation state, items = data
+**Items flow:**
+- Root context: uses flattened `rootItems` (cached from `onStart`)
+- Other contexts: uses `emittedItems` (from most recent navigate handler emit)
 
 ### Current Context Helper
 ```ts
@@ -562,7 +565,7 @@ ipcMain.on(channels.hideWindow, () => {
 3. Store receives navigate('input', item):
    a. Look up source: sources.get('websearch')
    b. Check: source.navigate?.input exists
-   c. Get placeholder: source.inputConfig.placeholder
+   c. Get placeholder: item.metadata?.placeholder ?? 'Type to search...'
    d. Create context: { tag: 'input', parent: item, text: '' }
    e. Push to contextStack
    f. Call: source.navigate.input(context, emit)
@@ -749,15 +752,11 @@ export const websearchSource: Source = {
             id,
             name: config.name,
             icon: config.icon,
-            sourceId: 'websearch'  // Items from this source
+            sourceId: 'websearch',
+            metadata: { placeholder: `Search ${config.name.replace(' Search', '')}...` }
         }))
         emit(items)
         console.log(`[WebSearch] Emitted ${items.length} search providers`)
-    },
-
-    // Input configuration
-    inputConfig: {
-        placeholder: 'Search...'  // Default, could be per-provider
     },
 
     // Handle Space navigation - show input for search
@@ -829,8 +828,6 @@ export const websearchResultsSource: Source = {
     id: 'websearch-results',
 
     // No onStart - these items are created dynamically by parent
-
-    // No inputConfig - results don't support further input
 
     // No navigate - results are leaf items
 
@@ -1512,11 +1509,11 @@ type UIState =
 + sources Map<string, Source>
 + contextStack: StoreContext[]
 + rootItems Map<string, ListItem[]>
++ emittedItems: ListItem[]
 + registerSource(source: Source)
 + handleNavigate(type, item)
 + handleBack()
-+ getCurrentItems()
-+ sendUIState()
++ buildUIState()
 
 // Modify:
 ~ init() - new initialization flow
@@ -1555,8 +1552,10 @@ store.registerInputHandler('websearch', { onQuery, onSubmit })
 // Change to:
 export const websearchSource: Source = {
     id: 'websearch',
-    onStart: (emit) => { emit(providers) },
-    inputConfig: { placeholder: 'Search...' },
+    onStart: (emit) => {
+        // Items carry their own placeholder in metadata
+        emit([{ id: 'websearch:google', ..., metadata: { placeholder: 'Search Google...' } }])
+    },
     navigate: {
         input: (context, emit) => { /* fetch suggestions */ }
     },
@@ -1649,65 +1648,3 @@ export const websearchSource: Source = {
 - **Custom actions** - User-defined actions
 - **Themes** - Customizable appearance
 - **Keyboard shortcuts** - Configurable bindings
-
-
--------------- Incomplete Changes discussed but not applied to document ----------
-----------------------------------------------------------------------------------
-
-Found unnecessary complexity:
-
-1. filterQuery in BrowseContext - Unnecessary
-   // Current
-   type BrowseContext = { parent: ListItem, filterQuery: string }
-
-// Simpler - store handles filtering, source doesn't need it
-type BrowseContext = { parent: ListItem }
-Source emits all children. Store filters.
-
-2. inputConfig on Source - Can be removed
-   // Current - source has inputConfig
-   inputConfig: { placeholder: 'Search...' }
-
-// Simpler - item carries its placeholder
-{ id: 'websearch:google', metadata: { placeholder: 'Search Google...' } }
-Store reads parent.metadata?.placeholder. One less field on Source.
-
-3. currentItems in Store - Can be computed
-   // Current - stored separately
-   currentItems: ListItem[]
-
-// Simpler - derive when building UIState
-// Root: flatten rootItems
-// Other: source emits into callback that updates state
-
-4. Two websearch sources - Could be one
-   But keeping two is actually cleaner (clear responsibility). Not changing.
-
-  ---
-Recommended changes:
-
-// BrowseContext (simpler)
-type BrowseContext = { parent: ListItem }
-
-// InputContext (unchanged)
-type InputContext = { parent: ListItem, text: string }
-
-// Source (simpler - no inputConfig)
-type Source = {
-id: string
-onStart?: (emit: EmitFn) => void
-navigate?: {
-browse?: (context: BrowseContext, emit: EmitFn) => void
-input?: (context: InputContext, emit: EmitFn) => void
-sendTo?: (context: BrowseContext, emit: EmitFn) => void
-actionMenu?: (context: BrowseContext, emit: EmitFn) => void
-}
-handlers: Partial<Record<ActionType, (item: ListItem) => void>>
-}
-
-// Placeholder from item metadata
-{ metadata: { placeholder: 'Search Google...' } }
-
-Want me to update the document with these simplifications?
-
-✻ Churned for 59s
