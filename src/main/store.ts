@@ -3,6 +3,7 @@ import {channels, ListItem} from '@shared/types'
 import {config} from '@shared/config'
 import {Apps} from './apps-indexer'
 import {MockIndexer} from './mock-indexer'
+import {filterAndSort, RankingContext} from './ranking'
 
 type Indexer = {
     id: string
@@ -18,15 +19,13 @@ export const Store = {
         const sources = new Map<string, ListItem[]>()
         let query = ''
 
-        const getAllItems = (): ListItem[] => {
-            return [...sources.values()].flat()
+        const rankingContext: RankingContext = {
+            learned: new Map(),
+            history: []
         }
 
-        const filterAndSort = (list: ListItem[]): ListItem[] => {
-            const filtered = query
-                ? list.filter(item => item.name.toLowerCase().includes(query.toLowerCase()))
-                : list
-            return filtered.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+        const getAllItems = (): ListItem[] => {
+            return [...sources.values()].flat()
         }
         let firstTime = true
         const sendFilteredItems = () => {
@@ -38,7 +37,7 @@ export const Store = {
             }
 
             function sendItemsToRenderer() {
-                webContents.send(channels.listItems, filterAndSort(getAllItems()))
+                webContents.send(channels.listItems, filterAndSort(getAllItems(), query, rankingContext))
             }
         }
 

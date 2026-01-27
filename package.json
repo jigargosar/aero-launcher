@@ -54,6 +54,7 @@
     "vite-tsconfig-paths": "^6.0.5"
   },
   "dependencies": {
+    "effect": "^3.19.15",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   }
