@@ -17,10 +17,6 @@ const api: ElectronAPI = {
     performPrimaryAction: (item) => {
         ipcRenderer.send(channels.performPrimaryAction, item)
     },
-    // Launcher state from main
-    onLauncherState: (callback) => {
-        ipcRenderer.on(channels.launcherState, (_, state) => callback(state))
-    },
 }
 
 contextBridge.exposeInMainWorld('electron', api)

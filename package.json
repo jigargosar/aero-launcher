@@ -54,7 +54,6 @@
     "vite-tsconfig-paths": "^6.0.5"
   },
   "dependencies": {
-    "node-global-key-listener": "^0.3.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   }

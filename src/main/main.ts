@@ -1,10 +1,8 @@
-import {app, BrowserWindow, ipcMain, Menu, nativeImage, Tray} from 'electron'
+import {app, BrowserWindow, globalShortcut, Menu, nativeImage, Tray} from 'electron'
 import {Store} from './store'
 import {join} from 'path'
 import {readFileSync, writeFileSync} from 'fs'
 import {spawn} from 'child_process'
-import {HotkeyHandler} from './hotkey-handler'
-import {channels} from '@shared/types'
 
 // Use separate userData for dev to avoid conflicts with prod
 if (!app.isPackaged) {
@@ -129,6 +127,26 @@ function setupTray(window: BrowserWindow): Tray {
     return tray
 }
 
+// === Hotkeys ===
+
+function registerHotkeys(window: BrowserWindow): void {
+    const shortcut = app.isPackaged ? 'Super+/' : 'Super+`'
+    const registered = globalShortcut.register(shortcut, () => {
+        if (window.isVisible() && window.isFocused()) {
+            window.blur()
+            window.hide()
+        } else {
+            window.show()
+        }
+    })
+
+    if (!registered) {
+        console.error(`Failed to register global shortcut: ${shortcut}`)
+    } else {
+        console.log(`Global shortcut registered: ${shortcut}`)
+    }
+}
+
 // === App Lifecycle ===
 
 if (!app.requestSingleInstanceLock()) {
@@ -143,45 +161,16 @@ if (!app.requestSingleInstanceLock()) {
         })
 
         setupTray(mainWindow)
+        registerHotkeys(mainWindow)
         Store.init(mainWindow)
-
-        // Unified hotkey handler (replaces globalShortcut)
-        HotkeyHandler.start(mainWindow, {
-            onToggleLauncher: () => {
-                const wasVisible = mainWindow.isVisible()
-                if (wasVisible) {
-                    mainWindow.hide()
-                    return false
-                } else {
-                    mainWindow.setAlwaysOnTop(true)
-                    mainWindow.show()
-                    mainWindow.focus()
-                    // Reset alwaysOnTop after a brief delay
-                    setTimeout(() => mainWindow.setAlwaysOnTop(false), 100)
-                    return true
-                }
-            },
-            onHideLauncher: () => {
-                mainWindow.hide()
-            },
-            onStateChange: (state) => {
-                mainWindow.webContents.send(channels.launcherState, state)
-            },
-            onActivateWindow: () => {
-                // Window focus handled in hotkey-handler
-            },
-        }).catch(err => console.error('[Main] HotkeyHandler failed to start:', err))
-
-        ipcMain.on(channels.hideWindow, () => {
-            mainWindow.blur()
-            mainWindow.hide()
-        })
     })
 
     app.on('window-all-closed', () => {
     })
 
     app.on('will-quit', () => {
-        HotkeyHandler.stop()
+        globalShortcut.unregisterAll()
     })
 }
+
+

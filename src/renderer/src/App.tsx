@@ -1,5 +1,5 @@
 import {useEffect, useEffectEvent, useRef, useState} from 'react'
-import {LauncherMode, LauncherState, ListItem} from '@shared/types'
+import {ListItem} from '@shared/types'
 import {Icons} from '@shared/icons'
 import {config} from '@shared/config'
 
@@ -39,76 +39,37 @@ function ItemDialog({item, onClose}: {item: ListItem; onClose: () => void}) {
 }
 
 function useLauncher() {
-    // Launcher mode items (from indexers)
-    const [launcherItems, setLauncherItems] = useState<ListItem[] | null>(null)
-
-    // State from main process (for switcher mode)
-    const [mainState, setMainState] = useState<LauncherState | null>(null)
-
-    // Local UI state
+    const [items, setItems] = useState<ListItem[] | null>(null)
     const [query, setQuery] = useState('')
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [dialogItem, setDialogItem] = useState<ListItem | null>(null)
     const lastKeyTime = useRef(0)
     const shouldScrollRef = useRef(false)
 
-    // Derive mode and items
-    const mode: LauncherMode = mainState?.mode ?? 'launcher'
-    const items = mode === 'switcher' ? mainState?.items ?? [] : launcherItems
-    const effectiveSelectedIndex = mode === 'switcher' ? (mainState?.selectedIndex ?? 0) : selectedIndex
-
-    // Subscribe to launcher items from indexers
+    // Subscribe to items and request initial data
     useEffect(() => {
-        window.electron.onListItemsReceived(setLauncherItems)
+        window.electron.onListItemsReceived(setItems)
         window.electron.requestListItems()
     }, [])
 
-    // Subscribe to state from main process
+    // Send query to store on change
     useEffect(() => {
-        window.electron.onLauncherState((state) => {
-            setMainState(state)
-            shouldScrollRef.current = true
-        })
-    }, [])
+        window.electron.setQuery(query)
+        setSelectedIndex(0)
+    }, [query])
 
-    // Reset to launcher mode when main state is cleared
-    useEffect(() => {
-        if (mainState === null) {
-            setSelectedIndex(0)
-        }
-    }, [mainState])
-
-    // Send query to store on change (only in launcher mode)
-    useEffect(() => {
-        if (mode === 'launcher') {
-            window.electron.setQuery(query)
-            setSelectedIndex(0)
-        }
-    }, [query, mode])
-
-    const selectedItem = items?.[effectiveSelectedIndex]
+    const selectedItem = items?.[selectedIndex]
 
     const launchItem = (item: ListItem) => {
         window.electron.performPrimaryAction(item)
-        // Reset main state after launching
-        setMainState(null)
     }
 
     const showItemInfo = (item: ListItem) => {
         setDialogItem(item)
     }
 
-    // Keyboard handler
+    // Keyboard handler with access to latest state
     const onKeyDown = useEffectEvent((e: KeyboardEvent) => {
-        // In switcher mode, disable most keyboard handling (hotkey handler controls it)
-        if (mode === 'switcher') {
-            if (e.key === 'Escape') {
-                window.electron.hideWindow()
-                setMainState(null)
-            }
-            return
-        }
-
         switch (e.key) {
             case 'Escape':
                 if (dialogItem) setDialogItem(null)
@@ -149,11 +110,10 @@ function useLauncher() {
     }, [])
 
     return {
-        mode,
         query,
         items,
         selectedItem,
-        selectedIndex: effectiveSelectedIndex,
+        selectedIndex,
         setSelectedIndex,
         launchItem,
         showItemInfo,
@@ -165,7 +125,6 @@ function useLauncher() {
 
 export default function App() {
     const {
-        mode,
         query,
         items,
         selectedItem,
@@ -179,7 +138,6 @@ export default function App() {
     } = useLauncher()
 
     const loading = items === null
-    const title = mode === 'switcher' ? 'Switch Windows' : (selectedItem?.name ?? 'Aero Launcher')
 
     return (
         <div className="launcher select-none">
@@ -191,10 +149,10 @@ export default function App() {
                     alt=""
                 />
                 <span className="header-title">
-                    {title}
+                    {selectedItem?.name ?? 'Aero Launcher'}
                     {loading && <LoadingBars />}
                 </span>
-                {!loading && query && mode === 'launcher' && <span className="header-query">{query}</span>}
+                {!loading && query && <span className="header-query">{query}</span>}
             </header>
 
             {!loading && items.length > 0 && (
@@ -202,6 +160,7 @@ export default function App() {
                     {items.map((item, index) => (
                         <div
                             key={item.id}
+                            // Scroll into view only on keyboard navigation
                             ref={index === selectedIndex ? el => {
                                 if (shouldScrollRef.current && el) {
                                     el.scrollIntoView({block: 'nearest'})
@@ -209,7 +168,7 @@ export default function App() {
                                 }
                             } : undefined}
                             className={`item ${index === selectedIndex ? 'selected' : ''}`}
-                            onMouseEnter={() => mode === 'launcher' && setSelectedIndex(index)}
+                            onMouseEnter={() => setSelectedIndex(index)}
                             onClick={(e) => e.shiftKey ? showItemInfo(item) : launchItem(item)}
                         >
                             <img className="item-icon" src={item.icon} alt=""/>
