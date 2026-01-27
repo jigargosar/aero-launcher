@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Snippets</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<a name="page-snippets"></a>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td>Topics</td>
+		<td></td>
+	</tr></table>
+
+    <h1>Snippets</h1>
+
+	<div class="preface">
+        LaunchBar’s Snippets feature is a fast and easy way to work with often–used pieces of small text. Instead of typing the same text again and again, you just select a snippet in LaunchBar and hit Return. Optional placeholders allow you to include things like clipboard contents or the current date in your snippets.
+	</div>
+
+	<div class="screenshot">
+		<img src="images/snippets.png" width="438" height="251" alt="" />
+		<p>Snippets</p>
+	</div>
+
+    
+<h2>Creating new Snippets</h2>
+    
+    <p>To create a new snippet, do one of the following:</p>
+
+    <div class="white box">
+        <ul class="stretched">
+            <li>Select the “Add Snippet” action, then press Space and enter the desired snippet text.</li>
+            <li>Select the “Snippets” indexing rule and press ⌘N.</li>
+            <li>Press your Snippets Shortcut to open the snippets list, then press ⌘N.</li>
+            <li>Select some text from LaunchBar’s Clipboard History, then press Tab and send it to the “Add Snippet” action or to the “Snippets” indexing rule.</li>
+            <li>Select some text in an application, transfer it to LaunchBar via <a href="InstantSend.html">Instant Send</a> and send it to the “Add Snippet” action or to the “Snippets” indexing rule.</li>
+        </ul>
+    </div>
+
+    <div class="screenshot">
+		<img src="images/add-snippet.png" width="438" height="59" alt="Creating a new snippet using the “Add Snippet” action" />
+		<p>Creating a new snippet using the “Add Snippet” action</p>
+	</div>
+
+    <div class="screenshot">
+		<img src="images/add-snippet-via-send-to.png" width="438" height="59" alt="Creating a new snippet vis “Send-to” or “Instant Send”" />
+		<p>Creating a new snippet vis “Send-to” or “Instant Send”</p>
+	</div>
+
+    <div class="small white box">
+        <p><span class="badge">Info</span> Internally, snippets are simply plain text files (.txt) that are stored in the following folder:</p>
+
+        <p class="indent"><tt>~/Library/Application Support/LaunchBar/Snippets</tt></p>
+
+        <p>Any plain text file you place in this folder will be picked up by LaunchBar and can then be used as a snippet.</p>
+    </div>
+
+<h2>Renaming Snippets</h2>
+
+    <p>LaunchBar automatically suggests a name for the newly created snippet, based on the snippet text. If you want access the snippet under a different name, just press ⇧⌘R to trigger the Rename action.</p>
+
+    <div class="screenshot">
+		<img src="images/rename-snippet.png" width="438" height="59" alt="" />
+		<p>Renaming a snippet</p>
+	</div>
+
+<h2>Accessing Snippets</h2>
+
+    <p>Snippets can be accessed like any other item in LaunchBar’s index. Just type a few letters from their name or type a previously–assigned <a href="AbbreviationSearch.html#assign">custom abbreviation</a>.</p>
+
+	<p>The complete list of all snippets can be quickly accessed via a system wide keyboard shortcut. By default this shortcut is configured to Control-Option-Command-Space, but it can be customized in the <a href="x-launchbar:pref-pane?identifier=shortcuts">Shortcuts pane</a> of LaunchBar Preferences.</p>
+
+    <p>Alternatively you can select the “Snippets” indexing rule and press Right Arrow to get the same list of all snippets.</p>
+
+    <p>Once the desired Snippet is selected in LaunchBar, press Return to insert it into the text that you are currently editing in the frontmost application.</p>
+
+<h2>Keyboard Shortcuts</h2>
+
+    <table class="xtable">
+        <tr>
+            <th colspan="2">Accessing a snippet’s contents</th>
+        </tr>
+        <tr>
+            <td>Insert the snippet into the currently edited text</td>
+            <td>↩</td>
+        </tr>
+        <tr>
+            <td>Copy the snippet’s contents to the clipboard (with placeholders expanded)</td>
+            <td>⌘C</td>
+        </tr>
+        <tr>
+            <td>Preview the snippet with Quick Look</td>
+            <td>Space or ⌘Y</td>
+        </tr>
+        <tr>
+            <td>Navigate into the snippet (line by line, word by word)</td>
+            <td>→</td>
+        </tr>
+        <tr>
+            <th colspan="2" style="padding-top:3em">Editing a snippet</th>
+        </tr>
+        <tr>
+            <td>Rename the snippet</td>
+            <td>⇧⌘R</td>
+        </tr>
+        <tr>
+            <td>Assign an abbreviation</td>
+            <td>⌥⌘A</td>
+        </tr>
+        <tr>
+            <td>Edit the snippet in your default text editor</td>
+            <td>⇧↩</td>
+        </tr>
+        <tr>
+            <td>Edit the snippet with some other text editor</td>
+            <td>⇥</td>
+        </tr>
+        <tr>
+            <td>Move the snippet to the Trash</td>
+            <td>⌘⌫</td>
+        </tr>
+        <tr>
+            <td>Show the snippet text file in Finder</td>
+            <td>⌘↩</td>
+        </tr>
+    </table>
+
+<h2>Placeholders</h2>
+    
+    <p>Placeholders can be used to include things like clipboard contents or the current date in your snippets. They are expanded to their corresponding value when the snippet is inserted or copied. The following placeholders are available:</p>
+    
+    <table class="xtable">
+        <tr>
+            <th>Example</th>
+            <th>Expands To</th>
+        </tr>
+        <tr>
+            <td class="kbd">
+                &lt;date short&gt;<br />
+                &lt;date medium&gt;<br />
+                &lt;date long&gt;<br />
+                &lt;date full&gt;<br />
+            </td>
+            <td valign="top">
+                The current date in the specified region format.
+                <p>The <em>short</em>, <em>medium</em>, <em>long</em> and <em>full</em> specifiers correspond to the respective date formats in System Preferences &gt; Language &amp; Text &gt; Region &gt; Dates &gt; Customize…</p>
+            </td>
+        </tr>
+        <tr>
+            <td class="kbd">
+                &lt;time short&gt;<br />
+                &lt;time medium&gt;<br />
+                &lt;time long&gt;<br />
+                &lt;time full&gt;<br />
+            </td>
+            <td valign="top">
+                The current time in the specified region format.
+                <p>The <em>short</em>, <em>medium</em>, <em>long</em> and <em>full</em> specifiers correspond to the respective time formats in System Preferences &gt; Language &amp; Text &gt; Region &gt; Times &gt; Customize…</p>
+            </td>
+        </tr>
+        <tr>
+            <td class="kbd">
+                &lt;date yyyy-MM-dd&gt;<br />
+                &lt;date MMM dd, yyyy&gt;<br />
+                &lt;date MM/dd/yy&gt;<br />
+                &lt;time HH:mm&gt;<br />
+                &lt;time HH:mm:ss&gt;<br />
+                &lt;time h:mm a&gt;
+            </td>
+            <td valign="top">
+                The current date and/or time in the specified format, according to <a href="http://unicode.org/reports/tr35/tr35-6.html#Date_Format_Patterns">Unicode standard’s date format patterns</a>.
+            </td>
+        </tr>
+        <tr>
+            <td class="kbd">
+                &lt;first name&gt;<br />
+                &lt;last name&gt;<br />
+                &lt;full name&gt;
+            </td>
+            <td valign="top">Your first name, last name or full name, according to “My Card” in Contacts.app.</a></td>
+        </tr>
+        <tr>
+            <td class="kbd">&lt;clipboard&gt;</td>
+            <td valign="top">The current clipboard contents.</td>
+        </tr>
+        <tr>
+            <td class="kbd">
+                &lt;clipboard 1&gt;<br />
+                &lt;clipboard 2&gt;<br />
+                &lt;clipboard 3&gt;
+            </td>
+            <td valign="top">The first, second, third, etc. item from the <a href="ClipboardHistory.html">Clipboard History.</a></td>
+        </tr>
+        <tr>
+            <td class="kbd">&lt;|&gt;</td>
+            <td valign="top">After inserting the snippet, the text cursor is moved to the location marked by this placeholder.</td>
+        </tr>
+        <tr>
+            <td class="kbd">&lt;|insert text here&gt;</td>
+            <td valign="top">Same as above, but also inserts and selects the specified placeholder text.</td>
+        </tr>
+	</table>
+
+</body>
+</html>

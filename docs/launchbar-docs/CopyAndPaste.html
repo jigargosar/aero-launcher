@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Copy and Paste</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="Actions.html">Actions</a></td>
+		<td><a href="DragAndDrop.html">previous</a> | <a href="PerformingWebSearches.html">next</a></td>
+	</tr></table>
+
+	<h1>Copy and Paste</h1>
+
+	<div class="subnavigation">
+	<ul>
+		<li><a href="#copy">					Copying the path or address of the selected item</a></li>
+		<li><a href="#file-contents">			Copying File Contents</a></li>
+		<li><a href="#copy-paste">				Copy and paste with a single keystroke</a></li>
+		<li><a href="#paste-path">				Pasting File Paths</a></li>
+		<li><a href="#paste-abbreviation">		Pasting Abbreviations</a></li>
+		<li><a href="#select-from-clipboard">	Select From Clipboard</a></li>
+	</ul>
+	</div>
+
+<a name="copy"></a>
+<h2>Copying the path or address of the selected item</h2>
+
+	<p>If the selected item refers to a file or folder, the item’s Unix file path will be copied to the clipboard when you invoke the “Copy” command (Command-C). In case of a bookmark or contact item, the item’s URL or email address will be copied respectively.</p>
+
+	<p>In the <a href="x-launchbar:pref-pane?identifier=advanced">Advanced pane</a> of LaunchBar Preferences you can specify whether the copied file path shall be abbreviated with a tilde sign.</p>
+
+	<h3>Copying file paths to Terminal</h3>
+
+	<p>When you paste a copied file path into a Terminal window, be aware that paths containing space characters must be either escaped or quoted. You can use Terminal’s “Paste Escaped Text” command (Command-Control-V) for that purpose.</p>
+
+	<h3>Copying file paths to Rich Text documents</h3>
+
+	<p>When you paste a copied file path into a Rich Text document (e.g. an RTF file in TextEdit), the corresponding file will be inserted as an attachment. To insert just the file path as plain text you can use the “Paste With Current Style” command (Command-Shift-Option-V).</p>
+
+<a name="file-contents"></a>
+<h2>Copying File Contents</h2>
+
+	<p>If the selected item refers to a text document (either plain text, rich text, HTML or PDF) or an image file (JPEG, PNG, etc.), you can use the “Copy File Contents” command to put the contents of that file on the clipboard.</p>
+
+<a name="copy-paste"></a>
+<h2>Copy and paste with a single keystroke</h2>
+
+	<p>The “Copy and Paste” command can be used to send the current selection (e.g. the selected file path, postal address, URL, etc.) to the frontmost application with a single keystroke (Command-Shift-C). It has the same effect as invoking Copy (Command-C), Hide (Command-H) and Paste (Command-V).</p>
+
+	<p>If the selected item refers to a text or image file, you can also invoke “Copy and Paste File Contents” (Command-Shift-Option-C) to send the file’s contents to the frontmost application with a single keystroke. You may use this command to quickly insert predefined text and graphic snippets in the currently edited document.</p>
+
+<a name="paste-path"></a>
+<h2>Pasting File Paths</h2>
+
+	<p>Pasting a Unix file path into the LaunchBar window (Command-V) simulates a <a href="DragAndDrop.html">drag and drop</a> of the corresponding file onto the bar, and the “Drop Action Menu” appears, allowing you to choose the desired action. You can e.g. select the file in LaunchBar to start <a href="Browsing.html">file system browsing</a> from that location, you can perform various file operations by pasting a file onto a folder, or open a file with a specific application by pasting it onto the desired app.</p>
+
+	<!-- see also DragAndDrop.html -->
+	<div class="small box" title="Note">
+		When you paste a file path onto a folder that’s selected in LaunchBar, the “Default Action” as defined in the <a href="x-launchbar:pref-pane?identifier=advanced">Advanced pane</a> of LaunchBar Preferences will <strong>not</strong> be performed to prevent accidental invocation. Instead you have to confirm the desired action by selecting the corresponding item from the pop-up menu. Note that this menu can also be navigated using the up/down arrow keys.
+	</div>
+
+<a name="paste-abbreviation"></a>
+<h2>Pasting Abbreviations</h2>
+
+	<p>If the pasted string is not a file path (determined by the string’s first character - a leading slash character indicates a path), the string will be interpreted as an abbreviation, and the matching items for this abbreviation will be searched.</p>
+
+<a name="select-from-clipboard"></a>
+<h2>Select From Clipboard</h2>
+
+	<p>In contrast to an ordinary Paste (Command-V) the Select From Clipboard action (Command-Shift-V) does not simulate a drag and drop of the pasted data, but it always selects it in LaunchBar.</p>
+
+	<p>It recognizes URLs, email addresses and file paths. It detects abbreviated file paths (e.g. ~/Documents), multiple file paths (in separate lines) and incomplete URLs whose scheme prefix is missing (e.g. www.apple.com). If the clipboard doesn’t contain any of these data types, a <a href="TextItems.html">text item</a> is created instead.</p>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="Actions.html">Actions</a></li>
+		<li><a href="AbbreviationSearch.html">Searching for items using abbreviations</a></li>
+		<li><a href="Browsing.html">Browsing</a></li>
+		<li><a href="DragAndDrop.html">Drag and Drop</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

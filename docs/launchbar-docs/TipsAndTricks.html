@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Tips &amp; Tricks</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td>Topics</td>
+		<td></td>
+	</tr></table>
+
+	<h1>Tips &amp; Tricks</h1>
+
+	<div class="subnavigation">
+		<ul>
+			<li><a href="#autostart">		Starting LaunchBar automatically at login</a></li>
+			<li><a href="#dock-icon">		Running LaunchBar without a Dock icon</a></li>
+			<li><a href="#command-tab">		Excluding LaunchBar from the Command-Tab app switcher</a></li>
+			<li><a href="#hide">			Hiding LaunchBar</a></li>
+			<li><a href="#prevent-hide">	Prevent LaunchBar from Hiding</a></li>
+			<li><a href="#move">			Moving the LaunchBar window</a></li>
+		</ul>
+	</div>
+
+	<a name="autostart"></a>
+    <h2>Starting LaunchBar automatically at login</h2>
+
+	<p>Just add LaunchBar to your “Login Items” in the Accounts Preference Pane of System Preferences to get it started automatically at login.</p>
+
+	<p>Alternatively, click and hold LaunchBar’s Dock icon and select “Open at Login” from the popup menu.</p>
+
+	<a name="dock-icon"></a>
+    <h2>Running LaunchBar without a Dock icon</h2>
+
+	<p>In order to run LaunchBar without a Dock icon, the program has to be modified to run as a “background application”.</p>
+
+	<p>To turn LaunchBar into such a background application, open the <a href="x-launchbar:pref-pane?identifier=advanced">Advanced pane</a> of LaunchBar preferences and click the “Hide Dock Icon” button.</p>
+
+	<p><strong>Note:</strong> In general, background applications are not considered to have a user interface or to become “active”. Thus be aware of the following shortcomings:</p>
+
+	<div class="small box">
+		<ul>
+			<li>You can no longer use LaunchBar’s Dock icon as a dragging destination for dragging files or text to LaunchBar.</li>
+			<li>Background applications do not have their own menu bar. You will find the menu commands in the LaunchBar menu, though.</li>
+			<li>Background applications do not appear in Apple’s Command-Tab app-switcher.</li>
+			<li>Due to the missing menu bar, the Hide Others command (Command-Option-H) will not work while LaunchBar is active. In OS X there must be at least one foreground application that provides a menu bar. But if a background application (which has no own menu bar) hides all other applications, no menu bar would be left. Therefore OS X simply refuses to perform the Hide Others command when a background application is active.</li>
+			<li>Background applications are not notified, when you log out or shut down. Therefore you will not be asked to save any unsaved configuration changes.</li>
+			<li>Background applications do not appear in the Force Quit window. Instead you have to use Activity Monitor in case you need to force quit LaunchBar.</li>
+			<li>The background mode can’t be set individually on a per user basis. If LaunchBar is installed in a multi user environment, the modification will affect all users.</li>
+			<li>The background mode setting is reset when you reinstall LaunchBar, or when you install a newer version. You will then have to reapply this change.</li>
+		</ul>
+	</div>
+
+	<a name="command-tab"></a>
+    <h2>Excluding LaunchBar from the Command-Tab app switcher</h2>
+
+	<p>When you turn off the Dock icon to make LaunchBar run as a background application (as <a href="#2">described above</a>), LaunchBar will also no longer appear in the Command-Tab application switcher of OS X.</p>
+
+	<a name="hide"></a>
+    <h2>Hiding LaunchBar</h2>
+
+	<p>In addition to the Command-H menu shortcut you can hide LaunchBar by pressing either Escape, Command-Period or Command-W.</p>
+
+	<a name="prevent-hide"></a>
+    <h2>Prevent LaunchBar from Hiding</h2>
+
+	<p>In some situations you may wish to prevent LaunchBar from hiding, for example, if you’ve selected a folder that’s going to be used as the destination for subsequent drag and drop operations.</p>
+
+	<p>To turn off LaunchBar’s auto-hiding behavior temporarily, select <em>Turn Hiding Off</em> from the LaunchBar menu or press Command-Shift-H. When auto-hiding is turned off, a lock icon is displayed at the right end of the bar.</p>
+
+	<div class="screenshot">
+		<img src="images/prevent-hide.png" alt="Prevent Hide" />
+		<p>Auto-hiding turned off</p>
+	</div>
+
+	<a name="move"></a>
+    <h2>Moving the LaunchBar window</h2>
+
+	<p>You can move the LaunchBar window to your preferred screen location by dragging it to the desired location. Just make sure to click into an empty area of the bar when you start the drag. Alternatively, when you hold down the Command key, you can start dragging from anywhere else within in the bar. Note that you can also move the bar across multiple screens.</p>
+
+</body>
+</html>

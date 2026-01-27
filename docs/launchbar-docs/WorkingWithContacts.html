@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Working with Contacts</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td>Topics</td>
+		<td></td>
+	</tr></table>
+
+	<h1>Working with Contacts</h1>
+
+	<div class="preface">
+		LaunchBar provides convenient access to your contacts, allowing you to quickly create new email messages or to retrieve phone numbers, postal addresses and other contact details, just by entering a few characters of a person’s name.
+	</div>
+
+	<div class="subnavigation">
+		<ul>
+			<li><a href="#search-by-name">		Searching for contacts by name</a></li>
+			<li><a href="#search-by-company">	Searching for contacts by company name or job title</a></li>
+			<li><a href="#personal-company">	Personal Contacts vs. Company Contacts</a></li>
+			<li><a href="#preferred-email">		Preferred Email Address</a></li>
+			<li><a href="#create-email">		Creating Email Messages</a></li>
+			<li><a href="#first-detail">		Accessing the first contact detail</a></li>
+			<li><a href="#send-attachment">		Sending file attachments via email</a></li>
+			<li><a href="#google-maps">			Show in Google Maps</a></li>
+		</ul>
+	</div>
+
+	<a name="search-by-name"></a>
+    <h2>Searching for contacts by name</h2>
+
+	<p>Contacts can be selected quickly by typing an abbreviation of the searched person’s name. It also works with abbreviations of the person’s reverse name, so you can search for <em>Robert Miller</em> as well as for <em>Miller Robert</em> by typing e.g. <kbd>ROMI</kbd> or <kbd>MIRO</kbd>.</p>
+
+	<p>If you’ve specified a person’s nickname in your contacts, you can search for this nickname as well. LaunchBar places the nickname between first and last name, so you can e.g. search for <em>Robert “Bobby” Miller</em> by entering <kbd>ROMI</kbd> as well as <kbd>BOMI</kbd>.</p>
+
+	<a name="search-by-company"></a>
+    <h2>Searching for contacts by company name or job title</h2>
+
+	<p>The “Company” and “Job Title” categories allow you to quickly retrieve groups of similar contacts.</p>
+
+	<p>LaunchBar automatically groups people working for the same company or people with the same profession. These categories are directly accessible via abbreviation search.</p>
+
+	<p>You need a plumber? Just enter <kbd>PLUM</kbd> to select the <em>Plumbers</em> category, then hit the right arrow key to display a list of all plumbers contained in your contacts.</p>
+
+	<p>You may also search for a particular company by sub-searching the <em>Companies</em> category, then press right arrow to retrieve all people working for that company.</p>
+
+	<a name="personal-company"></a>
+    <h2>Personal Contacts vs. Company Contacts</h2>
+
+	<p>LaunchBar distinguishes between Personal Contacts, representing individual persons, and Company Contacts which represent companies.</p>
+
+	<p>A Company Contact can be specified in Contacts.app either by selecting the contact’s “Company” checkbox or by choosing “Card &gt; This is a Company” from the menu.</p>
+
+	<p>LaunchBar automatically collects personal and company contacts in separate categories, so you can quickly search for a company or person by sub-searching the corresponding category.</p>
+
+	<a name="preferred-email"></a>
+    <h2>Preferred Email Address</h2>
+
+	<p>When LaunchBar indexes your contacts it considers a contact’s <em>preferred email address</em>. In the OS X Contacts.app the preferred email address is determined by the order of email addresses - the first address is considered to be preferred. In Entourage it’s defined using the “Make Default” command.</p>
+
+	<p>When browsing the details of a selected contact with the right arrow key, the preferred email address is always shown at the top of the details list.</p>
+
+	<a name="create-email"></a>
+    <h2>Creating Email Messages</h2>
+
+	<p>To create a new email message via LaunchBar do one of the following:</p>
+
+	<div class="white choices box">
+		<ul>
+			<li>Select the recipient’s contact card in LaunchBar and press Shift-Return. This creates a message to the contact’s preferred email address.</li>
+
+			<li>If a contact has multiple email addresses and you wish to send a message to a different address than the preferred one, select the contact in LaunchBar, press right arrow, choose the desired address from the list and press Return.</li>
+
+			<li>You can create new email messages to an entire contact group. Just select and open the contact group in LaunchBar to create a new message to all group members.</li>
+
+			<li>Send a piece of text to LaunchBar via <a href="InstantSend.html">Instant Send</a>, then select the recipient’s contact card and press Return.</li>
+
+			<li>Run LaunchBar’s “New Mail Message” <a href="RunningAppleScripts.html">AppleScript</a> to open a new, empty message window. If you are using Entourage, use the “New Entourage Mail Message” script instead.</li>
+
+			<li>Select the “New Mail Message” script, then press Space to start typing a short message. Press Return to open a new message window with this message.</li>
+		</ul>
+	</div>
+
+	<a name="first-detail"></a>
+    <h2>Accessing the first contact detail</h2>
+
+	<p>Opening a contact item with Shift-Return opens the first of its details (either its preferred email address, phone number, screen name, postal address, etc.). To gain direct access to a person’s email address (without having to browse its details first) it’s therefore not necessarily required to enable the “Direct Access &gt; Email Addresses” option. You just have to select the corresponding contact item and press Shift-Return in order to create a new email message. If no email address has been set for this contact, its phone number will be opened and so forth.</p>
+
+	<p>If you wish to open a contact’s first detail by default when pressing Return, go to the <a href="x-launchbar:pref-pane?identifier=actions.defaultActions">Actions pane</a> of LaunchBar preferences and set the Default Action for opening contacts to "Open First Contact Detail". You can then use Command-Return to open the selected contact card in Contacts.app.</p>
+
+	<a name="send-attachment"></a>
+    <h2>Sending file attachments via email</h2>
+
+	<p>Files can be conveniently sent as an email attachment to a particular contact. Select the file, press Tab, select the contact (or one of its email addresses) and press Return.</p>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="SendingItems.html">Sending Items with the Tab key</a></li>
+			<li><a href="InstantSend.html">Instant Send</a></li>
+		</ul>
+	</div>
+
+	<a name="google-maps"></a>
+    <h2>Show in Google Maps</h2>
+
+	<p>Select a contact card or a particular postal address and choose <em>Show in Google Maps</em> from the Action menu (or press Command-Control-Return) to search for this address in Google Maps.</p>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="Contacts.html">The Contacts indexing rule</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

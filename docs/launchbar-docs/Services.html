@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Invoking Commands from the Services Menu</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="Actions.html">Actions</a></td>
+		<td><a href="PerformingWebSearches.html">previous</a> | <a href="DialingPhoneNumbers.html">next</a></td>
+	</tr></table>
+
+	<h1>Invoking Commands from the Services Menu</h1>
+
+	<div class="preface">
+		LaunchBar’s Services indexing rule automatically adds all commands from the OS X Services menu to your LaunchBar index. They can then be triggered within LaunchBar, most often with an additional text or file argument.
+	</div>
+
+	<h2>Services with text or file argument</h2>
+
+	<p>Services that take an argument can be invoked in two different ways: You can either select the service first and press Space to enter some text, or select the argument first and press Tab to send it to the desired service.</p>
+
+	<h3>Select the service first</h3>
+
+	<p>Select a service in LaunchBar by typing an abbreviation of its name, e.g. type LDI to select the “Look Up in Dictionary” service. Once the service is selected, press the space bar, enter the text that you wish to process with this service, and hit Return.</p>
+
+	<div class="screenshot" style="margin-bottom:4em">
+		<img src="images/look-up-in-dictionary.png" width="376" height="214" alt="" /><br />
+	</div>
+
+	<h3>Select the argument first</h3>
+
+	<p>When you’ve already selected some text or file in LaunchBar, press Tab to trigger Send-to, choose the desired service (by typing an abbreviation) and hit Return.</p>
+
+	<p>To work with selections from other applications (e.g. some text in TextEdit or some file in Finder), you can invoke <a href="InstantSend.html">Instant Send</a> to transfer that selection to LaunchBar, then type an abbreviation of the desired service and press Return.</p>
+
+	<div class="screenshot">
+		<img src="images/sort-ascending.png" alt="" /><br />
+	</div>
+
+	<h2>Services without an argument</h2>
+
+	<p>If the service doesn’t take an argument, it can be invoked directly by pressing Return. The result of the service will then be selected in LaunchBar.</p>
+
+	<div class="screenshot">
+		<img src="images/insert-date-service.png" alt="" /><br />
+		<img src="images/insert-date-result.png" alt="" />
+	</div>
+
+	<div class="small white box" title="Note">
+		LaunchBar currently only supports text or file results.
+	</div>
+
+	<h2>Scope</h2>
+
+	<p>Note that LaunchBar does not remote control the Services menu of other applications. When you perform a service within LaunchBar, this service only affects LaunchBar’s selection but not what’s selected in other applications.</p>
+
+	<p>In other words, invoking a service within LaunchBar uses the data that’s currently selected in LaunchBar. And if that service returns some other data, this new data replaces LaunchBar’s current selection.</p>
+
+	<p>If you want to use the selection of another application, you first have to transfer it to LaunchBar, e.g. via Instant Send. If you want to place the results back into that other application, you would have to manually transfer it back, e.g. via Copy and Paste (Command-Shift-C).</p>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="Actions.html">Actions</a></li>
+		<li><a href="Workflows.html">Workflows</a></li>
+		<li><a href="SendingItems.html">Sending Items with the Tab key</a></li>
+		<li><a href="InstantSend.html">Instant Send</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

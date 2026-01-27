@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Index Window</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="Configuration.html">Configuration</a></td>
+		<td><a href="Configuration.html">previous</a> | <a href="IndexingRules.html">next</a></td>
+	</tr></table>
+
+	<h1>Index Window</h1>
+
+	<div class="preface">
+		The index window lets you perform all administrative tasks related to LaunchBar’s index. You can create and edit your indexing rules, perform manual or scheduled index updates, explore the resulting index, rename or disable particular index items, etc.
+	</div>
+
+	<div class="subnavigation">
+		<ul>
+			<li><a href="#window">			The index window</a></li>
+			<li><a href="#new">				Creating new indexing rules</a></li>
+			<li><a href="#delete">			Deleting or disabling indexing rules</a></li>
+			<li><a href="#options-pane">	The Options pane</a></li>
+			<li><a href="#index-pane">		The Index pane</a></li>
+			<li><a href="#schedule-pane">	The Schedule pane</a></li>
+		</ul>
+	</div>
+
+	<a name="window"></a>
+    <h2>The index window</h2>
+
+	<div class="screenshot">
+		<img src="images/index-window.png" width="460" height="362" alt="LaunchBar Index Window" />
+		<p>The Index Window</p>
+	</div>
+
+	<p>You can open the index window quickly using the Command-Option-I menu shortcut. The sidebar at the left hand side of the window shows a list of all <a href="IndexingRules.html">indexing rules</a> that are currently contained in your configuration.</p>
+
+	<p>The right hand side of the window is divided into three panes. The <a href="#options-pane">Options pane</a> allows you to fine tune each of your indexing rules, the <a href="#index-pane">Index pane</a> shows the resulting index for each rule, and finally, in the <a href="#schedule-pane">Schedule pane</a> you can choose whether and when the index shall be rebuilt.</p>
+
+	<a name="new"></a>
+    <h2>Creating new indexing rules</h2>
+
+	<p>To add a new indexing rule, click the “New” button in the toolbar of the index window and select the desired rule from the menu. To index the contents of a specific folder you may also drag that folder onto the sidebar of the index window, and a new rule will be created right away.</p>
+
+	<p>Once the new rule has been created, its properties can be edited in the Options pane.</p>
+
+	<a name="delete"></a>
+    <h2>Deleting or disabling indexing rules</h2>
+
+	<p>To delete an indexing rule, select the rule in the sidebar and press the Delete key.</p>
+
+	<p>Alternatively you may disable a rule temporarily by removing the checkmark in the sidebar. The items of such a disabled rule are then no longer considered when performing an abbreviation search.</p>
+
+	<div class="small box" title="Tip">
+		You can hide all disabled indexing rules by clicking the “Hide Disabled” toolbar button, resulting in a less cluttered index window.
+	</div>
+
+	<a name="options-pane"></a>
+    <h2>The Options pane</h2>
+
+	<p>Each indexing rule can be fine tuned in the Options pane of the index window. The available options depend on the type of the indexing rule.</p>
+
+	<p>The <strong>Access items via sub-search only</strong> option (which is available for all indexing rules) can be used to exclude the items of a specific rule from the standard abbreviation search. Rarely used parts of the index can so be searched “on demand”, they no longer affect the regular abbreviation search results. You might e.g. search the Safari History via sub-search by entering <kbd>SH&lt;space&gt;&lt;abbreviation&gt;</kbd>.</p>
+
+	<a name="index-pane"></a>
+    <h2>The Index pane</h2>
+
+	<p>The Index pane displays the items that have been found when indexing the currently selected indexing rule.</p>
+
+	<p>Note that you can also select multiple rules in the sidebar. The Index pane will then show the indexing results for all selected rules, and you can use the “Show Indexing Rule” command from the Action menu to find out to which indexing rule a particular item belongs.</p>
+
+	<h3>Searching for index items</h3>
+
+    <p>In order to locate a particular index item in the index window you can enter the searched item’s name in the toolbar’s <em>Search Index</em> field. You can enter multiple search strings (separated by space) to find items whose name contains all of the entered strings. Note that only the index for currently selected indexing rules is searched. If you want to search the entire index, you first have to select all indexing rules in the sidebar.</p>
+
+	<div class="screenshot">
+        <img src="images/search-index.png" width="290" height="112" alt="" />
+    </div>
+
+	<p>Alternatively, instead of searching for an item within the index window, you may also select the searched item in LaunchBar’s input window via abbreviation search, and invoke Show in Index (Command-Shift-I) to select that item in the index window.</p>
+
+	<h3>Renaming index items</h3>
+
+	<p>You can rename the selected index item by double clicking the item’s name or by pressing Return. Note that renaming an item in LaunchBar does <strong>not</strong> rename the original item (e.g. the file on your hard disk), it just assigns an <a href="AliasNames.html">alias name</a> for that item.</p>
+
+	<a name="schedule-pane"></a>
+    <h2>The Schedule pane</h2>
+
+	<p>In order to keep the index up to date, index updates should be performed either manually, periodically (at regular intervals) or automatically. Note that this indexing schedule can be configured individually for each indexing rule in the Schedule pane of the index window.</p>
+
+	<ul class="stretched">
+		<li><strong>Manually:</strong> You have to trigger the index update manually, either by clicking the “Update” button in the index window’s Index pane, or by selecting one of the commands in the Configuration &gt; Update Index menu.</li>
+
+		<li><strong>Periodically:</strong> The index update is performed either “Once at Startup” (every time you start LaunchBar) or at the specified interval.</li>
+
+		<li><strong>Automatically:</strong> LaunchBar keeps an eye on the resources that it maintains. As soon as a change is detected, the index gets updated automatically.</li>
+	</ul>
+
+	<div class="small box"  title="Note">
+		In case of files and applications, the “Automatically” option isn’t fully automatic. Changes are not detected if they were made in a subfolder (since the root folder’s modification date doesn’t change in that case).
+	</div>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="Configuration.html">Configuration</a></li>
+		<li><a href="IndexingRules.html">Indexing Rules</a></li>
+		<li><a href="AliasNames.html">Alias Names</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

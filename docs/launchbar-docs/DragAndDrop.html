@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Drag and Drop</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="Actions.html">Actions</a></td>
+		<td><a href="InstantSend.html">previous</a> | <a href="CopyAndPaste.html">next</a></td>
+	</tr></table>
+
+	<h1>Drag and Drop</h1>
+
+	<p>You can drag items onto the LaunchBar window, allowing you to open files or URLs with a specific application or to perform various file operations such as moving or copying.</p>
+
+	<p>Note that you can enter an abbreviation to select the desired destination even <strong>during</strong> the drag. Say you want to open an HTML file with TextEdit. Start dragging the file, press <a href="KeyboardShortcuts.html">Command-Space</a> to activate LaunchBar, enter <kbd>TED</kbd> to select TextEdit, and finally drop the file onto the bar.</p>
+
+	<a name="modifier-keys"></a>
+    <h2>Modifier Keys</h2>
+
+	<p>By default, when you drag an item onto the bar, LaunchBar pops up a menu where you can choose the desired action for the dragged item. Alternatively you can press the following modifier key combinations during the drag:</p>
+
+	<table class="xtable">
+		<tr><th>Modifier</th>			<th>Action</th></tr>
+		<tr><td>Command</td>			<td>Move to Folder / Open with…</td></tr>
+		<tr><td>Option</td>				<td>Copy to Folder</td></tr>
+		<tr><td>Shift</td>				<td>Select in LaunchBar</td></tr>
+
+		<!-- <tr><td>Command-Shift</td><td>Add to Configuration</td></tr> -->
+
+		<tr><td>Command-Option</td>		<td>Make Alias</td></tr>
+		<tr><td>Control</td>			<td>Make Symbolic Link (Absolute)</td></tr>
+		<tr><td>Control-Option</td>		<td>Make Symbolic Link (Relative)</td></tr>
+		<tr><td>Control-Shift</td>		<td>Make Hard Link</td></tr>
+	</table>
+
+	<a name="default-actions"></a>
+    <h2>Default Actions</h2>
+
+	<p>For different kinds of dragging destinations (applications, folders, …) a default action can be configured in the <a href="x-launchbar:pref-pane?identifier=advanced">Advanced pane</a> of LaunchBar Preferences. This action will be performed when you drag items onto LaunchBar without pressing any modifier keys.</p>
+
+	<p>If you drag onto the Action menu icon (at the right end of the LaunchBar window), the menu for choosing the desired action will pop up regardless of the configured default action.</p>
+
+	<a name="keyboard"></a>
+    <h2>Drag and drop using the keyboard</h2>
+
+	<p>LaunchBar provides a set of commands allowing you to perform drag and drop operations using the keyboard instead of the mouse:</p>
+
+	<ul class="stretched">
+		<li><strong>Get Finder Selection</strong> (Command-G): Transfers the current Finder selection to LaunchBar.</li>
+		<li><strong>Drop Finder Selection</strong> (Command-D): Simulates a “drag and drop” of the current Finder selection onto LaunchBar.</li>
+		<li><strong>Send to LaunchBar</strong> (Command-Shift-F1): This command is accessible from the Services menu of other applications, allowing you to send one or more files that are currently selected in that application to LaunchBar.
+			<br /><a href="OtherFeatures.html#send-to-launchbar">Learn more…</a></li>
+		<li><strong>Copy/Paste</strong> of a file path pops up a menu asking for the desired file operation. This allows to perform entire file operations using the keyboard: Select the source, Copy (Command-C), Select the destination, Paste (Command-V).
+			<br /><a href="CopyAndPaste.html">Learn more…</a></li>
+	</ul>
+
+	<!-- see also CopyAndPaste.html -->
+	<div class="small box" title="Note">
+		When you drop an item onto a folder using the keyboard (either via Command-D or Command-V) the “Default Action” as defined in the <a href="x-launchbar:pref-pane?identifier=advanced">Advanced pane</a> of LaunchBar Preferences will <strong>not</strong> be performed to prevent accidental invocation. Instead you have to confirm the desired action by selecting the corresponding item from the pop-up menu. Note that this menu can also be navigated using the up/down arrow keys.
+	</div>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="OtherFeatures.html#send-to-launchbar">Send to LaunchBar</a></li>
+			<li><a href="CopyAndPaste.html">Copy and Paste</a></li>
+		</ul>
+	</div>
+
+	<a name="drag-to-other-apps"></a>
+    <h2>Dragging items to other applications</h2>
+
+	<p>Items can be dragged from LaunchBar to other applications. You can either drag the selected item from the LaunchBar window as well as any other item from the search result menu.</p>
+
+	<p>To prevent unintended, accidental dragging of files (causing them to be moved or copied) you have to start the drag from within the selected item’s icon. To start the drag from any other location within the bar, you have to hold down the Option key.</p>
+
+	<ul class="stretched">
+		<li><strong>Dragging to Finder:</strong> A dragged file or folder will be moved or copied. Dragging a bookmark item creates a “.webloc” file, double-clicking such a file opens the corresponding address in your web browser.</li>
+		<li><strong>Dragging to the Dock:</strong> The dragged item is put in the Dock.</li>
+		<li><strong>Dragging to Mail:</strong> The dragged file is added as an attachment. Works with most other mail clients as well.</li>
+		<li><strong>Dragging to Terminal:</strong> The path of the dragged file or folder is inserted, space characters contained in the file path are properly escaped.</li>
+		<li><strong>Dragging to Open/Save dialogs:</strong> The dragged file or folder is selected in the dialog.</li>
+	</ul>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="Actions.html">Actions</a></li>
+		<li><a href="AbbreviationSearch.html">Searching for items using abbreviations</a></li>
+		<li><a href="Browsing.html">Browsing</a></li>
+		<li><a href="CopyAndPaste.html">Copy and Paste</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

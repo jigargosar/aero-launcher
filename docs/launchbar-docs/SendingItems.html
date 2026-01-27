@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Sending Items</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="Actions.html">Actions</a></td>
+		<td><a href="OpeningItems.html">previous</a> | <a href="InstantOpen.html">next</a></td>
+	</tr></table>
+
+	<h1>Sending Items</h1>
+
+	<p>Items can be sent to various targets such as applications, actions, search templates, scripts, folders, email addresses, etc. simply by pressing the Tab key and selecting the desired target. This allows you to open files or URLs with a particular application, pass them to AppleScripts, move them to another folder or send them as an email attachment.</p>
+
+	<p>By default, when you press the Tab key, LaunchBar will display a list of suitable applications for the currently selected item. You may however select a different target by typing an abbreviation of its name, or by selecting the target via browsing or sub-search.</p>
+
+	<h2>Sending items to applications</h2>
+
+	<p>If you want to open an item with a different application than the one associated with this item, press the Tab key and enter an abbreviation to select the desired target application.</p>
+
+	<div class="white box">
+		<h2>Tips</h2>
+
+		<ul class="stretched">
+			<li>If a web page doesn’t load correctly with your default web browser, you can use this feature to open that address with a different web browser instead.</li>
+
+			<li><strong>Send to TextEdit:</strong>
+			Sending a <a href="TextItems.html">text item</a> to TextEdit will create a new TextEdit document with that text.</li>
+
+			<li><strong>Send to Mail or Entourage:</strong>
+			Sending a <a href="TextItems.html">text item</a> to Mail or Entourage will create a new email message with that text.</li>
+
+			<li><strong>Send to Terminal:</strong>
+			Sending a folder to Terminal will open a new Terminal window with the current working directory set to that folder (same as when selecting <em>File &gt; Open Terminal Here</em> or pressing Command-T).</li>
+		</ul>
+	</div>
+
+	<h2>Sending items to AppleScripts</h2>
+
+	<p>To pass a selected file, URL or text to an AppleScript, press the Tab key to trigger the “Send to…” action, select the desired AppleScript and press Return. Files will be passed to the script’s <tt>open()</tt> handler, URLs will be passed to the <tt>handle_string()</tt> handler.</p>
+
+	<h2>Sending items to Unix Executables and Shell Scripts</h2>
+
+	<p>To pass a selected file, URL, or text to a Unix Executable or Shell Script, press the Tab key to trigger the “Send to…” action, select the desired target command and press Return. The file path or URL will then be passed to the command as an argument.</p>
+
+	<h2>Sending files to other folders</h2>
+
+	<p>If you select a folder as the target of the “Send to…” operation, you can <a href="DragAndDrop.html">“drag”</a> the item to that destination folder. A menu will pop up, allowing you to select the desired file operation (Move, Copy, Make Alias, etc.)</p>
+
+	<p>For even faster operation you can circumvent the menu and choose the desired command (Move, Copy, etc.) directly by pressing additional modifier keys. For example, Command-Return moves the file(s), Option-Return copies the file(s).</p>
+
+	<div class="white box">
+		<ul>
+			<li><strong>Command-Return:</strong> Move to Folder</li>
+			<li><strong>Option-Return:</strong> Copy to Folder</li>
+			<li><strong>Command-Option-Return:</strong> Make Alias</li>
+
+			<li style="margin-top:1em"><strong>Control-Return:</strong> Make Symbolic Link (Absolute)</li>
+			<li><strong>Control-Option-Return:</strong> Make Symbolic Link (Relative)</li>
+			<li><strong>Control-Shift-Return:</strong> Make Hard Link</li>
+		</ul>
+	</div>
+
+	<h2>Sending email attachments</h2>
+
+	<p>Files can be sent as an email attachment to a particular person from your contacts. Select the file, press Tab, select the recipient’s contact card (or one of its email addresses) and press Return. This will open a new message window in your email application, filled out with the recipient’s email address and with the file attached to the new message.</p>
+
+	<div class="small box">
+		This feature requires either Apple’s Mail application or Microsoft Entourage to be set as the system’s Default Mail Reader.
+	</div>
+
+	<h2>Examples</h2>
+
+	<h3>Dialing a phone number using a particular AppleScript</h3>
+
+	<div class="white box">
+	<ol>
+		<li>Select the phone number in LaunchBar</li>
+		<li>Press the Tab key to trigger the “Send to…” action</li>
+		<li>Type <kbd>APS</kbd> to select the “AppleScripts” category</li>
+		<li>Press the space bar to sub-search this category</li>
+		<li>Type an abbreviation of the desired AppleScript</li>
+		<li>Press Return to run that script with the phone number as the argument</li>
+	</ol>
+	</div>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="DialingPhoneNumbers.html">Dialing phone numbers</a></li>
+		</ul>
+	</div>
+
+	<h3>Moving a downloaded file from the Desktop to a particular folder</h3>
+
+	<div class="white box">
+	<ol>
+		<li>Select the file in Finder (click the file icon on the Desktop)</li>
+		<li>Press <a href="KeyboardShortcuts.html">Command-Space</a> to activate LaunchBar</li>
+		<li>Press Command-G to transfer the Finder selection to LaunchBar</li>
+		<li>Press the Tab key</li>
+		<li>Select the desired destination folder (either by typing an abbreviation or via <a href="Browsing.html">browsing</a>)</li>
+		<li>Press Return</li>
+		<li>Select “Move to…” from the pop-up menu (use the down arrow key or press F4)</li>
+	</ol>
+	</div>
+
+	<div class="small box" title="Note">
+		Steps 2, 3 and 4 can be combined into a single keystroke using <a href="InstantSend.html">Instant Send</a>.
+	</div>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="Actions.html">Actions</a></li>
+		<li><a href="OpeningItems.html">Opening Items</a></li>
+		<li><a href="InstantOpen.html">Instant Open</a></li>
+		<li><a href="InstantSend.html">Instant Send</a></li>
+		<li><a href="RunningAppleScripts.html">Running AppleScripts</a></li>
+		<li><a href="RunningUnixExecutables.html">Running Unix Executables and Shell Scripts</a></li>
+		<li><a href="DialingPhoneNumbers.html">Dialing Phone Numbers</a></li>
+		<li><a href="DragAndDrop.html">Drag and Drop</a></li>
+		<li><a href="Browsing.html">Browsing</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

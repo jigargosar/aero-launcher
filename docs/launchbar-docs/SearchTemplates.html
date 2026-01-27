@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Search Templates</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<a name="page-search-templates"></a>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="Configuration.html">Configuration</a></td>
+		<td><a href="WebBrowsers.html">previous</a> | <a href="FilesAndFolders.html">next</a></td>
+	</tr></table>
+
+	<h1>Search Templates</h1>
+
+	<p>Search templates are URLs that contain wildcards, these wildcards will then be replaced with the entered search string when you perform a <a href="PerformingWebSearches.html">Web Search</a> with one of these templates.</p>
+
+	<p>The wildcard can be either an asterisk <tt>*</tt> or the string <tt>%s</tt></p>
+
+	<p>To add a new search template to your LaunchBar index, click the “Add” button in the Index pane of the Search Templates indexing rule.</p>
+
+	<div class="white box">
+        <span class="badge">Examples</span>
+        <p>
+            <tt>
+                http://en.wikipedia.org/w/wiki.phtml?search=*<br />
+                http://www.imdb.com/Find?%s
+            </tt>
+        </p>
+    </div>
+
+	<a name="url-text-encoding"></a>
+    <h2>URL Text Encoding</h2>
+
+	<p>Most search engines on the web expect the passed search string to be encoded using the <span class="nobr">ISO Latin 1</span> string encoding. However, this encoding is rather limited, you cannot encode non Latin scripts such as Hebrew or Japanese with this encoding. Therefore some search engines (e.g. Google) support more versatile encodings, primarily UTF-8.</p>
+
+	<p>You can select the desired text encoding in the Options pane of the Search Templates indexing rule. Note that the selected encoding applies to all templates of this specific rule, you should therefore create separate Search Templates indexing rules for each encoding.</p>
+
+	<a name="post"></a>
+    <h2>Templates using POST instead of GET</h2>
+
+	<p>Some search engines may require you to send search requests via Form POST instead of GET. To create search templates for these search engines, prefix the corresponding template URL with “post-”.</p>
+
+    <div class="white box">
+        <span class="badge">Example</span>
+        <p>
+        <tt>
+            post-http://en.wikipedia.org/?search=*
+        </tt>
+        </p>
+    </div>
+
+	<a name="factory"></a>
+    <h2>Restoring Factory Search Templates</h2>
+
+	<p>Open the index window and click New > Search Templates > Factory Search Templates, to create a new indexing rule with the latest factory templates.</p>
+
+	<p>To avoid conflicts with your own, custom templates it’s recommendable to keep them in a separate indexing rule, so you can safely delete and re-create the factory templates at any time.</p>
+
+	<div class="small box" title="Tip">
+		You can cut and paste individual templates from one indexing rule to another, so if you have already mixed your custom templates with LaunchBar’s default templates, you can easily extract them to a separate rule.
+	</div>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="Configuration.html">Configuration</a></li>
+		<li><a href="PerformingWebSearches.html">Performing Web Searches</a></li>
+		<li><a href="URLCommands.html">URL Commands</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

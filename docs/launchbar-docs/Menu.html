@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Table Of Contents</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+
+	<script type="text/javascript">
+    <![CDATA[
+	function toggleSubMenu(identifier)
+	{
+		return;
+
+		var o, s;
+		s = "none";
+
+		if (identifier == "submenu-box-0"
+			&& document.getElementById("submenu-box-0").style.display == "block"
+			&& document.getElementById("submenu-box-1").style.display == "none") {
+			s = "block";
+		}
+
+		document.getElementById("submenu-box-0").style.display = s;
+		document.getElementById("submenu-box-1").style.display = s;
+		document.getElementById("submenu-box-2").style.display = s;
+		document.getElementById("submenu-box-3").style.display = s;
+		document.getElementById("submenu-box-4").style.display = s;
+
+		document.getElementById(identifier).style.display = "block";
+	}
+    ]]>
+	</script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="menu">
+
+	<div class="category">
+		<a href="Introduction.html" onclick="toggleSubMenu('submenu-box-0')" target="content">LaunchBar Help</a>
+	</div>
+	<div class="submenu-box" id="submenu-box-0">
+		<div class="item">
+			<a href="GettingStarted-1.html" target="content">Getting Started</a>
+		</div>
+	</div>
+
+	<!-- ==================================================================== -->
+
+	<div class="category">
+		<a href="SelectingItems.html" onclick="toggleSubMenu('submenu-box-1')" target="content">Selecting Items</a>
+	</div>
+	<div class="submenu-box" id="submenu-box-1">
+		<div class="item">
+			<a href="AbbreviationSearch.html" target="content">Abbreviation Search</a>
+		</div>
+		<div class="item">
+			<a href="Subsearch.html" target="content">Sub-Search</a>
+		</div>
+		<div class="item">
+			<a href="Browsing.html" target="content">Browsing</a>
+		</div>
+		<div class="item">
+			<a href="Categories.html" target="content">Categories</a>
+		</div>
+		<div class="item">
+			<a href="ApplicationSwitching.html" target="content">Application Switching</a>
+		</div>
+		<div class="item">
+			<a href="TextItems.html" target="content">Text Items</a>
+		</div>
+		<div class="item">
+			<a href="RecentItems.html" target="content">Recent Items</a>
+		</div>
+		<div class="item">
+			<a href="EnteringURLs.html" target="content">Entering Web Addresses</a>
+		</div>
+	</div>
+
+	<!-- ==================================================================== -->
+
+	<div class="category">
+		<a href="Actions.html" onclick="toggleSubMenu('submenu-box-2')" target="content">Actions</a>
+	</div>
+	<div class="submenu-box" id="submenu-box-2">
+		<div class="item">
+			<a href="OpeningItems.html" target="content">Opening Items</a>
+		</div>
+		<div class="item">
+			<a href="SendingItems.html" target="content">Sending Items</a>
+		</div>
+		<div class="item">
+			<a href="InstantOpen.html" target="content">Instant Open</a>
+		</div>
+		<div class="item">
+			<a href="InstantSend.html" target="content">Instant Send</a>
+		</div>
+		<div class="item">
+			<a href="DragAndDrop.html" target="content">Drag and Drop</a>
+		</div>
+		<div class="item">
+			<a href="CopyAndPaste.html" target="content">Copy and Paste</a>
+		</div>
+		<div class="item">
+			<a href="PerformingWebSearches.html" target="content">Performing Web Searches</a>
+		</div>
+		<div class="item">
+			<a href="Services.html" target="content">Invoking Services</a>
+		</div>
+		<div class="item">
+			<a href="DialingPhoneNumbers.html" target="content">Dialing Phone Numbers</a>
+		</div>
+		<div class="item">
+			<a href="RunningAppleScripts.html" target="content">Running AppleScripts</a>
+		</div>
+		<div class="item">
+			<a href="RunningUnixExecutables.html" target="content">Running Unix Executables</a>
+		</div>
+		<div class="item">
+			<a href="ActionConcepts.html" target="content">Concepts</a>
+		</div>
+	</div>
+
+	<!-- ==================================================================== -->
+
+	<div class="category">
+		<a href="Configuration.html" onclick="toggleSubMenu('submenu-box-3')" target="content">Configuration</a>
+	</div>
+	<div class="submenu-box" id="submenu-box-3">
+		<div class="item">
+			<a href="IndexWindow.html" target="content">Index Window</a>
+		</div>
+		<div class="item">
+			<a href="IndexingRules.html" target="content">Indexing Rules</a>
+		</div>
+		<div class="item">
+			<a href="Contacts.html" target="content">Contacts</a>
+		</div>
+		<div class="item">
+			<a href="WebBrowsers.html" target="content">Web Browsers</a>
+		</div>
+		<div class="item">
+			<a href="SearchTemplates.html" target="content">Search Templates</a>
+		</div>
+		<div class="item">
+			<a href="FilesAndFolders.html" target="content">Files and Folders</a>
+		</div>
+		<div class="item">
+			<a href="AliasNames.html" target="content">Alias Names</a>
+		</div>
+		<div class="item">
+			<a href="ConfigurationConcepts.html" target="content">Concepts</a>
+		</div>
+	</div>
+
+	<!-- ==================================================================== -->
+
+	<div class="category">
+		<a href="javascript:toggleSubMenu('submenu-box-4')">Topics</a>
+	</div>
+	<div class="submenu-box" id="submenu-box-4">
+		<div class="item">
+			<a href="KeyboardShortcuts.html" target="content">Keyboard Shortcuts</a>
+		</div>
+		<div class="item">
+			<a href="ModifierTaps.html" target="content">Modifier Taps</a>
+		</div>
+		<div class="item">
+			<a href="WorkingWith_iTunes.html" target="content">Working with iTunes</a>
+		</div>
+		<div class="item">
+			<a href="WorkingWithContacts.html" target="content">Working with Contacts</a>
+		</div>
+		<div class="item">
+			<a href="WorkingWithCalendars.html" target="content">Working with Calendars</a>
+		</div>
+		<div class="item">
+			<a href="WorkingWithFiles.html" target="content">Working with Files</a>
+		</div>
+		<div class="item">
+			<a href="SpotlightSearches.html" target="content">Spotlight Searches</a>
+		</div>
+		<div class="item">
+			<a href="ClipboardHistory.html" target="content">Clipboard History</a>
+		</div>
+		<div class="item">
+			<a href="Snippets.html" target="content">Snippets</a>
+		</div>
+		<div class="item">
+			<a href="Workflows.html" target="content">Workflows</a>
+		</div>
+		<div class="item">
+			<a href="Calculator.html" target="content">Calculator</a>
+		</div>
+		<div class="item">
+			<a href="URLCommands.html" target="content">URL Commands</a>
+		</div>
+		<div class="item">
+			<a href="OtherFeatures.html" target="content">Other Features</a>
+		</div>
+		<div class="item">
+			<a href="UsageExamples.html" target="content">Usage Examples</a>
+		</div>
+		<div class="item">
+			<a href="TipsAndTricks.html" target="content">Tips &amp; Tricks</a>
+		</div>
+	</div>
+
+</body>
+</html>

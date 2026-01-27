@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Running Unix Executables</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="Actions.html">Actions</a></td>
+		<td><a href="RunningAppleScripts.html">previous</a> | <a href="ActionConcepts.html">next</a></td>
+	</tr></table>
+
+	<h1>Running Unix Executables</h1>
+
+	<p>When you’ve selected a Unix Executable or a Shell Script in LaunchBar, press Return to execute it in a new Terminal window.</p>
+
+	<p>The factory configuration contains an indexing rule named “Unix Executables”. This rule is disabled by default - turn it on to get access to a number of commonly used command line tools such as “man”, “ssh”, “traceroute”, etc.</p>
+
+	<div class="small box" title="Note">
+		If you prefer to use <a href="http://iterm.sourceforge.net/">iTerm</a> in favor of Terminal, you can specify your “Preferred Terminal application” in the <a href="x-launchbar:pref-pane?identifier=actions.options">Actions pane</a> of LaunchBar preferences.
+	</div>
+
+	<h2>Running in background</h2>
+
+	<p>By default, LaunchBar runs Unix Executables and Shell Scripts in a newly opened Terminal window. You can optionally run them in background (without any window) by opening them with Option-Return.</p>
+
+	<h2>Passing string parameters</h2>
+
+	<p>To pass string parameters to Unix Executables and Shell Scripts, do one of the following:</p>
+
+	<div class="white choices box">
+		<ul>
+			<li>Select the script or executable item and press the space bar. A text field will appear where you can enter the parameters that shall be passed to the command.</li>
+			<li>Select a <a href="TextItems.html">text item</a>, then press Tab and select the desired script or executable.</li>
+		</ul>
+	</div>
+
+	<h3>Examples</h3>
+
+	<table class="xtable">
+		<tr><th>Input</th>								<th>Result</th></tr>
+		<tr><td class="kbd">MAN [Space] bash</td>		<td>opens the “bash” man page</td></tr>
+		<tr><td class="kbd">TRR [Space] hostname</td>	<td>runs the traceroute command for the given host</td></tr>
+		<tr><td class="kbd">SSH [Space] hostname</td>	<td>establishes an SSH connection to the given host</td></tr>
+		<tr><td class="kbd">CAL [Space] 1984</td>		<td>shows a calendar of 1984</td></tr>
+	</table>
+
+	<h2>Passing files and URLs as arguments</h2>
+
+	<p>You can pass file paths or URLs to Unix Executables and Shell Scripts either via <a href="DragAndDrop.html">drag and drop</a> or via LaunchBar’s <a href="SendingItems.html">“Send to…”</a> functionality. The passed file paths or URLs will then be appended to the command-line.</p>
+
+	<p><strong>Drag and drop:</strong> Select the desired command in LaunchBar and drag items e.g. from Finder onto that command. Choose “Send to…” from the pop-up menu or hold down the Command key during the drag to pass the dragged items immediately.</p>
+
+	<p><strong>Send to:</strong> Select a file or URL in LaunchBar, then press the Tab key to trigger the “Send to…” action. Now select the desired target command and press Return.</p>
+
+	<h2>Preparing Shell Scripts</h2>
+
+	<p>LaunchBar must be able to distinguish a Shell Script from an ordinary plain text file. First, make sure that your script contains a proper <a href="http://en.wikipedia.org/wiki/Shebang_line" target="_blank">shebang line</a>:</p>
+
+	<p class="indent"><tt>
+		#!/usr/bin/ruby<br />
+		puts 'Hello world'
+	</tt></p>
+
+	<p>Further, the script must have execute permissions set to make LaunchBar recognize it as a Unix Executable:</p>
+
+	<p class="indent">
+		<tt>chmod +x MyHelloWorldScript</tt>
+	</p>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="Actions.html">Actions</a></li>
+		<li><a href="SendingItems.html">Sending Items with the Tab key</a></li>
+		<li><a href="RunningAppleScripts.html">Running AppleScripts</a></li>
+		<li><a href="DragAndDrop.html">Drag and Drop</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Action Concepts</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="Actions.html">Actions</a></td>
+		<td><a href="RunningUnixExecutables.html">previous</a></td>
+	</tr></table>
+
+	<h1>Concepts</h1>
+
+	<a name="single"></a>
+    <h2>Single Stage Actions</h2>
+
+	<p>In case of single-item operations, the actions that are available for the selected item are listed in LaunchBar’s <a href="Actions.html#action-menu">Action menu</a> which can also be accessed from the keyboard by typing Control-Right Arrow. All these actions do have distinct keyboard shortcuts assigned, so you don’t even have to open the menu, but you can access them directly with a single keystroke (e.g. when you’ve selected a postal address from your contacts, you just have to type Command-Shift-C to insert a mailing label in your currently edited text document).</p>
+
+	<a name="multi"></a>
+    <h2>Multi Stage Actions</h2>
+
+	<p>LaunchBar uses an RPN style input scheme for multi-stage actions. You first select the items you wish to operate with (the operands), then you select the desired action (the operation).</p>
+
+	<p>This approach has the advantage that in many situations you don’t need to select any action at all, as it can be determined automatically based on the selected items, e.g. if you first select a file, then an email address, the only reasonable action would be to send that file as an attachment to the email recipient. And if there’s more than one possible action (e.g. file → folder), you will be asked to choose from those actions only (e.g. the desired file operation such as move, copy, make alias, etc.)</p>
+
+	<p>This RPN style input method allows you to achieve the same results as when using the traditional item/action/item input scheme, but it requires less keystrokes and is therefore more efficient.</p>
+
+	<p>Multi-stage operations such as sending a file as an attachment are <a href="SendingItems.html">triggered with the Tab key</a>. Select the source item first, press Tab, select the target item and press Return. That’s it. If there’s more than one possible action, a menu will pop up, allowing you to choose the desired action.</p>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="Actions.html">Actions</a></li>
+		<li><a href="OpeningItems.html">Opening Items</a></li>
+		<li><a href="SendingItems.html">Sending Items with the Tab key</a></li>
+		<li><a href="InstantSend.html">Instant Send</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

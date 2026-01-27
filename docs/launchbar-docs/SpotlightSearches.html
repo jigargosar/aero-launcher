@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Spotlight Searches</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td>Topics</td>
+		<td></td>
+	</tr></table>
+
+	<h1>Spotlight Searches</h1>
+
+	<p>LaunchBar’s <strong>Search in Spotlight</strong> command passes your search requests to the Spotlight window. In contrast to entering them directly in the Spotlight window, LaunchBar allows you enter the entire search string before starting the search. LaunchBar further provides a much simpler syntax to restrict the search results to items of a particular kind or date.</p>
+
+	<p>The search can be triggered by typing Command-Shift-F in LaunchBar or with a dedicated, system wide keyboard shortcut that can be configured in the <a href="x-launchbar:pref-pane?identifier=shortcuts">Keyboard Shortcuts pane</a> of LaunchBar Preferences (default is Command-Option-Control-Space).</p>
+
+	<div class="screenshot">
+		<img src="images/search-in-spotlight.png" alt="Search in Spotlight" />
+	</div>
+
+	<h2>Smart preprocessing</h2>
+
+	<p>No need to type clumsy search strings like “date:today kind:todo”. Just type “today todo”, “folder backup”, “url apple”, or “pref tcp” and LaunchBar automatically transforms these search requests into the correct Spotlight syntax.</p>
+
+	<p>LaunchBar also recognizes alternative kind specifiers such as <strong>picture, url, ical, …</strong> instead of <strong>image, bookmark, event, …</strong> so entering “picture flower” or “ical today” will deliver proper search results.</p>
+
+	<p>If you want to search literally instead, just enclose the search string with single quotes.</p>
+
+	<div class="screenshot">
+		<img src="images/search-in-spotlight-literally.png" alt="Search in Spotlight Literally" />
+	</div>
+
+	<h2>Examples</h2>
+
+	<table class="xtable">
+		<tr><th>Input</th>							<th>Result</th></tr>
+		<tr><td class="kbd">rose</td>				<td class="kbd">rose</td></tr>
+		<tr><td class="kbd">image rose</td>			<td class="kbd">kind:image rose</td></tr>
+		<tr><td class="kbd">todo</td>				<td class="kbd">kind:todo</td></tr>
+		<tr><td class="kbd">"todo"</td>				<td class="kbd">todo</td></tr>
+		<tr><td class="kbd">today todo</td>			<td class="kbd">date:today kind:todo</td></tr>
+		<tr><td class="kbd">todo next week</td>		<td class="kbd">kind:todo date:next week</td></tr>
+		<tr><td class="kbd">folder backup</td>		<td class="kbd">kind:folder backup</td></tr>
+		<tr><td class="kbd">url apple</td>			<td class="kbd">kind:bookmark apple</td></tr>
+		<tr><td class="kbd">pref tcp</td>			<td class="kbd">kind:preferences tcp</td></tr>
+		<tr><td class="kbd">ical tomorrow</td>		<td class="kbd">kind:event date:tomorrow</td></tr>
+		<tr><td class="kbd">mail meeting</td>		<td class="kbd">kind:email meeting</td></tr>
+	</table>
+
+</body>
+</html>

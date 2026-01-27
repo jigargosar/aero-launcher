@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Browsing</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="SelectingItems.html">Selecting Items</a></td>
+		<td><a href="Subsearch.html">previous</a> | <a href="Categories.html">next</a></td>
+	</tr></table>
+
+	<h1>Browsing</h1>
+
+	<div class="preface">
+		Use the left/right arrow keys to to find related information by browsing any hierarchically structured information such as the iTunes Library, iPhoto Library, Contacts, Safari Bookmarks, Safari History, and last but not least the files and folders stored on your hard disk.
+	</div>
+
+	<h2>File System Browsing</h2>
+
+	<p>File System Browsing allows you to browse the contents of your entire hard disk as well as of any attached drives using the left/right arrow keys. You can start with any file or folder that has been <a href="SelectingItems.html">previously selected</a>. Press either the right arrow key or the space bar to show the contents of a selected folder, use left arrow to show the contents of the parent folder.</p>
+
+	<h3><a name="expert">Expert Browsing</a></h3>
+
+	<p>If you hold down the Option key while browsing your hard disk, LaunchBar will show hidden and invisible files as well. That way you can also browse the hidden contents of application packages and file packages.</p>
+
+	<h3><a name="deep-subsearch">Deep Sub-Search</a></h3>
+
+    <p>If you navigate into a folder with Shift-Space, LaunchBar not only shows the contents of that folder, but also the contents of all its sub-folders and sub-sub-folders.</p>
+
+    <p>There’s one prerequisite to consider: This ￼<em>deep sub-search</em> only includes files and folders that are contained in LaunchBar’s index. So for example, if you have indexed your entire Documents folder in LaunchBar, you can perform arbitrary deep sub-searches inside your Documents folder. However, if your Documents indexing rule is restrictive in one or the other way (for example, if it only indexes up to a certain sub-folder level or if it includes only a certain type of files), only those indexed items will be accessible via deep sub-search.</p>
+
+	<h2>Text File Content Browsing</h2>
+
+	<p>LaunchBar lets you navigate into any text file (either plain text or .rtf, .html, .doc, .webarchive, and more) in order to preview its contents. Just select the text file in LaunchBar and press Right Arrow. Each line or paragraph will then be displayed as a separate <a href="TextItems.html">text item</a>.</p>
+
+	<p>Note that you can sub-search these text items, so you can quickly search the file contents for a particular word.</p>
+
+	<p>If you are a developer, you will find this feature very handy to search e.g. within a particular header or documentation file.</p>
+
+	<h2>Property List Browsing</h2>
+
+    <p>If you have selected a .plist file in LaunchBar, you can press Right Arrow to browse the plist hierarchy of this file. This works also with a number of other filetypes such as .strings, .dict, .pbxproj or .ini and more.</p>
+
+	<h2>URL Browsing</h2>
+
+	<p>When you’ve selected a web bookmark or an item from your web history, press Right Arrow to display other URLs from the same domain.</p>
+
+	<h2>Email Address Browsing</h2>
+
+	<p>Select an email address and press Right Arrow to display other email addresses from the same domain.</p>
+
+	<h2>Control Key Navigation</h2>
+
+	<p>As an alternative to the left/right/up/down arrow keys you can use emacs and vi style key bindings for navigating the search result menu.</p>
+
+	<table class="xtable">
+		<tr><th>Arrow Key</th>		<th>Emacs-style</th>		<th>vi-style</th></tr>
+		<tr><td>Up Arrow</td>		<td>Control-P</td>			<td>Control-K</td></tr>
+		<tr><td>Down Arrow</td>		<td>Control-N</td>			<td>Control-J</td></tr>
+		<tr><td>Left Arrow</td>		<td>Control-B</td>			<td>Control-H</td></tr>
+		<tr><td>Right Arrow</td>	<td>Control-F</td>			<td>Control-L</td></tr>
+		<tr><td>Home</td>			<td>Control-A</td>			<td>Control-Shift-H</td></tr>
+		<tr><td>End</td>			<td>Control-E</td>			<td>Control-Shift-L</td></tr>
+		<tr><td>Page Up</td>		<td>Control-Shift-P</td>	<td>Control-Shift-K</td></tr>
+		<tr><td>Page Down</td>		<td>Control-Shift-N</td>	<td>Control-Shift-J</td></tr>
+	</table>
+
+	<p>If you prefer to use Control-J-K-L-I instead of the standard vi-style Control-H-J-K-L keys you can choose this setting in the <a href="x-launchbar:pref-pane?identifier=shortcuts">Keyboard Shortcuts pane</a> of LaunchBar Preferences.</p>
+
+	<div class="small box" title="Note">
+		If you are using a Dvorak keyboard layout, the vi-style navigation keys will be Control-D-H-T-N and Control-H-T-N-C respectively.
+	</div>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="SelectingItems.html">Selecting Items</a></li>
+		<li><a href="AbbreviationSearch.html">Searching for items using abbreviations</a></li>
+		<li><a href="Subsearch.html">Performing sub-searches</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

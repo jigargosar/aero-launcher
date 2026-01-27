@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Abbreviation Search</title>
+        <link rel="stylesheet" href="style.css" type="text/css" />
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    </head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="SelectingItems.html">Selecting Items</a></td>
+		<td><a href="SelectingItems.html">previous</a> | <a href="Subsearch.html">next</a></td>
+	</tr></table>
+
+	<h1>Abbreviation Search</h1>
+
+	<div class="preface">
+		LaunchBar uses a very powerful, adaptive abbreviation search algorithm (AASv4) that allows you to use arbitrary abbreviations to locate those items whose name matches the entered abbreviation.
+	</div>
+
+	<div class="subnavigation">
+		<ul>
+			<li><a href="#examples">		Abbreviation Examples</a></li>
+			<li><a href="#habits">			LaunchBar learns from your habits</a></li>
+			<li><a href="#training">		Training short abbreviations</a></li>
+			<li><a href="#assign">			Assigning custom abbreviations</a></li>
+			<li><a href="#reassign">		Reassigning abbreviations</a></li>
+			<li><a href="#new-search">		Starting a new search</a></li>
+			<li><a href="#configure1">		How do I configure the abbreviations?</a></li>
+			<li><a href="#configure2">		But I want to configure the abbreviations!</a></li>
+			<li><a href="#background">		Background</a></li>
+		</ul>
+	</div>
+
+	<a name="examples"></a>
+    <h2>Abbreviation Examples</h2>
+
+	<p>For example, let’s say you want to open <em>System Preferences</em>. You may use abbreviations like <kbd>SP</kbd>, <kbd>SYS</kbd>, <kbd>PREF</kbd>, <kbd>SPRE</kbd>, and so on. Please note that LaunchBar not only searches for items with matching initial characters (<kbd>SYS</kbd> &gt; <strong><u>Sys</u></strong>tem Preferences) or contained character sequences (<kbd>PREF</kbd> &gt; System <strong><u>Pref</u></strong>erences), but you can use <strong>any</strong> combination of characters, provided that they appear in the same order (<kbd>SPF</kbd> &gt; <strong><u>S</u></strong>ystem <strong><u>P</u></strong>re<strong><u>f</u></strong>erences).</p>
+
+	<table class="xtable">
+		<tr><th>Input</th>				<th>Result</th></tr>
+		<tr><td class="kbd">SAF</td>	<td>selects Safari</td></tr>
+		<tr><td class="kbd">GB</td>		<td>selects GarageBand</td></tr>
+		<tr><td class="kbd">ESPP</td>	<td>selects the Energy Saver Preference Pane</td></tr>
+		<tr><td class="kbd">SH</td>		<td>selects the Safari History indexing rule</td></tr>
+		<tr><td class="kbd">ALB</td>	<td>selects the “Albums” category</td></tr>
+		<tr><td class="kbd">~</td>		<td>selects your home folder <sup class="tiny">(1)</sup></td></tr>
+		<tr><td class="kbd">/</td>		<td>selects the root folder of your hard disk</td></tr>
+	</table>
+
+	<div class="small">
+		<sup>(1)</sup> If you’re using a non-English keyboard, you can type Option-N to enter a tilde character.
+	</div>
+
+	<a name="habits"></a>
+    <h2>LaunchBar learns from your habits</h2>
+
+	<p>You should insist on your preferred abbreviations. If you type <kbd>T</kbd> in order to select <em>Terminal</em> but LaunchBar suggests <em>TextEdit</em> instead, just choose <em>Terminal</em> from the search result (scroll the list if necessary). That way LaunchBar can learn from your habits - it registers your preference automatically, and the next time you type T it will suggest <em>Terminal</em> immediately.</p>
+
+	<a name="training"></a>
+    <h2>Training short abbreviations</h2>
+
+	<p>Short, one or two character abbreviations may require some additional training, especially in case of a large index with lots of possible matches. If the search result doesn’t contain the searched item at all when you enter your preferred, short abbreviation, just provide a somewhat longer abbreviation in order to retrieve the desired item. This helps LaunchBar to adapt to your preference, and the next time you search for this item again, LaunchBar will find it with an even shorter abbreviation.</p>
+
+	<p>Another technique to train short abbreviations is to select the desired item via <a href="Subsearch.html">sub-search</a>. First select a collection that contains the desired item (e.g. a category, an indexing rule or a folder), then sub-search this collection using your preferred, short abbreviation. Due to the limited search scope it’s now more likely that the desired item appears in the search result. When you now open the item, LaunchBar registers your preference, and the next time you enter this short abbreviation, the item should be delivered right away, even without the sub-search.</p>
+
+	<a name="assign"></a>
+    <h2>Assigning custom abbreviations</h2>
+
+	<p>In some cases you may find it desirable to explicitly assign an abbreviation to a particular item. The <em>Assign Abbreviation</em> command (Command-Option-A) allows to assign arbitrary abbreviations to the currently selected item. This approach is especially useful for assigning very short, one or two-letter abbreviations. It’s even possible to assign custom, non-standard abbreviations with characters that are not contained in the item’s name.</p>
+
+	<p>You might for example assign a single apostrophe character to the <em>Enter Text</em> action (which can’t be abbreviated with apostrophe otherwise), to make this item quickly accessible via <a href="InstantOpen.html">Instant Open</a>. You can then press and hold apostrophe to invoke this action with a single keystroke.</p>
+
+	<a name="reassign"></a>
+    <h2>Reassigning abbreviations</h2>
+
+	<p>In order to reassign an already used abbreviation, simply use this abbreviation twice with the new item, and LaunchBar will adapt to your changed preferences automatically.</p>
+
+	<p>Or you can use the <em>Assign Abbreviation</em> command (Command-Option-A) to change the abbreviation immediately.</p>
+
+	<a name="new-search"></a>
+    <h2>Starting a new search</h2>
+
+	<p>If you don’t enter any character for more than 0.7 seconds, a new search will be started automatically. This “Retype Delay” can be adjusted in the <a href="x-launchbar:pref-pane?identifier=general">General pane</a> of LaunchBar Preferences. To begin a new search before this timeout has elapsed, simply press the Escape key or hit <a href="KeyboardShortcuts.html">Command-Space</a>.</p>
+
+	<a name="configure1"></a>
+    <h2>How do I configure the abbreviations</h2>
+
+	<p>You don’t need to configure any abbreviations manually. LaunchBar’s powerful abbreviation search algorithm allows you to use any abbreviation you like, as long as the characters of the abbreviation are contained in the name of the item you are looking for. So for example, if you want to open <em>QuickTime Player</em> you may use <kbd>QP</kbd>, <kbd>QPL</kbd>, <kbd>QTP</kbd>, <kbd>QPLAY</kbd>, <kbd>QUIP</kbd> and so on.</p>
+
+	<a name="configure2"></a>
+    <h2>But I want to configure the abbreviations!</h2>
+
+	<p>OK, in some rare cases it may become necessary to assign an abbreviation manually. If you want to use an abbreviation for an item that can’t be abbreviated with these characters (e.g. <kbd>CHAT</kbd> &gt; Messages), you may configure the desired abbreviation either with the the <em>Assign Abbreviation</em> command (Command-Option-A) or by assigning a proper <a href="AliasNames.html">alias name</a>.</p>
+
+	<a name="background"></a>
+    <h2>Background</h2>
+
+	<p>LaunchBar uses an adaptive evaluation algorithm (AASv4) to find the best matching items based on the abbreviation you type in. A sophisticated rating system considers the position and density of the given characters within the name of each index item. The resulting ratings are then adjusted based on the item’s previous usage. The more often a specific item or abbreviation has been used in the past, the better it will be rated at subsequent searches. LaunchBar learns from your habits and adapts to your preferences automatically.</p>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="SelectingItems.html">Selecting Items</a></li>
+		<li><a href="Subsearch.html">Performing sub-searches</a></li>
+		<li><a href="AliasNames.html">Alias Names</a></li>
+		<li><a href="Browsing.html">Browsing</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

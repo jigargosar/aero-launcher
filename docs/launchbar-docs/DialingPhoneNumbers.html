@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Dialing Phone Numbers</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="Actions.html">Actions</a></td>
+		<td><a href="Services.html">previous</a> | <a href="RunningAppleScripts.html">next</a></td>
+	</tr></table>
+
+	<h1>Dialing Phone Numbers</h1>
+
+	<p>By default, when you open a phone number, it is displayed in large type. Alternatively you can specify an AppleScript responsible for opening phone numbers in the <a href="x-launchbar:pref-pane?identifier=actions.defaultActions">Actions pane</a> of LaunchBar Preferences. This script may then dial the phone number via third party applications such as <a href="http://www.jonn8.com/dialectic/" target="_blank">Dialectic</a> or <a href="http://www.skype.com/" target="_blank">Skype</a> (see the example scripts below).</p>
+
+	<div class="small box" title="Note">
+		Once you have specified a script for opening phone numbers you can still show the number in large type by opening it with Shift-Return.
+	</div>
+
+	<h2>Passing phone numbers to AppleScripts</h2>
+
+	<p>A phone number can be opened with a particular AppleScript by <a href="SendingItems.html">sending the selected number</a> to the desired script. Once the phone number is selected, press the Tab key, then select the desired script and press Return.</p>
+
+	<p>The phone number will be passed to the script’s <tt>handle_string()</tt> handler as a tel-URL, e.g. the number <tt>555-1212</tt> will be passed as <tt>tel:555-1212</tt></p>
+
+	<h2>Dialing phone numbers with Skype</h2>
+
+	<p>The following AppleScript can be used to dial phone numbers with <a href="http://www.skype.com/" target="_blank">Skype</a>:</p>
+
+	<div class="white box">
+<pre>on handle_string(s)
+    if s starts with "tel:" then
+        set s to text 5 thru -1 of s
+        -- trims the URL's "tel:" scheme prefix
+    end if
+    if s does not start with "callto:" then
+        set s to "callto:" &amp; s
+    end if
+
+    tell application "Skype" to get URL s
+end handle_string</pre>
+</div>
+
+	<h2>Dialing phone numbers via Dialectic</h2>
+
+	<p>The following AppleScript can be used to dial phone numbers via <a href="http://www.jonn8.com/dialectic/" target="_blank">Dialectic</a> (the successor of Jon’s Phone Tool):</p>
+
+	<div class="white box">
+<pre>on handle_string(s)
+     if s starts with "tel:" then
+        set s to text 5 thru -1 of s
+        -- trims the URL's "tel:" scheme prefix
+    end if
+
+    tell application "Dialectic" to dial number s as string
+end handle_string</pre>
+</div>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="Actions.html">Actions</a></li>
+		<li><a href="OpeningItems.html">Opening Items</a></li>
+		<li><a href="SendingItems.html">Sending Items with the Tab key</a></li>
+		<li><a href="DragAndDrop.html">Drag and Drop</a></li>
+		<li><a href="CopyAndPaste.html">Copy and Paste</a></li>
+		<li><a href="RunningAppleScripts.html">Running AppleScripts</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

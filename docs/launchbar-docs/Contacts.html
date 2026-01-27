@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Contacts</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<a name="page-contacts"></a>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="Configuration.html">Configuration</a></td>
+		<td><a href="IndexingRules.html">previous</a> | <a href="WebBrowsers.html">next</a></td>
+	</tr></table>
+
+	<h1>Contacts</h1>
+
+	<div class="preface">
+		LaunchBar provides convenient access to all of your contacts, allowing you to quickly create new email messages or to retrieve phone numbers, postal addresses and other contact details, just by entering a few characters of a person’s name.
+	</div>
+
+	<div class="subnavigation">
+		<ul>
+			<li><a href="#supported">	Supported Applications</a></li>
+			<li><a href="#custom">		Custom Address Book Files</a></li>
+			<li><a href="#realnames">	Real Names</a></li>
+		</ul>
+	</div>
+
+	<a name="supported"></a>
+    <h2>Supported Applications</h2>
+
+	<p>LaunchBar is able to access the contacts from the following applications directly:</p>
+
+	<h3>OS X Contacts</h3>
+
+	<p>LaunchBar fully supports the OS X Contacts application. The Contacts indexing rule searches for contact groups, contacts, full name (including title and nickname), email addresses, phone numbers, postal addresses, company and job title information, notes and more. It also considers the contact’s first/last name order and company settings. Changes made in Contacts are reflected immediately in LaunchBar.</p>
+
+	<h3>Microsoft Entourage</h3>
+
+	<p>In Entourage 2004 and later you must turn off the “Warn before allowing an external application to access the address book” setting in the Security pane of Entourage preferences. Otherwise LaunchBar will not be able to access the Entourage address book.</p>
+
+	<div class="small box">
+		The “Update automatically” option doesn’t work fully automatic in case of Entourage Contacts. It’s not possible to detect changes in Entourage’s address book database automatically, therefore LaunchBar instead performs an index update whenever you start the Entourage application.
+
+		<p>In order to keep LaunchBar’s index up to date you might perform a manual index update whenever you make changes to your Entourage address book, e.g. by typing <a href="KeyboardShortcuts.html">Command-Space</a>, Command-2.</p>
+	</div>
+
+	<h3>Eudora</h3>
+
+	<p>Eudora’s main address book file is located at <tt>~/Documents/Eudora Folder/Eudora Nicknames</tt>. If you’ve created additional address books in Eudora, the corresponding files are located in the <tt>~/Documents/Eudora Folder/Nicknames Folder</tt>. The default configuration does not cover these files, you have to add them manually.</p>
+
+	<a name="custom"></a>
+    <h2>Custom Address Book Files</h2>
+
+	<p>Many other popular mail and address book applications use a proprietary file format for storing their contact data, so LaunchBar cannot simply parse these files directly. Therefore it’s necessary to export the address book contents to a file format that LaunchBar understands. Once this file has been created, create a new indexing rule by choosing “Custom Address Book File…”.</p>
+
+	<h3>Microsoft Outlook Express</h3>
+
+	<p>LaunchBar can index the exported contacts of Outlook Express. To export the address book data use the “File &gt; Export Contacts…” command in Outlook Express.</p>
+
+	<h3>Mailsmith</h3>
+
+	<p>LaunchBar can index the exported email addresses of your Mailsmith Address Book. In order to export the addresses you have to open the Mailsmith Address Book, select all entries and perform “Copy” (Command-C). Now open a new TextEdit document, paste the addresses (Command-V), save the document and add it to your LaunchBar index.</p>
+
+	<h3>ASCII or RTF formatted Lists</h3>
+
+	<p>You may provide a list of email addresses and phone numbers in a variety of different formats. Each line should begin with the person’s name followed by one or more email addresses or phone numbers (separated by blanks or commas). The email addresses may be surrounded by angle brackets (Example 1). You may also insert tabs, use different fonts and save the file in RTF format to make the list better readable.</p>
+
+		<div class="white box">
+			<h5>Example 1:</h5>
+			<tt>
+			John Carter &lt;john.carter@example.com&gt;<br />
+			Susan Lewis &lt;slewis@example.com&gt;<br />
+			Susan Lewis &lt;lewis@example.org&gt;<br />
+			Doug Ross &lt;ross@other-example.com&gt;<br />
+			<br />
+			</tt>
+
+			<h5>Example 2:</h5>
+<pre>John Carter:   john.carter@example.com
+Susan Lewis:   slewis@example.com, lewis@example.org
+Doug Ross:     ross@other-example.com, +1-415-555-6621</pre>
+		</div>
+
+	<h3>HTML files with mailto-URLs</h3>
+
+	<p>LaunchBar can also parse the contents of HTML files, e.g.:</p>
+
+		<div class="white box"><tt>
+			&lt;a href="mailto:john.carter@example.com"&gt;John Carter&lt;/a&gt;<br />
+			&lt;a href="mailto:slewis@example.com"&gt;Susan Lewis&lt;/a&gt;<br />
+			&lt;a href="mailto:ross@other-example.com"&gt;Doug Ross&lt;/a&gt;
+		</tt></div>
+
+	<a name="realnames"></a>
+    <h2>Real Names</h2>
+
+	<p>LaunchBar allows you to prefix the email address with the real name of the person you want to send email to. If you turn on the “Prefix email addresses with real name” option in the <a href="x-launchbar:pref-pane?identifier=actions.options">Actions pane</a> of LaunchBar Preferences, the addresses sent to your email client will be formatted like this:</p>
+
+	<p class="indent" style="margin-top:20px"><tt>
+		John Carter &lt;john.carter@example.com&gt;<br />
+		Susan Lewis &lt;slewis@example.com&gt;
+	</tt></p>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="WorkingWithContacts.html">Working with Contacts</a></li>
+		<li><a href="Configuration.html">Configuration</a></li>
+		<li><a href="AliasNames.html">Alias Names</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

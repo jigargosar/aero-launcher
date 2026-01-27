@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Clipboard History</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td>Topics</td>
+		<td></td>
+	</tr></table>
+
+	<h1>Clipboard History</h1>
+
+	<div class="preface">
+		LaunchBar’s Clipboard History preserves the data of your most recent Copy operations, allowing you to use the copied objects again later.
+	</div>
+
+	<div class="screenshot">
+		<img src="images/clipboard-history.png" alt="" />
+		<p>Clipboard History</p>
+	</div>
+
+<a name="shortcuts"></a>
+<h2>Keyboard Shortcuts</h2>
+
+	<p>The Clipboard History can be quickly accessed via system wide keyboard shortcuts. These shortcuts can be customized in the <a href="x-launchbar:pref-pane?identifier=clipboard">Clipboard History pane</a> of LaunchBar Preferences.</p>
+
+	<h3>Show clipboard history</h3>
+
+	<p>Use this shortcut to open the Clipboard History and to show the list of recent clipboard contents. You can invoke this shortcut repeatedly to browse the list - pressing the shortcut again selects the next item.</p>
+
+	<p>Once the desired item is selected, you can press Command-C to put its data back onto the clipboard, press Return to invoke the <em>default action</em> (see the <em>Settings</em> section below), or press Escape to close the list.</p>
+
+	<h3>Select from history</h3>
+
+	<p>This shortcuts works similar to the <em>Show clipboard history</em> shortcut, but it automatically invokes the default action as soon as you release the shortcut’s modifier key. This auto activation is indicated with an orange icon at the right edge of the bar:</p>
+
+	<div class="screenshot">
+		<img src="images/auto-activation.png" width="170" height="52" alt="Auto activation" />
+		<p>Auto activation</p>
+	</div>
+
+	<p>To prevent auto activation, tap any other modifier key before releasing the shortcut’s modifier key. To open the Clipboard History without auto activation in the first place, use the <em>Show clipboard history</em> shortcut instead.</p>
+
+	<p>The default for this shortcut is Command-\. If you change this shortcut, you must choose a shortcut that uses at least one modifier key (Command, Control, Option or Shift).</p>
+
+	<h3>Paste and remove from history</h3>
+
+	<p>This shortcut pastes the most recent Clipboard History item to the frontmost window, and then removes that item from the history. It operates as a so-called LIFO stack (last in / first out).</p>
+
+	<p>This allows you to perform a series of Copy operations to collect data from different locations, and then quickly paste them all (in reverse order) by invoking the <em>Paste and remove from history</em> shortcut repeatedly.</p>
+
+<a name="settings"></a>
+<h2>Settings</h2>
+
+	<p>The Clipboard History can be configured in the <a href="x-launchbar:pref-pane?identifier=clipboard">Clipboard History pane</a> of LaunchBar Preferences.</p>
+
+	<h3>Default Action</h3>
+
+	<p>The default action is performed when you select an item from the Clipboard History and press Return, or when you invoke the <em>Select from history</em> keyboard shortcut. You can choose between the following actions:</p>
+
+	<ul class="stretched">
+		<li><strong>Copy:</strong> Copies the selected item’s data to the clipboard.</li>
+		<li><strong>Copy and Paste:</strong> Copies the selected item’s data to the clipboard and pastes it to the frontmost window.</li>
+		<li><strong>Paste:</strong> Pastes the selected item’s data to the frontmost window. The current clipboard contents remain unchanged.</li>
+	</ul>
+
+	<p>When the <em>As Plain Text</em> option is selected, the default action uses a plain text representation of the selected item. You can still access an item’s rich text representation with Command-C or by pressing the Option key while invoking the default action.</p>
+
+<a name="clipmerge"></a>
+<h2>ClipMerge</h2>
+
+	<p>ClipMerge allows you to combine subsequent Copy operations into one single clipboard object. Just press Command-C twice to merge the copied data with the current clipboard contents.</p>
+
+	<p>If you wish to perform the Copy operation with the mouse (for example, when you select the <em>Copy Link</em> command from a contextual menu) just hold down the Shift key while clicking the menu item to trigger ClipMerge.</p>
+
+	<h3>Acoustic feedback</h3>
+
+	<p>To distinguish a successful ClipMerge operation from a regular Copy operation, there’s an acoustic feedback in form of a stapler sound. You can customize this sound effect by providing one or more audio files in the following folder:</p>
+
+	<p class="indent"><tt>~/Library/Application Support/LaunchBar/Sounds/ClipMerge</tt></p>
+
+	<p>If this folder contains more than one sound file, the sound effect will be chosen randomly.</p>
+
+	<h3>Creating multiple file selections</h3>
+
+	<p>ClipMerge can also be used to create multiple file selections on the Clipboard. For example, select a file in Finder or in LaunchBar, press Command-C, select another file, press Commmand-C-C, and you get both files copied to the clipboard. With this approach you can even select files from different folders.</p>
+
+	<p>Once the multiple selection has been created, you can paste all files at once:</p>
+	<ul>
+		<li>Paste onto a folder to copy the files to that folder.</li>
+		<li>Paste into a Mail window to attach them to the message.</li>
+		<li>Press Command-Shift-V in LaunchBar to select these files.</li>
+	</ul>
+
+<h2>Removing Items</h2>
+
+	<p>In some situations you may wish to remove particular items from the clipboard history (e.g. if you’ve copied sensitive data such as passwords).</p>
+
+	<p>To remove an item from the list just select the item and press the Delete key.</p>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="CopyAndPaste.html">Copy and Paste</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

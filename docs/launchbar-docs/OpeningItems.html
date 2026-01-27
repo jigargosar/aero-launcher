@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Opening Items</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="Actions.html">Actions</a></td>
+		<td><a href="Actions.html">previous</a> | <a href="SendingItems.html">next</a></td>
+	</tr></table>
+
+	<h1>Opening Items</h1>
+
+	<div class="preface">
+		Once you’ve selected an item, you can simply open it by pressing Return or by double clicking the item in the search result menu. Applications will be launched, documents will be opened, folders are displayed in Finder, URLs are opened in your web browser, opening an email address creates a new message for this recipient, etc.
+	</div>
+
+	<div class="subnavigation">
+		<ul>
+			<li><a href="#op-general-options">  General Options</a></li>
+			<li><a href="#op-files">            Opening Files</a></li>
+			<li><a href="#op-folders">          Opening Folders</a></li>
+			<li><a href="#op-disk-images">      Opening Disk Images</a></li>
+			<li><a href="#op-bookmarks">        Opening Bookmarks</a></li>
+			<li><a href="#op-bookmark-folders"> Opening Bookmark Folders</a></li>
+			<li><a href="#op-contacts">         Opening Contacts</a></li>
+			<li><a href="#op-email-addresses">  Opening Email Addresses</a></li>
+			<li><a href="#op-phone-numbers">    Opening Phone Numbers</a></li>
+			<li><a href="#op-AIM-buddies">      Opening AIM Buddies</a></li>
+			<li><a href="#op-applescripts">     Opening AppleScripts and Automator Workflows</a></li>
+			<li><a href="#op-user-accounts">    Fast User Switching</a></li>
+			<li><a href="#op-sending-items">    Sending Items</a></li>
+		</ul>
+	</div>
+
+	<a name="op-general-options"></a>
+    <h2>General Options</h2>
+
+	<h3>Hide other applications</h3>
+
+	<p>If you hold down the Option key while opening an item, LaunchBar automatically hides all other applications once the item is opened.</p>
+
+	<p>To make this the default behavior you can turn on the “Hide other applications when opening an item” option in the <a href="x-launchbar:pref-pane?identifier=actions.options">Actions pane</a> of LaunchBar Preferences. You can then press the Shift key to suppress this behavior temporarily.</p>
+
+	<h3>Show in Finder</h3>
+
+	<p>If an item refers to a file or folder, you can press Command-Return to show that item in Finder instead of opening it. If you are using an alternative file browser (e.g. Path Finder), you can specify this application in the <a href="x-launchbar:pref-pane?identifier=actions.options">Actions pane</a> of LaunchBar Preferences.</p>
+
+	<p>Pressing Command-Shift-Return will show the selected item in the current Finder window instead of opening a new one.</p>
+
+	<div class="small box">
+		<ul>
+			<li><strong>Command-Return:</strong> Show in Finder</li>
+			<li><strong>Command-Shift-Return:</strong> Show in Current Finder Window</li>
+		</ul>
+	</div>
+
+	<p>If you wish to show items in the current Finder window by default, select the “Show files and folders in current Finder window” option in the <a href="x-launchbar:pref-pane?identifier=actions.options">Actions pane</a> of LaunchBar Preferences. You can then use Command-Shift-Return to show items in a new window instead.</p>
+
+	<a name="op-files"></a>
+    <h2>Opening Files</h2>
+
+	<p>By default, files are opened with their corresponding application. You can configure a different application for a particular file or for all files of a particular kind in the “Open with” section of Finder’s Get Info window.</p>
+
+	<h3>Opening files of unknown type</h3>
+
+	<p>If you attempt to open a document whose file type is unknown to the system (e.g. if the document has neither a filename extension nor a type- or creator-code assigned), you will be asked to choose an application for opening this document. Alternatively, you can specify a default application for such unknown documents in the <a href="x-launchbar:pref-pane?identifier=actions.options">Actions pane</a> of LaunchBar Preferences.</p>
+
+	<a name="op-folders"></a>
+    <h2>Opening Folders</h2>
+
+	<p>Finder is used by default for opening folders and when you invoke the “Show in Finder” command. You can choose an alternative file browser (e.g. Path Finder) in the <a href="x-launchbar:pref-pane?identifier=actions.options">Actions pane</a> of LaunchBar Preferences.</p>
+
+	<h3>Reusing the current Finder window</h3>
+
+	<p>When opening a folder in Finder, it opens a new window. To avoid this and to reuse the current window instead, you can open the folder with Shift-Return.</p>
+
+	<p>If you wish to make this the default behavior, select the “Show files and folders in current Finder window” option in the <a href="x-launchbar:pref-pane?identifier=actions.options">Actions pane</a> of LaunchBar Preferences. You can then use Shift-Return to open a folder in a new window instead.</p>
+
+	<h3>Opening folder contents</h3>
+
+	<p>Opening a folder with Control-Return opens all items inside this folder. This allows you to open multiple items at once with a single keystroke.</p>
+
+	<div class="small box" title="Tip">
+		<p>If you are working on a project that involves a couple of documents, applications and web-pages, just put aliases of these apps and docs as well as .webloc references of the web-pages into a folder. You can then open them all at once by selecting that folder in LaunchBar and typing Control-Return.</p>
+	</div>
+
+	<a name="op-disk-images"></a>
+    <h2>Opening Disk Images</h2>
+
+	<p>When you open a disk image (.dmg file) via LaunchBar, the image gets mounted and LaunchBar automatically shows the contents of the newly mounted volume.</p>
+
+	<p>If your want to eject the volume later, just select any of the items located on that volume (or the volume itself) in LaunchBar and type Command-E.</p>
+
+	<a name="op-bookmarks"></a>
+    <h2>Opening Bookmarks</h2>
+
+	<p>The “Default Web Browser” is responsible for opening web addresses (URLs). It can be configured in the General pane of Safari Preferences.</p>
+
+	<h3>Open in New Tab</h3>
+
+	<p>By default many web browsers open links from other applications in separate windows. However, you can change this behavior in your web browser’s preferences to open them in new tabs instead.</p>
+	<ul>
+		<li><strong>Safari</strong> &gt; Preferences… &gt; General &gt; Open links from applications: in a new tab in the current window</li>
+		<li><strong>Firefox</strong> &gt; Preferences… &gt; Tabs &gt; Open links from other applications in: a new tab in the most recent window</li>
+		<li><strong>OmniWeb</strong> &gt; Preferences… &gt; Tabs &amp; Windows &gt; Open links from other applications in &gt; a new tab</li>
+	</ul>
+
+	<h3>Open in Safari</h3>
+
+	<p>If you are using Safari as your default web browser, depending on your Safari preferences for “Tabbed Browsing” and “Open links from applications”, LaunchBar will offer “Open in Current Safari Tab”, “Open in Current Safari Window” or “Open in New Safari Window” either in the <a href="Actions.html#action-menu">Action menu</a> or via Shift-Return.</p>
+
+	<h3>Open in current Safari window or tab</h3>
+
+	<p>If you wish to open URLs in the current window or tab by default, and create a new one only on demand, you can set the “Open URLs in current Safari window or tab” option in the <a href="x-launchbar:pref-pane?identifier=actions.options">Actions pane</a> of LaunchBar preferences, and type Shift-Return to suppress this option temporarily.</p>
+
+	<a name="op-bookmark-folders"></a>
+    <h2>Opening Bookmark Folders</h2>
+
+	<p>Opening a bookmark folder opens all the bookmarks contained in that folder at once (similar to Safari’s “Open in Tabs” command). A warning will appear if the folder contains more than eight bookmarks.</p>
+
+	<h3>Open in Tabs</h3>
+
+	<p>If you’ve configured your web browser to open links from other applications in new tabs (see above), opening a bookmark folder via LaunchBar will open the bookmarks in separate tabs of the current browser window.</p>
+
+	<a name="op-contacts"></a>
+    <h2>Opening Contacts</h2>
+
+	<p>Contacts are opened in your address book applications (Apple’s Contacts application or Microsoft Entourage). To show the details of the selected contact (email address, phone number, etc.), press the space bar or the right arrow key.</p>
+
+	<h3>Open First Contact Detail</h3>
+
+	<p>Opening a contact with Shift-Return opens the first of its details. So for example, if a contact has an email address, you can quickly create a new message to this person by opening its contact with Shift-Return.</p>
+
+	<p>If you wish to make this the default behavior, go to the <a href="x-launchbar:pref-pane?identifier=actions.defaultActions">Actions pane</a> of LaunchBar preferences and set the Default Action for opening contacts to "Open First Contact Detail". You can then use Command-Return to open the selected contact in Contacts.app.</p>
+
+	<a name="op-email-addresses"></a>
+    <h2>Opening Email Addresses</h2>
+
+	<p>Email addresses are opened in your mail application, and a new message for that recipient will be created. The “Default Email Reader” can be configured in the Preferences window of Apple’s Mail application.</p>
+
+	<p>Opening an email address with Command-Return will open the corresponding card in your address book.</p>
+
+	<a name="op-phone-numbers"></a>
+    <h2>Opening Phone Numbers</h2>
+
+	<p>By default, when you open a phone number, it is displayed in large type. Alternatively you can <a href="DialingPhoneNumbers.html">specify an AppleScript</a> in the <a href="x-launchbar:pref-pane?identifier=actions.defaultActions">Actions pane</a> of LaunchBar Preferences. This script may then dial the phone number via third party applications such as <a href="http://www.jonn8.com/dialectic/" target="_blank">Dialectic</a> or <a href="http://www.skype.com/" target="_blank">Skype</a>.</p>
+
+	<p>Opening a phone number with Command-Return will open the corresponding card in your address book.</p>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="DialingPhoneNumbers.html">Dialing Phone Numbers</a></li>
+		</ul>
+	</div>
+
+	<a name="op-AIM-buddies"></a>
+    <h2>Opening AIM Buddies</h2>
+
+	<p>By default, AIM buddies are opened in iChat. You may change the “AIM buddies” setting in the <a href="x-launchbar:pref-pane?identifier=actions.defaultActions">Actions pane</a> of LaunchBar Preferences from “Open in iChat” to “Open” to open them in the corresponding helper application (e.g. AOL Instant Messenger, Adium X, etc) instead.</p>
+
+	<a name="op-applescripts"></a>
+    <h2>Opening AppleScripts and Automator Workflows</h2>
+
+	<p>AppleScripts or Automator Workflows can be run directly from LaunchBar by pressing Return. To open these items in AppleScript Editor or Automator instead, press Shift-Return.</p>
+
+	<p>If you prefer to always open scripts or workflows in their corresponding editors, you can specify the desired behavior in the <a href="x-launchbar:pref-pane?identifier=actions.defaultActions">Actions pane</a> of LaunchBar Preferences. You can then still run them from LaunchBar by pressing Shift-Return.</p>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="RunningAppleScripts.html">Running AppleScripts</a></li>
+		</ul>
+	</div>
+
+	<a name="op-user-accounts"></a>
+    <h2>Fast User Switching</h2>
+
+	<p>The <a href="IndexingRules.html#ir-user-accounts">User Accounts</a> indexing rule provides a list of all user accounts available on your computer. Select such an item and press Return to switch to this account via Fast User Switching.</p>
+
+	<a name="op-sending-items"></a>
+    <h2>Sending Items</h2>
+
+	<p>If you want to open an item with a different application than the one associated with this item, press the Tab key to <a href="SendingItems.html">send the item</a> to the desired application. Items can also be sent to several other targets such as scripts, folders or email addresses, allowing you to pass them to AppleScripts, move them to another folder or send them as an email attachment.</p>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="SendingItems.html">Sending Items with the Tab key</a></li>
+		</ul>
+	</div>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="Actions.html">Actions</a></li>
+		<li><a href="SendingItems.html">Sending Items with the Tab key</a></li>
+		<li><a href="InstantOpen.html">Instant Open</a></li>
+		<li><a href="DragAndDrop.html">Drag and Drop</a></li>
+		<li><a href="CopyAndPaste.html">Copy and Paste</a></li>
+		<li><a href="DialingPhoneNumbers.html">Dialing Phone Numbers</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

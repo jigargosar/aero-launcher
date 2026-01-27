@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Working with Calendars</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<a name="page-calendars"></a>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td>Topics</td>
+		<td></td>
+	</tr></table>
+
+	<h1>Working with Calendars</h1>
+
+	<div class="preface">
+		The Calendars indexing rule provides convenient access to your calendars from Calendar.app, allowing you to create events and reminders right from within LaunchBar.
+	</div>
+
+	<div class="subnavigation">
+		<ul>
+			<li><a href="#select-calendar">		Selecting a calendar or reminder list</a></li>
+			<li><a href="#create-event">		Creating Events</a></li>
+			<li><a href="#create-reminder">		Creating Reminders</a></li>
+			<li><a href="#date-and-time">		Date and Time Specification</a></li>
+			<li><a href="#third-party">         Third Party Calendar Utilities</a></li>
+		</ul>
+	</div>
+
+<a name="select-calendar"></a>
+<h2>Selecting a calendar or reminder list</h2>
+
+	<p>To select a calendar or a reminder list, do one of the following:</p>
+
+	<div class="white choices box">
+		<ul>
+			<li>Select the desired calendar or reminder list directly by typing an abbreviation of its name.</li>
+
+			<li>Select either the Calendar application, the Calendars category or the Calendars indexing rule, then press Right Arrow (or press the space bar) to browse a list of all available calendars and reminder lists.</li>
+		</ul>
+	</div>
+
+	<p>Once you’ve selected a calendar or a reminder list in LaunchBar, press the space bar to create a new event or reminder.</p>
+
+<a name="create-event"></a>
+<h2>Creating Events</h2>
+
+	<p>Events are created by entering a description, followed by a date and time specification, separated by an “@” sign. For example:</p>
+
+	<div class="screenshot">
+		<img src="images/create-event.png" width="432" height="52" alt="Create Event" />
+	</div>
+
+    <h4>Locations</h4>
+	<p>Optionally you can specify a location, separated by another “@” sign. For example:</p>
+
+	<div class="screenshot">
+		<img src="images/create-event-with-location.png" width="432" height="52" alt="Create Event with Location" />
+	</div>
+
+	<div class="small white box">
+		<span class="badge">Tip</span> You can press the Tab key to insert the required “@” signs.
+	</div>
+
+    <h4>Alerts</h4>
+	<p>Alerts can be specified relative to the event’s start date, with a leading or trailing exclamation mark (Examples: !15m, !1.5h, 2days!, 1week!). If no alert is specified, the default alert setting of Calendar.app &gt; Preferences &gt; Alerts will be applied.</p>
+
+	<p>Note that alerts will always be set to occur <em>before</em> the the event’s start date.</p>
+
+    <h4>Create the event</h4>
+	<p>Finally, press Return to create the new calendar event.</p>
+
+	<div class="small white box">
+		<span class="badge">Tip</span> If you press Command-Return instead of Return, the newly created event will also be opened in Calendar.app, so you can review and optionally amend the event.
+	</div>
+
+	<table class="xtable">
+		<tr>
+			<th>Input</th>
+			<th>Result</th>
+		</tr>
+		<tr>
+			<td valign="top" nowrap="nowrap"><tt>Car service @ Feb 15</tt></td>
+			<td valign="top">Creates an all-day event</td>
+		</tr>
+		<tr>
+			<td valign="top" nowrap="nowrap"><tt>Meeting with John @ Jun 2 2010</tt></td>
+			<td valign="top">Creates an all-day event</td>
+		</tr>
+		<tr>
+			<td valign="top" nowrap="nowrap"><tt>Meeting with John @ Jun 12 3-5pm</tt></td>
+			<td valign="top">Creates an event with a start and end time</td>
+		</tr>
+		<tr>
+			<td valign="top" nowrap="nowrap"><tt>Dinner @ Joe's Cafe @ Tue 7pm 2h</tt></td>
+			<td valign="top">Creates a 2 hour with a location</td>
+		</tr>
+		<tr>
+			<td valign="top" nowrap="nowrap"><tt>TV Show @ next Sunday 20.15</tt></td>
+			<td valign="top">Creates a 1 hour event at the specified time</td>
+		</tr>
+		<tr>
+			<td valign="top" nowrap="nowrap"><tt>Trip to Paris @ Mar 13 5d</tt></td>
+			<td valign="top">Creates a multi-day event that spans 5 days</td>
+		</tr>
+		<tr>
+			<td valign="top" nowrap="nowrap"><tt>Holiday @ Mar 13 2 weeks</tt></td>
+			<td valign="top">Creates a multi-day event that spans 2 weeks</td>
+		</tr>
+		<tr>
+			<td valign="top" nowrap="nowrap"><tt>Call John @ tomorrow 2pm 15m!</tt></td>
+			<td valign="top">Creates an event with an alert 15 minutes before</td>
+		</tr>
+		<tr>
+			<td valign="top" nowrap="nowrap"><tt>Dad's birthday @ Jun 12 !5d</tt></td>
+			<td valign="top">Creates an event with an alert 5 days before</td>
+		</tr>
+	</table>
+
+<a name="create-reminder"></a>
+<h2>Creating Reminders</h2>
+
+	<p>Reminders are created by entering just a description, and an optional reminder date, separated by a right angle bracket.</p>
+
+	<div class="screenshot">
+		<img src="images/create-reminder1.png" width="432" height="52" alt="Create Reminder" /><br />
+		<img src="images/create-reminder2.png" width="432" height="52" alt="Create Reminder" />
+	</div>
+
+	<div class="small white box">
+		<span class="badge">Tip</span> You can press the Tab key to insert the required “&gt;” sign.
+	</div>
+
+	<ul>
+		<li>Append 1-3 exclamation marks to set a priority.</li>
+		<li>To enter a reminder date, separate it with a right angle bracket.</li>
+	</ul>
+
+	<table class="xtable">
+		<tr>
+			<th>Input</th>
+			<th>Result</th>
+		</tr>
+		<tr>
+			<td valign="top" nowrap="nowrap"><tt>Buy milk</tt></td>
+			<td valign="top">Creates a reminder</td>
+		</tr>
+		<tr>
+			<td valign="top" nowrap="nowrap"><tt>Buy butter !!</tt></td>
+			<td valign="top">Creates a reminder with medium priority</td>
+		</tr>
+		<tr>
+			<td valign="top" nowrap="nowrap"><tt>Clean the house &gt; next sun</tt></td>
+			<td valign="top">Creates a reminder on a particular day</td>
+		</tr>
+		<tr>
+			<td valign="top" nowrap="nowrap"><tt>Watch TV &gt; May 15, 8pm</tt></td>
+			<td valign="top">Creates a reminder with an alert at the specified date and time</td>
+		</tr>
+	</table>
+
+<a name="date-and-time"></a>
+<h2>Date and Time Specification</h2>
+
+    <p>The date an time of an event can be specified in a variety of different formats in different languages. The date and time format preferences specified in ￼<em>System Preferences &gt; Language &amp; Text > Region</em> are taken into account, but lots of other common formats are recognized as well.</p>
+
+	<ul class="stretched">
+		<li>If parts of the date are missing, the closest date relative to the current date will be used.</li>
+		<li>Durations can be specified as a time range (3-5pm, 11:30-13:30), in minutes (30m, 45min), in hours (2h, 3.5h), in days (3d, 7days) or in weeks (1w, 3weeks).</li>
+	</ul>
+
+	<table class="xtable">
+		<tr>
+			<th>Input</th>
+			<th>Result</th>
+		</tr>
+		<tr>
+			<td><tt>today</tt></td>
+			<td>Today, all-day</td>
+		</tr>
+		<tr>
+			<td><tt>tomorrow</tt></td>
+			<td>Tomorrow, all-day</td>
+		</tr>
+		<tr>
+			<td><tt>Mon</tt></td>
+			<td>Next Monday</td>
+		</tr>
+		<tr>
+			<td><tt>next fri</tt></td>
+			<td>Next Friday</td>
+		</tr>
+		<tr>
+			<td><tt>Apr 4</tt></td>
+			<td>The next 4th of April</td>
+		</tr>
+		<tr>
+			<td><tt>Aug 17 2011</tt></td>
+			<td>August 17th, 2011</td>
+		</tr>
+		<tr>
+			<td><tt>dec 24 8-10pm</tt></td>
+			<td>December 24, 8 PM - 10 PM</td>
+		</tr>
+		<tr>
+			<td><tt>Fri 8:10 30min</tt></td>
+			<td>Next Friday, 8:10 AM - 8:40 AM</td>
+		</tr>
+		<tr>
+			<td><tt>jun 23 9 to 11.45</tt></td>
+			<td>June 23, 9:00 AM - 11:45 AM</td>
+		</tr>
+		<tr>
+			<td><tt>Oct 11 5 days</tt></td>
+			<td>5 days, from October 11 to October 15</td>
+		</tr>
+		<tr>
+			<td><tt>Mar 13 2009 2w</tt></td>
+			<td>2 weeks from March 13, 2009</td>
+		</tr>
+	</table>
+
+<a name="third-party"></a>
+<h2>Third Party Calendar Utilities</h2>
+
+    <p>Instead of LaunchBar’s built-in calendar event creation method you can select an alternative calendar input method in Preferences &gt; Actions &gt; Options. You can choose between LaunchBar, Fantastical (<a href="http://flexibits.com/fantastical" target="_blank">http://flexibits.com/fantastical</a>) and QuickCal (<a href="http://quickcalapp.com/" target="_blank">http://quickcalapp.com/</a>).</p>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="IndexingRules.html#ir-calendars">The Calendars indexing rule</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

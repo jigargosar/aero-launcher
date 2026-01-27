@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>URL Commands</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td>Topics</td>
+		<td></td>
+	</tr></table>
+
+	<h1>URL Commands</h1>
+
+	<div class="preface">
+		Some of LaunchBar’s internal functionality can be accessed via URL commands. They can be used in AppleScripts, Shell Scripts or search templates.
+	</div>
+
+	<div class="small red box" title="Note">
+		The same functionality can be accessed much more conveniently using the corresponding AppleScript commands.
+	</div>
+
+	<p>URL commands are URLs utilizing LaunchBar’s custom “x-launchbar” URL scheme. They can be used to display large text messages, to select items in LaunchBar, to run command line tools in background, to trigger commands from the Services menu, and more.</p>
+
+	<p>You can open such URLs using “open location” in AppleScripts, using the “open” command in Shell Scripts, or by creating search templates with this scheme.</p>
+
+	<div class="white box">
+		<h3>AppleScript</h3>
+		<tt>open location "x-launchbar:large-type?string=Hello+World"</tt>
+	</div>
+
+	<div class="white box">
+		<h3>Command Line</h3>
+		<tt>open "x-launchbar:large-type?string=Hello+World"</tt>
+	</div>
+
+	<div class="white box">
+		<h3>Search Template</h3>
+		<tt>x-launchbar:large-type?string=*</tt>
+		<div class="small">Note: When using URL commands in search templates, the UTF-8 string encoding must be used.</div>
+	</div>
+
+	<h2>Large Type Display</h2>
+
+	<p>The <em>large-type</em> command can be used to display arbitrary strings in large type. Multiple lines can be separated with a backslash character.</p>
+
+	<h3>Arguments</h3>
+
+	<ul>
+		<li><em>string:</em> the string that shall be displayed in large type.</li>
+		<li><em>title:</em> an optional title, displayed above the string.</li>
+		<li><em>font-name:</em> optional, allows to specify the PostScript name of the display font.</li>
+	</ul>
+
+	<h3>Examples</h3>
+
+	<ul>
+		<li><a href="x-launchbar:large-type?string=LaunchBar+4.3">x-launchbar:large-type?string=LaunchBar+4.3</a></li>
+		<li><a href="x-launchbar:large-type?font-name=Times-Bold&amp;string=Hello+World">x-launchbar:large-type?font-name=Times-Bold&amp;string=Hello+World</a></li>
+		<li><a href="x-launchbar:large-type?title=Large+Type&amp;string=Small+Example">x-launchbar:large-type?title=Large+Type&amp;string=Small+Example</a></li>
+	</ul>
+
+	<h2>Selecting Items</h2>
+
+	<p>The <em>select</em> command can be used to select arbitrary items in LaunchBar:</p>
+
+	<ul>
+		<li><a href="x-launchbar:select?file=/Applications">x-launchbar:select?file=/Applications</a></li>
+		<li><a href="x-launchbar:select?url=www.obdev.at">x-launchbar:select?url=www.obdev.at</a></li>
+		<li><a href="x-launchbar:select?url=www.obdev.at&amp;name=Objective+Development">x-launchbar:select?url=www.obdev.at&amp;name=Objective+Development</a></li>
+		<li><a href="x-launchbar:select?string=Hello,+I'm+a+text">x-launchbar:select?string=Hello,+I'm+a+text</a></li>
+		<li><a href="x-launchbar:select?abbreviation=SAFARI">x-launchbar:select?abbreviation=SAFARI</a></li>
+	</ul>
+
+	<h2>Running Unix commands in background</h2>
+
+	<p>The <em>execute</em> command allows to create search templates that refer to local Unix Executables or Shell Scripts. In contrast to running these commands directly, the search template executes them in background so that no Terminal window opens to show their stdout.</p>
+
+	<div class="small box"  title="Note">
+		For security reasons, the <em>execute</em> command only works in conjunction with search templates, it can’t be triggered from other applications.
+	</div>
+
+	<h3>Arguments</h3>
+	<ul>
+		<li><em>path:</em> the full path of the Unix command.</li>
+		<li><em>argument:</em> an optional argument. The value is considered to be a single argument, so any necessary quoting and escaping is applied automatically.</li>
+		<li><em>arguments:</em> an optional list of space separated arguments. In contrast to <em>argument</em>, the value is passed to the command “as is”, so any necessary quoting or escaping must be applied by the caller.</li>
+	</ul>
+
+	<div class="white box">
+        <span class="badge">Examples</span>
+        <p class="small">
+            x-launchbar:execute?path=/usr/local/bin/MyScript&amp;argument=*<br />
+            x-launchbar:execute?path=/usr/bin/open&amp;arguments=-a+%22*%22
+        </p>
+	</div>
+
+	<h2>Performing calculations</h2>
+
+	<p>The <em>calculate</em> command can be used to send arbitrary arithmetic expressions to LaunchBar. The result of the expression is then evaluated with LaunchBar’s built-in Calculator and displayed in large type.</p>
+
+	<p>See the <a href="Calculator.html#url-command">Calculator chapter, section “Invoking Calculator from external applications”</a> for details.</p>
+
+	<h2>Hiding LaunchBar</h2>
+
+	<p>The <em>hide</em> command can be used in AppleScripts to hide LaunchBar.</p>
+
+	<div class="white box">
+        <span class="badge">Example</span>
+        <p class="small">
+            open location "x-launchbar:hide"
+        </p>
+	</div>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="SearchTemplates.html">Search Templates</a></li>
+		<li><a href="Calculator.html">Calculator</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

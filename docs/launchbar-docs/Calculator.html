@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Calculator</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td>Topics</td>
+		<td></td>
+	</tr></table>
+
+	<h1>Calculator</h1>
+
+	<div class="preface">
+		LaunchBar’s built-in Calculator allows you to quickly perform numeric calculations. Just type <a href="KeyboardShortcuts.html">Command-Space</a>, type your calculation and press Return.
+	</div>
+
+	<div class="screenshot">
+		<img src="images/calculator.png" width="352" height="52" alt="Calculator" />
+		<p>LaunchBar’s built-in Calculator</p>
+	</div>
+
+	<div class="subnavigation">
+		<ul>
+			<li><a href="#open">						Opening the Calculator</a></li>
+			<li><a href="#examples">					Examples</a></li>
+			<li><a href="#multiple-arguments">			Multiple arguments</a></li>
+			<li><a href="#smart-input">					Smart Calculator Input</a></li>
+			<li><a href="#smart-brackets">				Smart Brackets</a></li>
+			<li><a href="#function-shortcuts">			Function Shortcuts</a></li>
+			<li><a href="#decimal-separators">			Automatic Decimal Separator Detection</a></li>
+			<li><a href="#sums">						Calculating Sums</a></li>
+			<li><a href="#instant-calculate">			Instant Calculate</a></li>
+			<li><a href="#non-contiguous-selections">	Non-contiguous Selections</a></li>
+			<li><a href="#subsequent-calculations">		Subsequent Calculations</a></li>
+			<li><a href="#remote-invocation">			Invoking Calculator from external applications</a></li>
+		</ul>
+	</div>
+
+	<a name="open"></a>
+    <h2>Opening the Calculator</h2>
+
+	<p>To open the Calculator, do one of the following:</p>
+
+	<div class="white choices box">
+		<ul>
+			<li>Press the Calculator keyboard shortcut, which can be configured in the <a href="x-launchbar:pref-pane?identifier=calculator">Calculator pane</a> LaunchBar preferences.</li>
+			<li>Choose Select &gt; Calculator (or press Command-=).</li>
+			<li>Type an abbreviation to select the Calculator item (e.g. CALC or '='), then press Space.</li>
+			<li>Type your calculation right away, e.g. just type <em>13 + 5</em> and press Return.</li>
+			<li>Paste a calculation or just a series of numbers onto LaunchBar (Command-V).</li>
+		</ul>
+	</div>
+
+	<div class="small box" title="Note">
+		Entering leading digits (either by typing them or via 'paste') automatically switches to Calculator. This behavior can be turned off in LaunchBar preferences &gt; General &gt; Switch to Calculator when typing digits.
+	</div>
+
+	<a name="examples"></a>
+    <h2>Examples</h2>
+
+	<table class="xtable">
+		<tr><th>Operation</th>								<th width="50%">Example</th></tr>
+		<tr><td>Basic arithmetical operations</td>			<td class="kbd">44 - 16 * (12.3 + 4.8 / 3)</td></tr>
+		<tr><td>Trigonometric operations</td>				<td class="kbd">sin(pi / 2)</td></tr>
+		<tr><td>Inverse trigonometric operations</td>		<td class="kbd">atan(1)</td></tr>
+		<tr><td>Square Root</td>							<td class="kbd">sqrt(2)</td></tr>
+		<tr><td>Raise to power</td>							<td class="kbd">pow(27 | 1/3)</td></tr>
+		<tr><td>Raise to integral power</td>				<td class="kbd">2^8</td></tr>
+		<tr><td>Exponential function e<sup>x</sup></td>		<td class="kbd">exp(1)</td></tr>
+		<tr><td>Logarithm (base 10)</td>					<td class="kbd">log(1000)</td></tr>
+		<tr><td>Natural logarithm</td>						<td class="kbd">ln(2.71828182846)</td></tr>
+		<tr><td>Binary logarithm</td>						<td class="kbd">ld(1024)</td></tr>
+		<tr><td>Greatest common divisor</td>				<td class="kbd">gcd(527 | 697)</td></tr>
+		<tr><td>Least common multiple</td>					<td class="kbd">lcm(91 | 143)</td></tr>
+	</table>
+
+	<a name="multiple-arguments"></a>
+    <h2>Multiple arguments</h2>
+
+	<p>If a function has more than one argument (such as <em>pow</em> or <em>gcd</em>), the arguments have to be separated with a vertical line character <span class="small keycap">|</span> to prevent ambiguities with decimal and thousand separators.</p>
+
+	<p>To enter this separator more conveniently, you can also press either <span class="small keycap">Tab</span> or <span class="small keycap">\</span>.</p>
+
+	<a name="smart-input"></a>
+    <h2>Smart Calculator Input</h2>
+
+	<p>To speed up typing your expressions (especially on notebook keyboards), LaunchBar provides some smart conversions during input or prior to calculating the result:</p>
+
+	<ul>
+		<li>The plus sign can be omitted between consecutive numbers. For example, <em>13 9 8.3</em> will be converted to <em>13+9+8.3</em>.</li>
+		<li>In some cases the multiplication operator can be omitted as well. For example, you can type <em>17(3+5)</em> or <em>2pi</em> to get <em>17*(3+5)</em> or <em>2*pi</em>.</li>
+		<li>Square brackets can be entered as an alternative to parentheses.</li>
+		<li>A lowercase <em>x</em> can be used for multiplications as an alternative to '*'</li>
+		<li>The Equals sign '=' can be typed to enter '+'.</li>
+		<li>The key left from the "1" key can be used to enter a decimal separator.</li>
+	</ul>
+
+	<a name="smart-brackets"></a>
+    <h2>Smart Brackets</h2>
+
+	<p>Calculator automatically inserts closing brackets if appropriate. When you type an opening bracket, the corresponding closing bracket will inserted automatically.</p>
+
+	<p>To put some part of an already entered expression in brackets, select that part and type a bracket. Entering an opening bracket will put the insertion point before the bracketed expression, entering a closing bracket will put it behind.</p>
+
+	<div class="small box"  title="Note">
+		Smart Brackets can be turned off in the <a href="x-launchbar:pref-pane?identifier=general">General pane</a> of LaunchBar preferences.
+	</div>
+
+	<a name="function-shortcuts"></a>
+    <h2>Function Shortcuts</h2>
+
+	<p>Uppercase letters can be used to enter function names more quickly. For example, type <tt>S45</tt> to get <tt>sin(45)</tt>, or type <tt>Q2</tt> to get <tt>sqrt(2)</tt>.</p>
+
+	<table class="xtable">
+		<tr><th>Input</th>			<th width="80%">Result</th></tr>
+		<tr><td>S</td>				<td class="kbd">sin(x)</td></tr>
+		<tr><td>C</td>				<td class="kbd">cos(x)</td></tr>
+		<tr><td>T</td>				<td class="kbd">tan(x)</td></tr>
+		<tr><td>AS</td>				<td class="kbd">asin(x)</td></tr>
+		<tr><td>AC</td>				<td class="kbd">acos(x)</td></tr>
+		<tr><td>AT</td>				<td class="kbd">atan(x)</td></tr>
+		<tr><td>Q</td>				<td class="kbd">sqrt(x)</td></tr>
+		<tr><td>L</td>				<td class="kbd">ln(x)</td></tr>
+		<tr><td>D</td>				<td class="kbd">ld(x)</td></tr>
+		<tr><td>G</td>				<td class="kbd">log(x)</td></tr>
+		<tr><td>E</td>				<td class="kbd">exp(x)</td></tr>
+		<tr><td>P</td>				<td class="kbd">pow(x|y)</td></tr>
+		<tr><td>X</td>				<td class="kbd">pow(10|x)</td></tr>
+		<tr><td>R</td>				<td class="kbd">1/x</td></tr>
+		<tr><td>Shift-2</td>		<td class="kbd">x²</td></tr>
+		<tr><td>Shift-3</td>		<td class="kbd">x³</td></tr>
+	</table>
+
+	<div class="small box"  title="Note">
+		You can select an expression prior to typing the shortcut to use the expression as the function’s argument. For example, when you’ve selected the number <em>43</em>, typing <em>S</em> results in <em>sin(45)</em>.
+	</div>
+
+	<a name="decimal-separators"></a>
+    <h2>Automatic Decimal Separator Detection</h2>
+
+	<p>Calculator automatically detects the used notation for decimal- and thousand-separators (period vs. comma). So you may enter either <em>12.3 + 1,550</em> or <em>12,3 + 1.550</em> and you’ll get the expected results in both cases.</p>
+
+	<p>In ambiguous cases (e.g. <em>12.000 + 3,123</em>) LaunchBar considers the number format as specified in <em>System Preferences &gt; Language &amp; Text &gt; Formats</em>.</p>
+
+	<a name="sums"></a>
+    <h2>Calculating Sums</h2>
+
+	<p>To calculate the sum of a series of numbers, you can omit the plus signs. It’s sufficient to separate the numbers with a space character, or if you enter them via Copy &amp; Paste they just have to be in separate lines (so you can paste e.g. a column of numbers).</p>
+
+	<a name="instant-calculate"></a>
+    <h2>Instant Calculate</h2>
+
+	<p>With Instant Calculate you can quickly perform calculations via Instant Send. If the sent text appears to be a valid calculator expression, the results are displayed automatically.</p>
+
+	<p>For example, if you are working on a document that contains a series of numbers, you can select these numbers, send them to LaunchBar via <a href="InstantSend.html">Instant Send</a>, and LaunchBar will instantly show the sum of these numbers.</p>
+
+	<a name="non-contiguous-selections"></a>
+    <h2>Non-contiguous Selections</h2>
+
+	<p>Many OS X applications support non-contiguous text selections, allowing you to select multiple, individual pieces of text. You first select one piece of text, then hold down the Command key and select some other text elsewhere in the document. For example, the following TextEdit selection was created by double clicking the first, third and fourth number while holding the Command key down:</p>
+
+	<div class="screenshot">
+		<img src="images/calculator-example-1.png" width="227" height="148" alt="Calculator Example" />
+	</div>
+
+	<p>Now copy and paste this text selection from TextEdit to LaunchBar, and you will get the following result:</p>
+
+	<div class="screenshot">
+		<img src="images/calculator-example-2.png" width="352" height="52" alt="Calculator Example" />
+	</div>
+
+	<p>Or if you are using Instant Calculate as described above, you’ll get the sum of these numbers with just a single keystroke:</p>
+
+	<div class="screenshot">
+		<img src="images/calculator-example-3.png" width="200" height="79" alt="Calculator Example" />
+	</div>
+
+	<a name="subsequent-calculations"></a>
+    <h2>Subsequent Calculations</h2>
+
+	<p>When the result of a calculation is displayed in large type, you can press Space to modify the current expression, or press <span class="small keycap">Tab</span>, <span class="small keycap">+</span>, <span class="small keycap">-</span>, <span class="small keycap">*</span>, <span class="small keycap">/</span> or <span class="small keycap">A</span> to perform subsequent calculations based on the current result.</p>
+
+	<p>The letter “a” can be used as a placeholder for the most recent result, which is especially useful if you want to use this result in different places of your new expression. For example, if your last calculation delivered <em>7.24</em> as the result you can enter:</p>
+
+	<p class="indent"><tt>(a + 3) / a</tt></p>
+
+	<p>which will then evaluate to:</p>
+
+	<p class="indent"><tt>(7.24 + 3) / 7.24</tt></p>
+
+	<a name="remote-invocation"></a>
+    <h2>Invoking Calculator from external applications</h2>
+
+	<p>Calculations can be sent from external applications to LaunchBar via AppleScript or <a href="URLCommands.html">URL commands</a>. The result of the expression is then displayed in large type.</p>
+
+	<h3>AppleScript</h3>
+
+	<p>Calculation requests can be sent to LaunchBar via AppleScript using the <em>perform action</em> command. For example:</p>
+
+	<div class="rounded white box">
+		<div class="applescript">
+			<span class="bold">tell</span> <span class="keyword italic">application</span> "LaunchBar"
+			<div class="indent">
+				<span class="keyword bold">perform action</span> "Calculator" <span class="keyword">with string</span> "(1+sqrt(5))/2"
+			</div>
+			<span class="bold">end tell</span>
+		</div>
+	</div>
+
+	<h3>URL commands</h3>
+
+	<p>Calculation requests can also be sent to LaunchBar using the <em>x-launchbar:calculate</em> <a href="URLCommands.html">URL command</a>. You can optionally specify input and output formats to customize the display of the result. Special characters must be properly URL encoded using UTF-8 percent escapes.</p>
+
+	<ul>
+		<li><a href="x-launchbar:calculate?expression=2*sin(pi/4)^2">x-launchbar:calculate?expression=2*sin(pi/4)^2</a></li>
+		<li><a href="x-launchbar:calculate?expression=(1+sqrt(5))/2&amp;title=Golden%20Ratio">x-launchbar:calculate?expression=(1+sqrt(5))/2&amp;title=Golden%20Ratio</a></li>
+		<li><a href="x-launchbar:calculate?expression=(1+sqrt(5))/2&amp;title=Golden%20Ratio&amp;result=%cf%86=@">x-launchbar:calculate?expression=(1+sqrt(5))/2&amp;title=Golden%20Ratio&amp;result=%cf%86=@</a></li>
+	</ul>
+
+	<h3>Search Templates</h3>
+
+	<p>The x-launchbar:calculate URL command can also be used to compute the result of predefined formulas via <a href="SearchTemplates.html">Search Templates</a>.</p>
+
+	<div class="white box">
+		<strong>Convert Fahrenheit to Celsius</strong><br />
+		<tt>x-launchbar:calculate?argument=*&amp;expression=(@-32)/1.8&amp;title=@%c2%b0F%20=&amp;result=@%c2%b0C</tt>
+	</div>
+	<div class="white box">
+		<strong>Convert Celsius to Fahrenheit</strong><br />
+		<tt>x-launchbar:calculate?argument=*&amp;expression=@*1.8+32&amp;title=@%c2%b0C%20=&amp;result=@%c2%b0F</tt>
+	</div>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="InstantOpen.html">Instant Open</a></li>
+		<li><a href="InstantSend.html">Instant Send</a></li>
+		<li><a href="CopyAndPaste.html">Copy and Paste</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Working with iTunes</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td>Topics</td>
+		<td></td>
+	</tr></table>
+
+	<h1>Working with iTunes</h1>
+
+	<div class="subnavigation">
+		<ul>
+			<li><a href="#playback">			Playback Control</a></li>
+			<li><a href="#browsing">			Browsing the iTunes Library</a></li>
+			<li><a href="#itunes-dj">			iTunes DJ</a></li>
+			<li><a href="#best-of-lists">		Best Of Lists</a></li>
+			<li><a href="#primary-artist">		Primary Artist</a></li>
+			<li><a href="#current-song">		Current Song</a></li>
+			<li><a href="#play-and-open">		Play and Open iTunes</a></li>
+			<li><a href="#reveal">				Show in iTunes</a></li>
+			<li><a href="#troubleshooting">		Troubleshooting</a></li>
+		</ul>
+	</div>
+
+	<a name="playback"></a>
+    <h2>Playback Control</h2>
+
+	<p>LaunchBar’s <a href="IndexingRules.html#ir-actions">Actions indexing rule</a> provides a number of actions for controlling iTunes playback:</p>
+
+	<table class="bullet-list">
+		<tr><th>Play			</th><td>Starts playback</td></tr>
+		<tr><th>Pause			</th><td>Pauses playback</td></tr>
+		<tr><th>Play/Pause		</th><td>Toggles between Play and Pause</td></tr>
+		<tr><th>Next Song		</th><td>Jumps to the next song in the current playlist</td></tr>
+		<tr><th>Previous Song	</th><td>Jumps to the previous song in the current playlist</td></tr>
+		<tr><th>Fast Forward	</th><td>Skips forward in the currently playing song</td></tr>
+		<tr><th>Rewind			</th><td>Skips backwards in the currently playing song</td></tr>
+		<tr><th>Back Track		</th><td>Jumps back to the beginning of the current song</td></tr>
+	</table>
+
+	<div class="small box" title="Tip">
+		You might use <kbd>PP</kbd> as an abbreviation for <strong>Play/Pause</strong>, and <kbd>NN</kbd> as an abbreviation for <strong>Next Song</strong> to have these actions always quickly accessible. And you can use <a href="InstantOpen.html">Instant Open</a> to invoke them even more quickly.
+	</div>
+
+	<a name="play-song"></a>
+    <h2>Playing Songs</h2>
+
+	<p>When you open a single song for playback in iTunes, LaunchBar provides two different playback modes:</p>
+
+	<ul class="stretched">
+		<li><strong>Play from Album</strong><br />
+			Continues playback with other songs from the same album. This is the default mode.</li>
+		<li><strong>Play Single Song</strong><br />
+			Plays only the selected song and stops playback at the end of the song.</li>
+	</ul>
+
+	<p>You can choose your preferred playback mode in the <a href="x-launchbar:pref-pane?identifier=actions.options">Actions pane</a> of LaunchBar preferences.</p>
+
+	<a name="browsing"></a>
+    <h2>Browsing the iTunes Library</h2>
+
+	<p>Select iTunes (or the iTunes Library indexing rule) in LaunchBar and press the right arrow key to browse the contents of your music library.</p>
+
+	<table cellspacing="2" cellpadding="8" border="0" style="margin-left:-10">
+	<tr>
+		<td><img src="images/artist-subsearch.png" alt="" /></td>
+		<td class="small">To search for a particular song, artist, album, etc., you can select and sub-search the corresponding category.</td>
+	</tr>
+	<tr>
+		<td><img src="images/song-details.png" alt="" /></td>
+		<td class="small">To display the details of the currently selected song (artist, album, genre and composer) press the right arrow key.</td>
+	</tr>
+	<tr>
+		<td><img src="images/album.png" alt="" /></td>
+		<td class="small">Browsing an album displays all tracks along with track number, rating and playing time.</td>
+	</tr>
+	<tr>
+		<td><img src="images/genre-browsing.png" alt="" /></td>
+		<td class="small">Browsing a genre, an artist or a composer displays related information such as the corresponding Best of List, albums or artists for the selected genre, albums and genres of the selected artist, etc.</td>
+	</tr>
+	</table>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="Browsing.html">Browsing using the arrow keys</a></li>
+			<li><a href="Subsearch.html">Performing sub-searches</a></li>
+		</ul>
+	</div>
+
+	<a name="itunes-dj"></a>
+    <h2>iTunes DJ</h2>
+
+	<p>Music items (songs, playlists, albums, artists, etc.) can be added to the iTunes DJ playlist using the Play in iTunes DJ, Play Next in iTunes DJ and Add to iTunes DJ commands. Invoking these commands keeps the LaunchBar search result menu visible - it just flickers the selected item, allowing you to quickly select further items from the menu.</p>
+
+	<div class="screenshot">
+		<img src="images/song-action-menu.png" alt="" />
+	</div>
+
+	<div class="small box">
+		<ul>
+			<li><strong>Shift-Return:</strong> Play in iTunes DJ</li>
+			<li><strong>Shift-Control-Return:</strong> Play Next in iTunes DJ</li>
+			<li><strong>Shift-Option-Return:</strong> Add to iTunes DJ</li>
+		</ul>
+	</div>
+
+	<a name="best-of-lists"></a>
+    <h2>Best Of Lists</h2>
+
+	<p>Top rated songs of a particular artist, composer or genre are automatically collected in smart lists, the so called Best Of Lists. They can be accessed either directly, by entering e.g. <kbd>BOJZ</kbd> to select the <em>Best Of Jazz</em> list, or via browsing by selecting e.g. an artist and pressing Right Arrow to get a list of this artist’s best tunes.</p>
+
+	<div class="screenshot">
+		<img src="images/best-of-lists.png" alt="" />
+	</div>
+
+	<p>By default, songs rated with 4 stars or better are included in these Best Of Lists. You can choose a different threshold in the Options pane of the iTunes indexing rule.</p>
+
+	<div class="screenshot">
+		<img src="images/best-of-jazz.png" alt="" />
+	</div>
+
+	<a name="primary-artist"></a>
+    <h2>Primary Artist</h2>
+
+	<p>The <em>Direct Access &gt; Primary Artists</em> configuration setting allows you to access classical and soundtrack pieces by composer, and contemporary music by artist (assuming that in most cases you rather know the interpreter of a contemporary song, but the composer of a classical work). When using this option, you should turn off the Artist/Composer options in return.</p>
+
+	<a name="current-song"></a>
+    <h2>Current Song</h2>
+
+	<p>The song that’s currently played in iTunes can be retrieved quickly by selecting the iTunes application and pressing the right arrow key. Pressing the right arrow key again shows further details such as album, artist, composer and genre allowing you e.g. to quickly select songs from the same album or artist.</p>
+
+	<a name="play-and-open"></a>
+    <h2>Play and Open iTunes</h2>
+
+	<p>When a music item (song, playlist, album, artist, etc.) is opened with Return, the playback is started in background, without activating iTunes. However, if the item is opened with Control-Return instead, iTunes will be activated in addition to starting the playback.</p>
+
+	<a name="reveal"></a>
+    <h2>Show in iTunes</h2>
+
+	<p>The <em>Show in iTunes</em> action (Command-Control-Return) reveals a selected song in iTunes without playing it.</p>
+
+	<p>Use this action for example to edit some attributes of a particular song in iTunes (change the rating, open the Get Info window, etc.).</p>
+
+	<a name="troubleshooting"></a>
+    <h2>Troubleshooting</h2>
+
+	<h3>LaunchBar can’t find song files that have been renamed or moved in Finder</h3>
+
+	<p>When LaunchBar indexes your iTunes Library, it reads an XML mirror file of the library, which is created and updated by iTunes whenever you make changes to your library. However, if you rename or move a song file in Finder, iTunes doesn’t notice this change, therefore it doesn’t update the XML mirror. iTunes itself has no problem with such external changes since internally it references your music files via aliases, which are more resistant against renaming and moving the underlying files. The XML mirror however only contains the file’s absolute Unix file path, which becomes invalid when you rename or move the file.</p>
+
+	<p>Usually it’s possible to work around this issue by opening the "Get Info" window for the affected songs in iTunes. This helps iTunes to get aware of the song’s new Unix file path, and the XML mirror will be updated the next time it’s written.</p>
+
+	<p>Another way to make iTunes aware of these changes is to open the affected song files from within Finder via double click or Command-O (provided that they are then opened iTunes). Alternatively you can drag them from Finder onto the iTunes Dock icon.</p>
+
+</body>
+</html>

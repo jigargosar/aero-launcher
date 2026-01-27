@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Workflows</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<a name="page-workflows"></a>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td>Topics</td>
+		<td></td>
+	</tr></table>
+
+    <h1>Workflows</h1>
+
+	<div class="preface">
+        LaunchBar provides tight integration with Automator workflows, allowing you to run them from within LaunchBar, optionally pass text or file arguments, and to return the results back to LaunchBar.
+	</div>
+
+	<div class="subnavigation">
+		<ul>
+			<li><a href="#wf-create">               Creating a new workflow</a></li>
+			<li><a href="#wf-run">                  Running a workflow</a></li>
+			<li><a href="#wf-edit">                 Editing an existing workflow</a></li>
+			<li><a href="#wf-delete">               Deleting an existing workflow</a></li>
+			<li><a href="#wf-share">                Sharing your workflows with others</a></li>
+			<li><a href="#wf-automator-actions">    Automator Actions</a></li>
+		</ul>
+	</div>
+
+<a name="wf-create"></a>
+<h2>Creating a new workflow</h2>
+
+    <p>To create a new workflow you just have to create a Service workflow in Automator. LaunchBar automatically indexes all these workflows, so any workflow that you create in Automator is immediately accessible from within LaunchBar.</p>
+
+    <div class="white box">
+    <ol class="stretched">
+        <li>Launch Automator.</li>
+        <li>Create a new document.</li>
+        <li>Choose “Service” as the document type.</li>
+        <li>Specify the kind of input that your workflow shall receive from the “Service receives selected …” pop-up:<br />
+            <img src="images/receives-selected-text.png" width="292" height="27" style="margin: 4px 0" alt="" /><br />
+            If your workflow doesn’t require any input, choose “no input”:<br />
+            <img src="images/receives-no-input.png" width="245" height="27" style="margin: 4px 0" alt="" /><br />
+        </li>
+        <li>Optionally, choose if your workflow service shall be available in “any application”:<br />
+            <img src="images/available-in-any-application.png" width="195" height="27" style="margin: 4px 0" alt="" /><br />
+            or just in one particular application:<br />
+            <img src="images/available-in-one-application.png" width="195" height="27" style="margin: 4px 0" alt="" /><br />
+        </li>
+        <li>Add some actions from Automator’s Library sidebar to your workflow.</li>
+        <li>If your workflow generates any results, use actions like <em>Send to LaunchBar</em> or <em>Display in Large Type</em> to pass these results back to LaunchBar.</li>
+        <li>Save the Workflow. You just have to provide a name. Automator saves Service workflows in your ~/Library/Services folder.</li>
+    </ol>
+    </div>
+
+<a name="wf-run"></a>
+<h2>Running a workflow</h2>
+
+    <p>If the workflow doesn’t require any input, just type an abbreviation of its name to select it in LaunchBar and hit Return.</p>
+
+    <h3>Running a workflow that requires text input</h3>
+
+    <p>If the workflow requires a text input, press Return or Space to open a text field where you can enter the text:</p>
+
+	<div class="screenshot">
+        <img src="images/workflow-text-input.png" width="362" height="47" alt="" />
+    </div>
+
+    <p>Alternatively, you can use Instant Send to send some text from another application to LaunchBar and then choose the workflow that shall process the sent text:</p>
+
+	<div class="screenshot">
+        <img src="images/send-text-to-workflow.png" width="362" height="47" alt="" />
+    </div>
+
+    <h3>Running a workflow that requires file input</h3>
+
+    <p>If the workflow requires a file input, select the file in LaunchBar first, then press Tab and select the desired workflow. Alternatively, send the file from Finder to LaunchBar via <a href="InstantSend.html">Instant Send</a>, then pass it over to the workflow:</p>
+
+	<div class="screenshot">
+        <img src="images/send-file-to-workflow.png" width="362" height="47" alt="" />
+    </div>
+
+<a name="wf-edit"></a>
+<h2>Editing an existing workflow</h2>
+
+    <p>To edit an an existing workflow, select it in LaunchBar and press Shift-Return to trigger “Open with Automator” from the action menu. Alternatively you can press Tab to send the selected workflow to Automator.</p>
+
+	<div class="screenshot">
+        <img src="images/open-workflow-with-automator.png" width="362" height="119" alt="" />
+    </div>
+
+<a name="wf-delete"></a>
+<h2>Deleting an existing workflow</h2>
+
+    <p>To delete a workflow, select it in LaunchBar and press Command-Delete to trigger <em>Move to Trash</em> from the action menu.</p>
+
+<a name="wf-share"></a>
+<h2>Sharing your workflows with others</h2>
+
+    <p>If you’ve created a workflow (or a set of workflows) that you’d like to share with others, you can export them to a LaunchBar Extension file. You can then send this file via email or make it available for download. A double click on such file installs the workflows.</p>
+
+    <div class="white box">
+        <ol class="stretched">
+            <li>￼Open the LaunchBar index window.</li>
+            <li>Select the ￼Workflows indexing rule in the sidebar.</li>
+            <li>Switch to the Index pane.</li>
+            <li>Select one or more workflows that you’d like to share.</li>
+            <li>Click the Share button in the bottom-right corner of the window.<br />
+                <img src="images/share-button.png" width="29" height="24" style="margin: 4px 0" alt="" /><br />
+            </li>
+            <li>Enter a brief description of the workflow(s), and optionally some information about the author.</li>
+        </ol>
+    </div>
+
+<a name="wf-automator-actions"></a>
+<h2>Automator Actions</h2>
+
+    <p>LaunchBar provides a set of Automator actions that are useful especially for workflows that are run from within LaunchBar.</p>
+
+    <div class="white box">
+        <h4>Available Actions</h4>
+        <ul>
+            <li>￼Send to LaunchBar</li>
+            <li>￼Display in Large Type</li>
+            <li>￼Display in Notification Center</li>
+            <li>￼Paste in Frontmost Application</li>
+            <li>￼Perform Action</li>
+            <li>￼Perform Service</li>
+            <li>￼Hide LaunchBar</li>
+            <li>￼Browse</li>
+        </ul>
+
+    </div>
+
+    <p>You can type “LaunchBar” in the search field of the Automator Library to get a list of all actions that are provided by LaunchBar:</p>
+
+	<div class="screenshot" style="margin-bottom:5em">
+        <img src="images/automator-actions.png" width="310" height="226" alt="" />
+    </div>
+
+
+    <h3>Send to LaunchBar</h3>
+    <p>This action can be used to pass results from the workflow back to LaunchBar. You can choose from three options how these results shall be shown in LaunchBar:</p>
+
+    <h4>Create text item</h4>
+    <p>With this option, the input is shown as text in LaunchBar, even if it could be interpreted as a file or URL.</p>
+
+    <h4>Create single item</h4>
+    <p>With this option, multiple input items are combined into a single item in LaunchBar. For example, if your workflow returns a list of file paths, LaunchBar shows them as a single item that represents all files at once.</p>
+
+    <h4>Create list of individual items</h4>
+    <p>With this option, each item from input is shown as a separate item in LaunchBar. This allows to select and open an individual item from the list.</p>
+
+    <p>Input is accepted in a variety of formats:</p>
+    <ul>
+        <li>A list of strings (or just a single string)</li>
+        <li>A list of file paths (or just a single file path)</li>
+        <li>A list of URLs (or just a single URL)</li>
+        <li>A list of items in PLIST format</li>
+        <li>A list of items in XML format</li>
+        <li>A list of items in JSON format</li>
+    </ul>
+
+    <p>The PLIST, XML and JSON formats allow you to specify detailed properties for each item, such as title, subtitle, url, path and icon.</p>
+
+    <p>Here’s an example of the XML format:</p>
+
+    <div class="small white box">
+    <pre>&lt;?xml version='1.0'?&gt;
+&lt;items&gt;
+    &lt;item&gt;
+        &lt;url&gt;http://www.example.com/forecast/tomorrow&lt;/url&gt;
+        &lt;title&gt;Weather forecast for tomorrow&lt;/title&gt;
+        &lt;subtitle&gt;Sunny, 23 to 27°C&lt;/subtitle&gt;
+        &lt;icon&gt;/tmp/forecast.png&lt;/icon&gt;
+    &lt;/item&gt;
+    &lt;item&gt;
+        &lt;path&gt;/tmp/some-file.txt&lt;/path&gt;
+        &lt;title&gt;This is some text file&lt;/title&gt;
+    &lt;/item&gt;
+    &lt;item&gt;
+        &lt;url&gt;x-launchbar:perform-action?name=Display+in+Large+Type&amp;amp;string=Hello+World&lt;/url&gt;
+        &lt;title&gt;Hello World&lt;/title&gt;
+        &lt;icon&gt;com.apple.mail:attachment&lt;/icon&gt;
+    &lt;/item&gt;
+&lt;/items&gt;</pre>
+    </div>
+
+    <p>Here’s the same example in JSON format:</p>
+
+    <div class="small white box">
+    <pre>[
+    {
+        "url": "http://www.example.com/forecast/tomorrow",
+        "title": "Weather forecast for tomorrow",
+        "subtitle": "Sunny, 23 to 27°C",
+        "icon": "/tmp/forecast.png"
+    },
+    {
+        "path": "/tmp/some-file.txt",
+        "title": "This is some text file"
+    },
+    {
+        "url": "x-launchbar:perform-action?name=Display+in+Large+Type&amp;string=Hello+World",
+        "title": "Hello World",
+        "icon": "com.apple.mail:attachment"
+    }
+]</pre>
+    </div>
+
+    <h3>Display in Large Type</h3>
+    <p>This action can be used if you just want to display the results of a workflow instead of sending it back to LaunchBar. You can specify an optional title, and an optional font name.</p>
+
+    <h3>Display in Notification Center</h3>
+    <p>Similar to the <em>Display in Large Type</em> action this action can used to display the results of a workflow in Mountain Lion’s Notification Center.</p>
+
+    <h3>Paste in Frontmost Application</h3>
+    <p>This action can be used to insert the results of your workflow directly into the document that you are currently editing.</p>
+
+    <h3>Perform Action</h3>
+    <p>This Automator action can be used to invoke an action from LaunchBar’s <em>Actions</em> index, just by specifying the action’s name.</p>
+
+    <div class="white box">
+        <span class="badge">Example</span>
+
+        <p>Create an Automator workflow whose output is an image file. You can now add the <em>Perform Action</em> action to trigger LaunchBar’s “Post on Twitter” action which then posts that image on Twitter:</p>
+
+        <div class="screenshot">
+            <img src="images/post-on-twitter-workflow.png" width="407" height="201" alt="" />
+        </div>
+    </div>
+
+    <h3>Perform Service</h3>
+    <p>Similar to the <em>Perform Action</em> action this action lets you invoke any service from LaunchBar’s Services index, just by specifying the name of the Service.</p>
+
+    <h3>Hide LaunchBar</h3>
+    <p>When running an Automator workflow via LaunchBar, the LaunchBar window remains open after the workflow has completed to make sure that any results of the workflow that have been sent back to LaunchBar via <em>Send to LaunchBar</em> are immediately accessible.</p>
+
+    <p>If your workflow doesn’t return any results back to LaunchBar, you can add this action to close the LaunchBar window after the workflow has completed.</p>
+
+    <h3>Browse</h3>
+    <p>With this action the contents of the specified object can be browsed in LaunchBar. This has the same effect as when you select that object in LaunchBar and then press the Right Arrow key. The following types of objects can be browsed with this action:</p>
+
+    <ul>
+        <li><strong>Text:</strong> Shows the specified text, separated into individual lines or words.</li>
+        <li><strong>File or Folder:</strong> Shows the contents of the specified folder or text file.</li>
+        <li><strong>Indexing Rule:</strong> Shows the items of one of the indexing rules from LaunchBar’s index. You must specify the name of the desired indexing rule.</li>
+        <li><strong>Category:</strong> Shows the contents of one of the categories in LaunchBar’s Categories indexing rule. You must specify the name of the desired category.</li>
+        <li><strong>Mounted Volumes:</strong> Shows all currently mounted volumes.</li>
+        <li><strong>Running Applications:</strong> Shows all applications that are currently running on your computer.</li>
+    </ul>
+
+
+<div class="related-topics">
+    <h2>Related Topics</h2>
+    <ul>
+        <li><a href="Actions.html">Actions</a></li>
+        <li><a href="Services.html">Services</a></li>
+		<li><a href="SendingItems.html">Sending Items with the Tab key</a></li>
+		<li><a href="InstantSend.html">Instant Send</a></li>
+    </ul>
+</div>
+
+</body>
+</html>

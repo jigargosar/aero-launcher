@@ -1,0 +1,320 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Working with Files and Folders</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td>Topics</td>
+		<td></td>
+	</tr></table>
+
+	<h1>Working with Files</h1>
+
+	<div class="preface">
+		LaunchBar provides quick access to your files and folders either via abbreviation search or by browsing the file system using the arrow keys. And once you’ve found the desired item, there are multitudes of possibilities what you can do with the selected item.
+	</div>
+
+	<div class="subnavigation">
+		<ul>
+			<li><a href="#search-by-name">		Searching for files by name</a></li>
+			<li><a href="#search-by-kind">		Searching for files of a specific kind</a></li>
+			<li><a href="#browsing">			File System Browsing</a></li>
+			<li><a href="#finder-selection">	Using the current Finder selection</a></li>
+			<li><a href="#multiple-selection">	Selecting multiple files</a></li>
+			<li><a href="#move-copy">			Moving and copying files and folders</a></li>
+			<li><a href="#copy-paste">			Copy and Paste</a></li>
+			<li><a href="#drag-drop">			Drag and Drop</a></li>
+			<li><a href="#open-save">			Selecting folders in Open/Save dialogs</a></li>
+			<li><a href="#alias">				Accessing remote servers and encrypted disk images via alias files</a></li>
+			<li><a href="#invisible">			Accessing invisible files</a></li>
+			<li><a href="#file-content-search">	File Content Search</a></li>
+			<li><a href="#rename">				Renaming Files</a></li>
+			<li><a href="#append-text">			Append Text</a></li>
+			<li><a href="#other">				New Folder, Duplicate, Get Info, Eject, Move to Trash</a></li>
+		</ul>
+	</div>
+
+<a name="search-by-name"></a>
+<h2>Searching for files by name</h2>
+
+	<p>If you want to access files or folders directly by entering abbreviations of their name, these items must be contained in LaunchBar’s index. However, LaunchBar’s default configuration does <strong>not</strong> cover all files and folders on your hard disk, so it’s necessary to create indexing rules for those folders whose contents you want to access directly via LaunchBar.</p>
+
+	<p>So if you wish to access items from your Documents folder, make sure that your index window’s sidebar shows an indexing rule for your Documents folder and that this rule is enabled. If there is no such rule yet, simply drag your Documents folder to the Indexing Rules sidebar to create one.</p>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="FilesAndFolders.html">The Files and Folders indexing rule</a></li>
+			<li><a href="IndexWindow.html#new">Creating new indexing rules</a></li>
+		</ul>
+	</div>
+
+<a name="search-by-kind"></a>
+<h2>Searching for files of a specific kind</h2>
+
+	<p>If you are looking for a file of a particular kind (e.g. a JPEG image or an RTF text file), you can limit the search scope to items of that kind by selecting the corresponding <a href="Categories.html">category</a> first. You can then <a href="Subsearch.html">sub-search</a> this category by pressing the space bar or the right arrow key.</p>
+
+<a name="browsing"></a>
+<h2>File System Browsing</h2>
+
+	<p>Instead of selecting files or folders directly by typing an abbreviation of the searched item’s name, you can also select them by <a href="Browsing.html"> browsing the contents of your file system</a> with the left/right arrow keys. This allows you to access even those items that are not covered by the configuration.</p>
+
+<a name="finder-selection"></a>
+<h2>Using the current Finder selection</h2>
+
+	<p>There are several ways to transfer the current Finder selection to LaunchBar:</p>
+
+	<ul>
+		<li><strong>Get Finder Selection</strong> (Command-G): Transfers the current Finder selection to LaunchBar.</li>
+		<li><strong>Drop Finder Selection</strong> (Command-D): Simulates a “drag and drop” of the current Finder selection onto LaunchBar.</li>
+		<li><strong>Instant Send:</strong> Select one or more items in Finder, then press and hold <a href="KeyboardShortcuts.html">Command-Space</a>.</li>
+		<li><strong>Finder &gt; Services &gt; Send to LaunchBar</strong> (Command-Shift-F1)</li>
+		<li><strong>Copy/Paste</strong>: Copy the file in Finder (Command-C) and paste it in LaunchBar (Command-V).</li>
+	</ul>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="InstantSend.html">Instant Send</a></li>
+			<li><a href="DragAndDrop.html#keyboard">Drag and Drop using the keyboard</a></li>
+		</ul>
+	</div>
+
+<a name="multiple-selection"></a>
+<h2>Selecting multiple files</h2>
+
+	<p>Although LaunchBar currently doesn’t allow to select a number of individual files directly, there are already a couple of ways to create such multiple selections:</p>
+
+	<ul class="stretched">
+		<li>Use <a href="ClipboardHistory.html#clipmerge">ClipMerge</a> to create a multiple file selection on the Clipboard. You can then press Command-Shift-V to select these files in LaunchBar. Or you can select a folder and press Command-V to “paste” these files to that folder - you can then choose to copy or move the files to that folder.</li>
+
+		<li>Press Command-A to select all files inside a folder. If you first <a href="Subsearch.html">sub-search</a> that folder, Command-A selects the matching files only. For example, you might sub-search your Desktop folder by typing PICPNG to find all the Picture 1.png, Picture 2.png, etc. files on your Desktop. Then press Command-A to get a selection that contains just these picture files.</li>
+
+		<li>Select multiple files in Finder, and send them to LaunchBar via <a href="InstantSend.html">Instant Send</a>.</li>
+	</ul>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="ClipboardHistory.html#clipmerge">ClipMerge</a></li>
+			<li><a href="Subsearch.html">Sub-Search</a></li>
+			<li><a href="InstantSend.html">Instant Send</a></li>
+		</ul>
+	</div>
+
+<a name="move-copy"></a>
+<h2>Moving and copying files and folders</h2>
+
+	<p>You can move or copy a selected object to another folder in two different ways: You can either use Copy and Paste to copy the source object and paste it onto the destination folder, or you can press the Tab key to send it directly to the desired folder.</p>
+
+	<h3>Copy and Paste</h3>
+
+	<div class="white box">
+		<ol>
+			<li>Select the source object</li>
+			<li>Press Command-C</li>
+			<li>Select the destination folder</li>
+			<li>Press Command-V</li>
+			<li>Choose the desired file operation (Move, Copy, etc.) from the menu</li>
+		</ol>
+	</div>
+
+	<p>Note that you can navigate the menu with the arrow keys, and that you can select the desired file operation directly by typing the corresponding digit 1-6:</p>
+
+	<div class="screenshot">
+		<img src="images/file-operation-menu.png" alt="" />
+	</div>
+
+	<h3>Send to folder</h3>
+
+	<div class="white box">
+		<ol>
+			<li>Select the source object</li>
+			<li>Press Tab</li>
+			<li>Select the destination folder</li>
+			<li>Press Return</li>
+			<li>Choose the desired file operation (Move, Copy, etc.) from the menu</li>
+		</ol>
+	</div>
+
+	<p>For even faster operation you can circumvent the menu and choose the desired file operation directly by pressing additional modifier keys. For example, Command-Return moves the file, Option-Return copies the file:</p>
+
+	<div class="screenshot">
+		<img src="images/send-to-folder.png" alt="" />
+	</div>
+
+	<div class="small white box">
+		<ul>
+			<li><strong>Command-Return:</strong> Move to Folder</li>
+			<li><strong>Option-Return:</strong> Copy to Folder</li>
+			<li><strong>Command-Option-Return:</strong> Make Alias</li>
+			<li><strong>Control-Return:</strong> Make Symbolic Link (Absolute)</li>
+			<li><strong>Control-Option-Return:</strong> Make Symbolic Link (Relative)</li>
+			<li><strong>Control-Shift-Return:</strong> Make Hard Link</li>
+		</ul>
+	</div>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="CopyAndPaste.html">Copy and Paste</a></li>
+			<li><a href="SendingItems.html">Sending Items</a></li>
+		</ul>
+	</div>
+
+<a name="copy-paste"></a>
+<h2>Copy and Paste</h2>
+
+	<h3>Copying file paths</h3>
+
+	<p>If the selected item refers to a file or folder, you can copy its file path (Command-C) or the file’s contents (Command-Option-C) to the Clipboard.</p>
+
+	<p>In <a href="x-launchbar:pref-pane?identifier=advanced">LaunchBar Preferences &gt; Advanced</a> you can choose to abbreviate the home folder with a tilde sign, and to surround copied file paths with double quotes.</p>
+
+	<h3>Pasting file paths</h3>
+
+	<ul>
+		<li>You can paste a file onto an application, in order to open it with that application.</li>
+		<li>You can paste it onto a folder to move or copy it to that folder.</li>
+		<li>You can use <em>Select from Clipboard</em> (Command-Shift-V) to select the pasted file in LaunchBar.</li>
+	</ul>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="CopyAndPaste.html">Copy and Paste</a></li>
+		</ul>
+	</div>
+
+<a name="drag-drop"></a>
+<h2>Drag and Drop</h2>
+
+	<p>You can drag files from other applications to LaunchBar in order to select them in LaunchBar, open them with a particular application or AppleScript, move or copy them to a folder, etc.</p>
+
+	<p>You can also drag files or folders from LaunchBar to other applications in order to move or copy them to a folder in Finder, attach them to a Mail message, select a folder in an Open/Save dialog, insert a file’s Unix path in a Terminal window, etc.</p>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="DragAndDrop.html#keyboard">Drag and Drop</a></li>
+		</ul>
+	</div>
+
+<a name="open-save"></a>
+<h2>Selecting folders in Open/Save dialogs</h2>
+
+	<p>You can use LaunchBar to quickly select a folder in Open/Save dialogs of other applications. Instead of clicking and scrolling within the dialog, press the /-key (forward-slash) to open the “Go to folder” dialog, switch to LaunchBar, select the desired folder and press Command-Shift-C to <a href="CopyAndPaste.html#copy-paste">copy and paste</a> the folder from LaunchBar to the dialog.</p>
+
+	<div class="small box" title="Note">
+		The Open dialog of Carbon applications (such as Word, Photoshop, Eudora, etc.) unfortunately doesn’t support the forward-slash keyboard shortcut. It only works in Save dialogs. This is a shortcoming of the OS X Carbon frameworks.
+	</div>
+
+	<p>Alternatively you can <a href="DragAndDrop.html">drag and drop</a> a folder from LaunchBar directly to the Open/Save dialog in order to navigate to that folder.</p>
+
+	<div class="small box"  title="Tip">
+		You can select the desired folder in LaunchBar either directly via abbreviation search, by sub-searching the “Folders” <a href="Categories.html">category</a>, or via <a href="Browsing.html">File System Browsing</a> (e.g. if the folder is not contained in LaunchBar’s index).
+	</div>
+
+<a name="alias"></a>
+<h2>Accessing remote servers and encrypted disk images via alias files</h2>
+
+	<p>Using alias files in conjunction with LaunchBar provides a very convenient method for quickly mounting remote servers and accessing the contents of encrypted disk images. Create an alias while the volume is mounted, and if you open it later, the corresponding volume will be remounted automatically.</p>
+
+	<p>First, mount the volume whose contents you wish to access later via LaunchBar (i.e. connect to the remote server or open the encrypted disk image). Now make an alias of either the entire volume or one of its items, and make this alias accessible via LaunchBar (e.g. move it to a folder that’s indexed by LaunchBar). When you later access this alias via LaunchBar, the volume gets remounted automatically. If necessary, you will be asked to enter a username and/or password. Note that LaunchBar also allows you to "browse through" such an alias (using the right arrow key), so in order to access e.g. the contents of a not yet mounted remote server you just have to select the server’s alias in LaunchBar and press right arrow to mount the server and list its contents.</p>
+
+	<div class="small box"  title="Tip">
+		To create an alias of an entire volume, choose Finder &gt; Go &gt; Computer, hold down the Command and the Option key, and drag the icon of the desired volume to the Desktop.
+	</div>
+
+<a name="invisible"></a>
+<h2>Accessing invisible files</h2>
+
+	<p>To access a folder’s invisible contents (invisible files, "dot files", etc.), select that folder in LaunchBar, hold down the Option key and press the right arrow key. That way you can also browse the hidden contents of application packages and file packages.</p>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="Browsing.html#expert">Expert Browsing</a></li>
+		</ul>
+	</div>
+
+<a name="file-content-search"></a>
+<h2>File Content Search</h2>
+
+	<p>If you’ve selected a text file whose contents can be converted into plain text (.txt, .rtf, .rtfd, .html, .h, .m, .doc, .webarchive, etc.), you can press Command-F or Option-Space to search the contents of that file. LaunchBar will then show a list with all occurrences of the searched string. Opening one of these search results opens the file and selects the corresponding line.</p>
+
+<a name="rename"></a>
+<h2>Renaming Files</h2>
+
+	<p>To rename a file or folder that’s currently selected in LaunchBar, choose <em>Rename</em> from the action menu, or press the Command-Shift-R shortcut.</p>
+
+	<div class="screenshot">
+		<img src="images/rename-file.png" alt="" />
+	</div>
+
+	<p>Initially, only the filename gets selected (without the filename extension) to prevent the extension from being overridden by accident. If you wish to change the extension, you can press the Tab key to quickly select just the extension.</p>
+
+	<div class="screenshot">
+		<img src="images/rename-file-extension.png" alt="" />
+	</div>
+
+<a name="append-text"></a>
+<h2>Append Text</h2>
+
+	<p>The <em>Append Text</em> command allows you to append short text notes to a plain text or RTF file. It can be invoked in two ways, either by selecting the file first and then entering the text, or by selecting the text first and then sending it to the desired file.</p>
+
+	<h3>Selecting the file first</h3>
+
+	<p>First, select a text file in LaunchBar. Then do one of the following:</p>
+
+	<div class="white choices box">
+		<ul>
+			<li>Choose <em>File &gt; Append Text</em> from the menu bar</li>
+			<li>Choose <em>Append Text</em> from the action menu</li>
+			<li>Press the Command-Shift-A keyboard shortcut</li>
+			<li>Press Shift-Space</li>
+		</ul>
+	</div>
+
+	<p>Now you can enter the text that you wish to append. To enter multiple lines, you can separate them with a '\' backslash character.</p>
+
+	<div class="screenshot">
+		<img src="images/append-text.png" alt="" />
+	</div>
+
+	<h3>Selecting the text first</h3>
+
+	<p>If you’ve already selected some text in LaunchBar (e.g. via <a href="InstantSend.html">Instant Send</a>), you can send it to a text file using the Tab key, and the text will be appended to that file.</p>
+
+	<div class="screenshot">
+		<img src="images/send-to-text-file.png" alt="" />
+	</div>
+
+<a name="other"></a>
+<h2>Other File Operations</h2>
+
+	<ul class="stretched">
+		<li><strong>New Folder</strong> (Command-Shift-N): Creates a new folder within the same folder where the currently selected item is located.</li>
+		<li><strong>Duplicate</strong> (Command-Shift-D): Creates a copy of the currently selected file or folder.</li>
+		<li><strong>Get Info</strong> (Command-I): Opens Finder’s Get Info window for the selected item. If you’ve selected Path Finder as your default file browser, Path Finder’s Get Info window will be opened instead.</li>
+		<li><strong>Eject</strong> (Command-E): If the selected item is an ejectable volume (CD, DVD, external hard disk, iPod, digital camera, mounted disk image, etc.), the volume can be ejected by typing Command-E. A list of all currently mounted volumes can be retrieved quickly by browsing the “Mounted Volumes” indexing rule.</li>
+		<li><strong>Move to Trash</strong> (Command-Delete)</li>
+	</ul>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="FilesAndFolders.html">The Files and Folders indexing rule</a></li>
+		<li><a href="Browsing.html">Browsing the file system</a></li>
+		<li><a href="CopyAndPaste.html">Copy and Paste</a></li>
+		<li><a href="DragAndDrop.html">Drag and Drop</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

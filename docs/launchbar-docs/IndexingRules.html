@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Indexing Rules</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="Configuration.html">Configuration</a></td>
+		<td><a href="IndexWindow.html">previous</a> | <a href="Contacts.html">next</a></td>
+	</tr></table>
+
+	<h1>Indexing Rules</h1>
+
+	<div class="preface">
+		LaunchBar provides a multitude of indexing rules, allowing you to access a wide range of different resources such as applications, documents, contacts, bookmarks, your iTunes Library and much more.
+	</div>
+
+	<div class="subnavigation">
+	<ul>
+		<li><a href="#ir-categories">           Categories</a></li>
+		<li><a href="#ir-applications">         Applications</a></li>
+		<li><a href="#ir-actions">              Actions</a></li>
+		<li><a href="#ir-workflows">            Workflows</a></li>
+		<li><a href="#ir-services">             Services</a></li>
+		<li><a href="#ir-snippets">             Snippets</a></li>
+		<li><a href="#ir-dock">                 Dock</a></li>
+		<li><a href="#ir-preference-panes">     Preference Panes</a></li>
+		<li><a href="#ir-mounted-volumes">      Mounted Volumes</a></li>
+		<li><a href="#ir-network-locations">    Network Locations</a></li>
+		<li><a href="#ir-user-accounts">        User Accounts</a></li>
+		<li><a href="#ir-contacts">             Contacts</a></li>
+		<li><a href="#ir-calendars">            Calendars</a></li>
+		<li><a href="#ir-itunes">               iTunes Library</a></li>
+		<li><a href="#ir-iphoto">               iPhoto Library</a></li>
+		<li><a href="#ir-web">                  Web Bookmarks and History</a></li>
+		<li><a href="#ir-1password">            1Password Bookmarks</a></li>
+		<li><a href="#ir-cyberduck">            Cyberduck Bookmarks</a></li>
+		<li><a href="#ir-tower">                Tower Repositories</a></li>
+		<li><a href="#ir-development">          Development Resources</a></li>
+		<li><a href="#ir-icloud">               iCloud Documents</a></li>
+		<li><a href="#ir-files">                Files and Folders</a></li>
+		<li><a href="#ir-search-templates">     Search Templates</a></li>
+		<li><a href="#ir-custom-lists">         Custom Lists</a></li>
+	</ul>
+	</div>
+
+<a name="ir-categories"></a>
+<h2>Categories</h2>
+
+	<p>The Categories indexing rule automatically groups similar index items. All items of the same kind are collected into <a href="Categories.html">categories</a>, allowing you to <a href="Subsearch.html">sub-search</a> these categories for a specific item of that kind.</p>
+
+<a name="ir-applications"></a>
+<h2>Applications</h2>
+
+	<p>The Applications indexing rule scans for applications installed on your computer.</p>
+
+	<h3>Options</h3>
+	<ul class="small stretched">
+		<li><strong>Include enclosing folders</strong><br />
+		If you have organized your applications in separate subfolders (e.g. if you’ve put all your gaming applications into a “Games” folder), you can use this option to access these applications by selecting their enclosing folder first. Then you just have to press the right arrow key to show all applications inside this folder.</li>
+
+		<li><strong>Use Spotlight index</strong><br />
+		Using the Spotlight index instead of searching for installed applications on disk results in much faster application indexing.</li>
+
+		<li><strong>Search in Specific Places / Everywhere</strong><br />
+		You can specify a list of folders where to search for applications. Using the “Search Everywhere” option requires the “Use Spotlight index” option to be set.</li>
+	</ul>
+
+<a name="ir-actions"></a>
+<h2>Actions</h2>
+
+	<p>The Actions indexing rule provides access to a number of built-in actions as well as custom actions in form of AppleScripts and Unix Executables.</p>
+
+	<h3>Built-in Actions</h3>
+
+	<p>LaunchBar comes with a comprehensive set of built-in actions, such as Sleep, Shut Down, Save Text, Show Date, Volume control (Mute, Mute Off, Maximum Volume,  etc.), iTunes playback control (Play, Pause, Next Song, Previous Song, etc.), Entourage control (Address Book View, Calendar View, etc.), and more. See the Index pane of the Actions indexing rule for a complete list of all available actions.</p>
+
+	<div class="screenshot">
+		<img src="images/save-text.png" width="372" height="52" alt="The built-in “Save Text” action" />
+		<p>The built-in “Save Text” action</p>
+	</div>
+
+	<ul class="small">
+		<li><strong>iTunes <a href="WorkingWith_iTunes.html#playback">playback control</a>:</strong> Play, Pause, Next Song, Previous Song, etc.</li>
+		<li><strong>Volume control:</strong> Mute, Mute Off, Maximum Volume, etc.</li>
+		<li><strong>System control:</strong> Sleep, Shut Down, Restart, Log Out</li>
+		<li><strong>Application control:</strong> Quit, Force Quit, Quit All Applications, Running Applications</li>
+		<li><strong>Mail and Entourage:</strong> Get Mail, New Mail Message, Entourage Calendar View, etc.</li>
+		<li><strong>File operations: Set Color Label, Resize Image, Rotate, Image, Open Trash</strong></li>
+		<li><strong>Save Text:</strong> Can be used to type quick text notes and save them to a file. Also useful in conjunction with <a href="TextItems.html">text items</a> sent to this action by pressing Tab.</li>
+		<li><strong>Utilities: Show Date, Show IP Address, Sync Devices, Calculator</strong> </li>
+		<li><strong>and more…</strong></li>
+	</ul>
+
+	<p>See the Index pane of the Actions indexing rule for a complete list of all available actions.</p>
+
+	<h3>Custom Actions</h3>
+
+	<p>If you wish to add your own custom actions, you can create AppleScripts, shell scripts or Unix Executables and put them in the <tt>~/Library/Application Support/LaunchBar/Actions</tt> folder. This folder is automatically indexed by LaunchBar.</p>
+
+	<p>In addition you can turn on indexing for your <tt>~/Library/Scripts</tt>, <tt>~/Library/iTunes/Scripts</tt> and <tt>/Library/Scripts</tt> folders in the Options pane of the Actions indexing rule.</p>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="RunningAppleScripts.html">Running AppleScripts</a></li>
+			<li><a href="WorkingWith_iTunes.html">Working with iTunes</a></li>
+		</ul>
+	</div>
+
+<a name="ir-workflows"></a>
+<h2>Workflows</h2>
+
+	<p>The Workflows indexing rule includes all Automator workflows that have been saved as an OS X Service. You can then use these items just like other <a href="#ir-actions">Actions</a>, either by invoking them directly, pressing Space to enter a text argument or using them as a <a href="SendingItems.html">Send to</a> target.</p>
+
+    <p class="learn-more"><a href="Workflows.html">Learn more about Workflows…</a></p>
+
+<a name="ir-services"></a>
+<h2>Services</h2>
+
+	<p>The Services indexing rule includes all items contained in the OS X Services menu. You can then use these items just like other <a href="#ir-actions">Actions</a>, either by invoking them directly, pressing Space to enter a text argument or using them as a <a href="SendingItems.html">Send to</a> target.</p>
+
+<a name="ir-snippets"></a>
+<h2>Snippets</h2>
+
+	<p>The Snippets indexing rule provides access to a set of often–used pieces of small text. Instead of typing the same text again and again, you just select a snippet in LaunchBar and hit Return. </p>
+
+    <p class="learn-more"><a href="Snippets.html">Learn more about Snippets…</a></p>
+
+<a name="ir-dock"></a>
+<h2>Dock</h2>
+
+	<p>Includes all items contained in the Dock. You can specify whether to include docked applications or to include items from the Dock’s documents area only.</p>
+
+<a name="ir-preference-panes"></a>
+<h2>Preference Panes</h2>
+
+	<p>Includes all preference panes available in System Preferences, allowing you to open a particular preference pane directly from LaunchBar.</p>
+
+<a name="ir-mounted-volumes"></a>
+<h2>Mounted Volumes</h2>
+
+	<p>Includes all mounted volumes such as hard disks, mounted disk images, removable media like CD, DVD, digital camera or iPod, and all connected servers.</p>
+
+<a name="ir-network-locations"></a>
+<h2>Network Locations</h2>
+
+	<p>Includes all network locations defined in the Network pane of System Preferences. Allows you to quickly switch between locations using the keyboard.</p>
+
+<a name="ir-user-accounts"></a>
+<h2>User Accounts</h2>
+
+	<p>Provides access to all user accounts and the Login Window. Allows you to quickly perform Fast User Switching using the keyboard.</p>
+
+<a name="ir-contacts"></a>
+<h2>Contacts</h2>
+
+	<p>The Contacts indexing rule includes all contact cards, contact groups and contact details like full name (including title and nickname), email addresses, phone numbers, postal addresses, company, department and job title information, notes and more.</p>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="Contacts.html">The Contacts indexing rule</a></li>
+			<li><a href="WorkingWithContacts.html">Working with Contacts</a></li>
+		</ul>
+	</div>
+
+<a name="ir-calendars"></a>
+<h2>Calendars</h2>
+
+	<p>Includes all calendars from your Calendar.app allowing you to select a particular calendar and press the space bar to create a new event.</p>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="WorkingWithCalendars.html">Working with Calendars</a></li>
+		</ul>
+	</div>
+
+<a name="ir-itunes"></a>
+<h2>iTunes Library</h2>
+
+	<p>Scans your iTunes Library for music items such as songs, playlists, artists, composers and genres. Automatically creates smart “Best Of Lists” containing the top rated songs of each artist, composer or genre.</p>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="WorkingWith_iTunes.html">Working with iTunes</a></li>
+		</ul>
+	</div>
+
+<a name="ir-iphoto"></a>
+<h2>iPhoto Library</h2>
+
+	<p>Scans your iPhoto Library for photo albums and photos. Scanning for photos is turned off by default.</p>
+
+<a name="ir-web"></a>
+<h2>Web Bookmarks and History</h2>
+
+	<p>Web Addresses (URLs) are retrieved by reading your web browser’s bookmarks and history, or by scanning the contents of an arbitrary HTML file.</p>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="WebBrowsers.html">Web Browsers</a></li>
+		</ul>
+	</div>
+
+<a name="ir-1password"></a>
+<h2>1Password Bookmarks</h2>
+
+	<p>Reads your Go &amp; Fill Bookmarks defined in 1Password.</p>
+
+<a name="ir-cyberduck"></a>
+<h2>Cyberduck Bookmarks</h2>
+
+	<p>Reads your Cyberduck Bookmarks and allows you to quickly establish bookmarked FTP connections.</p>
+
+<a name="ir-tower"></a>
+<h2>Tower Repositories</h2>
+
+	<p>This indexing rule includes all git-repositories that are managed by Tower. This allows you to quickly switch to a particular repository in Tower.</p>
+
+<a name="ir-development"></a>
+<h2>Development Resources</h2>
+
+	<p>This indexing rule scans for development resources such as frameworks, header files and documentation from the ADC Reference Library.</p>
+
+	<p>There are options for scanning the “Cocoa Reference” (including all Cocoa API reference files) and the “Cocoa Guides” (including conceptual information, programming guides and tutorials). LaunchBar displays these ADC Reference Library items with distinct file icons to make them better distinguishable from regular HTML files.</p>
+
+	<h3>Search Scope</h3>
+
+	<p>The “Search Scope” option specifies where to search for frameworks and header files. The “Essential Frameworks” option represents a fixed list of commonly used frameworks. It includes AddressBook, AppKit, ApplicationServices, Foundation, CoreData, CoreFoundation, CoreGraphics, CoreServices, LaunchServices, PreferencePanes, ScreenSaver, Metadata and WebKit frameworks.</p>
+
+<a name="ir-icloud"></a>
+<h2>iCloud Documents</h2>
+
+    <p>This indexing rule indexes all your documents that are currently stored in iCloud.</p>
+
+<a name="ir-files"></a>
+<h2>Files and Folders</h2>
+
+	<p>Files and folders are retrieved by scanning the contents of a folder. The configuration can contain multiple Files and Folders indexing rules, one for each folder whose contents shall be scanned.</p>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="FilesAndFolders.html">The Files and Folders indexing rule</a></li>
+			<li><a href="WorkingWithFiles.html">Working with Files and Folders</a></li>
+		</ul>
+	</div>
+
+<a name="ir-search-templates"></a>
+<h2>Search Templates</h2>
+
+	<p>Search templates allow you to perform web searches and to invoke commands from the Services menu directly from LaunchBar.</p>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="SearchTemplates.html">Search Templates</a></li>
+			<li><a href="PerformingWebSearches.html">Performing Web Searches</a></li>
+		</ul>
+	</div>
+
+<a name="ir-custom-lists"></a>
+<h2>Custom Lists</h2>
+
+	<p>Custom Lists can be used to add single files or folders to the index (instead of indexing the entire contents of a folder).</p>
+
+<div class="related-topics">
+<h2>Related Topics</h2>
+<ul>
+	<li><a href="Configuration.html">Configuration</a></li>
+	<li><a href="IndexWindow.html">Index Window</a></li>
+</ul>
+</div>
+
+</body>
+</html>

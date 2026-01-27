@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Files and Folders</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<a name="page-files-and-folders"></a>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="Configuration.html">Configuration</a></td>
+		<td><a href="SearchTemplates.html">previous</a> | <a href="AliasNames.html">next</a></td>
+	</tr></table>
+
+	<h1>Files and Folders</h1>
+
+	<p>The <strong>Files and Folders</strong> indexing rule scans the contents of a given folder and adds the found items to the index.</p>
+
+	<div class="small box" title="Note">
+		<p>The default configuration does <strong>not</strong> cover all files and folders on your hard disk, but only a couple of common folders. In order to gain access to your personal files and folders via LaunchBar, you first have to create or modify the corresponding indexing rules.</p>
+
+		<p>Read some <a href="ConfigurationConcepts.html">background information</a> why it is recommended to limit LaunchBar’s index to some reasonable size.</p>
+	</div>
+
+	<h2>Options</h2>
+
+	<table class="options">
+		<tr>
+			<th>Search Scope</th>
+			<td>This option allows you to limit the search depth to a number of subfolder levels.</td>
+		</tr>
+		<tr>
+			<th>Search for</th>
+			<td>
+				<p>This pop up button provides a number of <em>Filetype Collections</em>, each representing a set of file types (either filename extensions or HFS filetype codes). When LaunchBar indexes the contents of a folder, it searches for items whose extension or type code matches one of the types in the given collection. If such items are found, they are added to the index.</p>
+
+				<p>There’s a number of built-in collections, such as <em>Folders</em> or <em>Text Files</em>. You may also add your own, custom collections by selecting <em>Edit this List…</em>.</p>
+			</td>
+		</tr>
+		<tr>
+			<th>Skip Subfolders</th>
+			<td>
+				<p>The Skip Subfolders setting allows you to specify a list of folders whose contents shall not be indexed. If a folder with a matching name is found during indexing, the folder and its contents are not added to the index.</p>
+
+				<p>You may use simple shell wildcards (* and ?) to specify a folder’s name, e.g. entering <span class="nobr"><tt>*-Backup</tt></span> or <span class="nobr"><tt>Old-*</tt></span> will skip any folder whose name ends with <span class="nobr">“-Backup”</span> or begins with <span class="nobr">“Old-”</span>.</p>
+			</td>
+		</tr>
+		<tr>
+			<th>Exclude Items</th>
+			<td>
+				Similar to <em>Skip Subfolders</em> the Exclude Items setting lets you specify a list of item names that shall be excluded from the index. If you have e.g. a folder containing lots of files named <em>index.html</em> that you never want to access directly via LaunchBar, you may simply exclude these files by adding <em>index.html</em> to the exclude list.
+			</td>
+		</tr>
+		<tr>
+			<th>Search file package contents</th>
+			<td>
+				<p>In OS X a file package is a folder that is treated like a single file in Finder. For example, an RTFD file (created by TextEdit when you save an RTF file that contains graphics) is such a file package, it contains the RTF file and all attached graphics.</p>
+
+				<p>By default, the contents of these package folders are not scanned by LaunchBar because you usually should not access them individually (this may break the integrity of the whole package). If you wish to include file package contents to LaunchBar’s index, you have to turn on this option.</p>
+			</td>
+		</tr>
+	</table>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="WorkingWithFiles.html">Working with Files and Folders</a></li>
+		<li><a href="Browsing.html">Browsing the file system</a></li>
+		<li><a href="Configuration.html">Configuration</a></li>
+		<li><a href="AliasNames.html">Alias Names</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

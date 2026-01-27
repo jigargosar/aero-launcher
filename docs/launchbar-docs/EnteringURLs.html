@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Web Addresses</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="SelectingItems.html">Selecting Items</a></td>
+		<td><a href="TextItems.html">previous</a></td>
+	</tr></table>
+
+	<h1>Web Addresses</h1>
+
+	<h2>Entering Web Addresses</h2>
+
+	<p>Choose <em>Select &gt; Open Location</em> or press Command-L to enter arbitrary web addresses, or even simpler, just type the address. As soon as you enter a dot character, LaunchBar automatically switches to <em>Open Location</em>. You don’t have to enter the full address, LaunchBar automatically completes the address if necessary by inserting a scheme prefix or by appending “.com”.</p>
+
+	<div class="screenshot">
+		<img src="images/open-location.png" width="422" height="52" alt="Open Location" />
+	</div>
+
+	<table class="xtable">
+		<tr><th>Entered String</th>			<th>Resulting Address</th></tr>
+
+		<tr><td class="kbd">.apple</td>		<td>http://www.apple.com/</td></tr>
+		<tr><td class="kbd">apple.</td>		<td>http://apple.com/</td></tr>
+		<tr><td class="kbd">w3.org</td>		<td>http://w3.org/</td></tr>
+		<tr><td class="kbd">ftp.apple</td>	<td>ftp://ftp.apple.com/</td></tr>
+	</table>
+
+	<div class="small box" title="Note">
+		A different default top level domain (instead of “.com”) can be specified in LaunchBar’s <a href="x-launchbar:pref-pane?identifier=general">General preferences</a>. There you can also define the desired behavior when a dot character is entered.
+	</div>
+
+	<h2>Pasting Web Addresses</h2>
+
+	<p>Instead of typing the address you can also copy/paste an address that you’ve selected in some other application. This is especially useful in cases where you have e.g. a web address written in a text document, but the address is not clickable. Then you just have to copy the address to the clipboard, paste it in LaunchBar and press Return.</p>
+
+	<div class="small box" title="Note">
+		You can even paste text that <em>contains</em> a web address. LaunchBar will detect the address and extract it automatically. For example, try to copy and paste the following line onto LaunchBar:
+		<p><tt>…visit www.obdev.at for more information about…</tt></p>
+	</div>
+
+	<h2>Opening the entered Web Address</h2>
+
+	<p>Press Return to open the entered address in your default web browser. Alternatively, press Tab to get a list of all available web browsers in order to open the address in a particular browser.</p>
+
+	<div class="screenshot">
+		<img src="images/open-with-firefox.png" width="372" height="125" alt="" />
+	</div>
+
+	<p>If you don’t want to open the entered address, but just select it in LaunchBar, press Command-Return.</p>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="SelectingItems.html">Selecting Items</a></li>
+		<li><a href="SendingItems.html">Sending Items with the Tab key</a></li>
+		<li><a href="WebBrowsers.html">Web Browsers</a></li>
+		<li><a href="SearchTemplates.html">Search Templates</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>

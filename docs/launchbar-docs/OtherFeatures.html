@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Other Features</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td>Topics</td>
+		<td></td>
+	</tr></table>
+
+	<h1>Other Features</h1>
+
+	<div class="subnavigation">
+		<ul>
+			<li><a href="#dictionary">				Look Up in Dictionary</a></li>
+			<li><a href="#text-clips">				Text Clips</a></li>
+			<li><a href="#terminal">				Terminal Interaction</a></li>
+			<li><a href="#send-to-launchbar">		Send to LaunchBar</a></li>
+		</ul>
+	</div>
+
+	<a name="dictionary"></a>
+    <h2>Look Up in Dictionary</h2>
+
+	<p>Select the Dictionary application in LaunchBar and press the space bar to enter a search term that shall be looked up in Dictionary.</p>
+
+	<a name="text-clips"></a>
+    <h2>Text Clips</h2>
+
+	<p>A text document whose filename ends with a special <tt>.clip.txt</tt> or <tt>.clip.rtf</tt> filename extension is treated as a Text Clip File. Opening such a file via LaunchBar inserts the file’s contents in the frontmost application.</p>
+
+	<p>You can use this feature to quickly insert predefined text blocks in the currently edited document.</p>
+
+	<a name="terminal"></a>
+    <h2>Terminal Interaction</h2>
+
+	<p>LaunchBar provides a number of commands to interact with Terminal or iTerm.</p>
+
+	<div class="small box">
+		If you prefer to use iTerm instead of Terminal, select the “Preferred Terminal Application” in the <a href="x-launchbar:pref-pane?identifier=actions.options">Actions pane</a> of LaunchBar Preferences accordingly.
+	</div>
+
+	<h3>Open Terminal Here</h3>
+
+	<p>Select a folder in LaunchBar and choose File &gt; Open Terminal Here or press Command-T to open a new Terminal window with the current working directory set to that folder.</p>
+
+	<p>Alternatively, you can send a selected folder to Terminal by pressing Tab and selecting Terminal.</p>
+
+	<div class="see-also">
+		<h4>See also:</h4>
+		<ul>
+			<li><a href="SendingItems.html">Sending Items</a></li>
+		</ul>
+	</div>
+
+	<h3>Run Terminal Command Here…</h3>
+
+	<p>Choose File &gt; Run Terminal Command Here… or press Command-Option-T to enter a Unix command that shall be executed in the currently selected folder.</p>
+
+	<p>When entering the command, the Tab key can be used to perform path completion.</p>
+
+	<h3>Run Terminal Command With…</h3>
+
+	<p>Choose File &gt; Run Terminal Command With… or press Command-Shift-T to enter a Unix command that shall be executed with the currently selected file or folder as an argument.</p>
+
+	<p>When entering the command, the Tab key can be used to perform path completion.</p>
+
+	<h3>Send CWD to LaunchBar</h3>
+
+	<p>When you are working in a Terminal window, type:</p>
+
+	<p class="indent"><tt>open -a LaunchBar .</tt></p>
+
+	<p>to select the current working directory of your shell in LaunchBar.</p>
+
+	<a name="send-to-launchbar"></a>
+    <h2>Send to LaunchBar</h2>
+
+	<p>The “Send to LaunchBar” command is accessible from the Services menu of other applications, allowing you to send a file or a text that is currently selected in that application to LaunchBar.</p>
+
+	<p>You can e.g. select one or more files in Finder, or select some text in TextEdit or Safari, then press <span class="nobr">Command-Shift-F1</span> to send this selection to LaunchBar.</p>
+
+	<div class="small box" title="Note">
+		You may also use <a href="InstantSend.html">Instant Send</a> for that purpose, which has the same effect of sending the current selection to LaunchBar.
+	</div>
+
+</body>
+</html>

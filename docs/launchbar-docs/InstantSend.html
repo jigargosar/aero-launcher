@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Instant Send</title>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body id="content">
+
+	<table id="navigation"><tr>
+		<td><a href="Actions.html">Actions</a></td>
+		<td><a href="InstantOpen.html">previous</a> | <a href="DragAndDrop.html">next</a></td>
+	</tr></table>
+
+	<h1>Instant Send</h1>
+
+	<div class="preface">
+		Instant Send is an extremely efficient way to send files or text selections to LaunchBar, and optionally <a href="SendingItems.html">send them</a> further to other items such as applications, folders, email contacts or search templates.
+	</div>
+
+	<h2>Instructions</h2>
+
+	<p>First you select some files in Finder, or some text in applications like Safari or TextEdit. Now, to send that selection to LaunchBar via Instant Send, do one of the following:</p>
+
+	<div class="white choices box">
+		<ul>
+			<li>
+				Press and hold <a href="KeyboardShortcuts.html">Command-Space</a>.
+				<div style="margin-top:0.2em; font-size:0.91em">
+					The duration depends on the <em>Delay Until Repeat</em> setting in <em>System Preferences &gt; Keyboard</em>. Set this delay to <em>Short</em> to make Instant Send respond more quickly.
+				</div>
+			</li>
+
+			<li>
+				Use a <a href="ModifierTaps.html">modifier tap</a> to invoke Instant Send.
+				<div style="margin-top:0.2em; font-size:0.91em">
+					Using a modifier tap for Instant Send has the advantage to be slightly faster than using the shortcut, which has to be kept pressed for a while.
+				</div>
+			</li>
+
+			<li>Drag the selection with the mouse onto LaunchBar’s Dock icon.</li>
+		</ul>
+	</div>
+
+	<p>The sent data now appears in LaunchBar, and an orange icon at the right end of the bar indicates that LaunchBar waits for a target item to be selected by typing an abbreviation:</p>
+
+	<div class="screenshot">
+		<img src="images/instant-send-file-1.png" width="452" height="52" alt="" />
+	</div>
+
+	<p>Now you can type an abbreviation to select the target of the <a href="SendingItems.html">Send to…</a> operation:</p>
+
+	<div class="screenshot">
+		<img src="images/instant-send-file-2.png" width="452" height="52" alt="" />
+	</div>
+
+	<p>When selecting the target you can also use <a href="InstantOpen.html">Instant Open</a> to commit your selection even faster. In the above example, when typing JC, keep the C character pressed to send the file to the selected email contact immediately. This allows you to perform such operations with just two keystrokes!</p>
+
+	<h2>Examples</h2>
+
+	<p>The following examples assume that you’ve selected some text or file in another application and that the abbreviations have already been <a href="AbbreviationSearch.html#training">trained</a> to select the corresponding items. The blue colored boxes indicate a key that is kept pressed.</p>
+
+	<table cellspacing="0" cellpadding="0" style="margin-top:20px">
+		<tr>
+			<td width="210">
+				<span class="keycap nobr highlighted">⌘ Space</span>
+				<span class="keycap highlighted">G</span>
+			</td>
+			<td class="small">
+				Search selected text with <u>G</u>oogle
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<span class="keycap nobr highlighted">⌘ Space</span>
+				<span class="keycap highlighted">W</span>
+			</td>
+			<td class="small">
+				Look up a selected word in <u>W</u>ikipedia
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<span class="keycap nobr highlighted">⌘ Space</span>
+				<span class="keycap highlighted">M</span>
+			</td>
+			<td class="small">
+				Send selected file(s) as <u>M</u>ail attachment
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<span class="keycap nobr highlighted">⌘ Space</span>
+				<span class="keycap highlighted">=</span>
+			</td>
+			<td class="small">
+				Get result of selected expression using <a href="Calculator.html">Calculator</a>
+			</td>
+		</tr>
+		<tr style="height:20px"></tr>
+		<tr>
+			<td>
+				<span class="keycap nobr highlighted">⌘ Space</span>
+				<span class="keycap">P</span>
+				<span class="keycap highlighted">S</span>
+			</td>
+			<td class="small">
+				Open selected file(s) with <u>P</u>hoto<u>s</u>hop
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<span class="keycap nobr highlighted">⌘ Space</span>
+				<span class="keycap">N</span>
+				<span class="keycap highlighted">O</span>
+			</td>
+			<td class="small">
+				Append selected text to “<u>No</u>tes.txt” file
+			</td>
+		</tr>
+	</table>
+
+	<h2>Instant Send via Drag and Drop</h2>
+
+	<p>Instant Send can also be triggered by dragging files, folders or text selections onto LaunchBar’s Dock icon. This will select the dragged item(s) in LaunchBar, so you can quickly send them to a friend via email, pass them on to an AppleScript, or open them with a particular application.</p>
+
+	<div class="small box">
+		<h3>Example 1</h3>
+
+		<p>Select some text in Safari, drag it onto LaunchBar’s Dock icon, then <a href="InstantOpen.html">press and hold</a> <em>semicolon</em> to send it to the “Save Text” script. You can then choose a filename for saving the text.</p>
+	</div>
+
+	<div class="small box">
+		<h3>Example 2</h3>
+
+		<p>Drag a folder onto LaunchBar’s Dock icon, then <a href="InstantOpen.html">press and hold</a> the letter <kbd>T</kbd> to send that folder to Terminal. This will open a new Terminal window for that folder.</p>
+	</div>
+
+	<div class="related-topics">
+	<h2>Related Topics</h2>
+	<ul>
+		<li><a href="OpeningItems.html">Opening Items</a></li>
+		<li><a href="SendingItems.html">Sending Items with the Tab key</a></li>
+		<li><a href="InstantOpen.html">Instant Open</a></li>
+	</ul>
+	</div>
+
+</body>
+</html>
