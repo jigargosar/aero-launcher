@@ -246,12 +246,8 @@ function useLauncher() {
                 return
 
             case 'Backspace':
-                // Input frame handles its own backspace via input element
-                if (uiState.tag === 'input') {
-                    if (!uiState.text) back()
-                    return
-                }
-                uiState.query ? setQuery(uiState.query.slice(0, -1)) : back()
+                if (uiState.tag === 'input') return
+                if (uiState.query) setQuery('')
                 return
         }
 
