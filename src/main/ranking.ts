@@ -2,7 +2,7 @@ import {pipe} from 'effect'
 import * as A from 'effect/Array'
 import * as Option from 'effect/Option'
 import * as Order from 'effect/Order'
-import {ListItem} from '@shared/types'
+import {Item} from '@shared/types'
 
 // --- Types ---
 
@@ -53,7 +53,7 @@ type SearchableItem = {
     name: string
     segments: string[]
     normalized: string
-    item: ListItem
+    item: Item
 }
 
 type UnifiedScored = {
@@ -79,7 +79,7 @@ function toSegments(name: string): string[] {
         .filter(s => s.length > 0)
 }
 
-function toSearchable(item: ListItem): SearchableItem {
+function toSearchable(item: Item): SearchableItem {
     const segments = toSegments(item.name)
     return {
         id: item.id,
@@ -211,10 +211,10 @@ const matchers: Matcher[] = [matchLearned, matchUnified]
 // --- Main ---
 
 export function filterAndSort(
-    items: ListItem[],
+    items: Item[],
     query: string,
     context: RankingContext
-): ListItem[] {
+): Item[] {
     const q = query.toLowerCase()
     const searchables = items.map(toSearchable)
 

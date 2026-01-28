@@ -1,7 +1,7 @@
-import {useEffect, useEffectEvent, useRef, useState} from 'react'
-import {ListItem, UIState} from '@shared/types'
-import {Icons} from '@shared/icons'
-import {config} from '@shared/config'
+import { useEffect, useEffectEvent, useRef, useState } from 'react'
+import { Item, UIState, Trigger } from '@shared/types'
+import { Icons } from '@shared/icons'
+import { config } from '@shared/config'
 
 import AERO_ICON from '@assets/icon.png'
 
@@ -16,12 +16,13 @@ function LoadingBars() {
     )
 }
 
-function ItemDialog({item, onClose}: {item: ListItem; onClose: () => void}) {
+function ItemDialog({ item, onClose }: { item: Item; onClose: () => void }) {
     const rows = [
         ['name', item.name],
         ['id', item.id],
-        ['sourceId', item.sourceId],
-        ...Object.entries(item.metadata ?? {}),
+        ['moduleId', item.moduleId],
+        ['triggers', item.triggers.join(', ')],
+        ...Object.entries(item.metadata),
     ]
 
     return (
@@ -30,7 +31,7 @@ function ItemDialog({item, onClose}: {item: ListItem; onClose: () => void}) {
                 {rows.map(([k, v]) => (
                     <div key={k} className="dialog-row">
                         <span className="dialog-label">{k}</span>
-                        <span className="dialog-value">{v}</span>
+                        <span className="dialog-value">{String(v)}</span>
                     </div>
                 ))}
             </div>
@@ -40,89 +41,127 @@ function ItemDialog({item, onClose}: {item: ListItem; onClose: () => void}) {
 
 function useLauncher() {
     const [uiState, setUIState] = useState<UIState | null>(null)
-    const [selectedIndex, setSelectedIndex] = useState(0)
-    const [dialogItem, setDialogItem] = useState<ListItem | null>(null)
+    const [dialogItem, setDialogItem] = useState<Item | null>(null)
     const lastKeyTime = useRef(0)
     const shouldScrollRef = useRef(false)
 
-    // Subscribe to state and request initial data
     useEffect(() => {
-        window.electron.onState(state => {
-            setUIState(state)
-            setSelectedIndex(0)
-        })
+        window.electron.onState(setUIState)
         window.electron.requestState()
     }, [])
 
     const items = uiState?.items ?? []
-    const selectedItem = items[selectedIndex]
+    const selected = uiState?.selected ?? 0
+    const selectedItem = items[selected]
 
-    const executeItem = (item: ListItem) => {
-        window.electron.execute(item)
+    const sendTrigger = (item: Item, trigger: Trigger) => {
+        window.electron.sendEvent({ type: 'trigger', item, trigger })
     }
 
-    const navigateItem = (item: ListItem) => {
-        window.electron.navigate(item)
+    const setSelected = (index: number) => {
+        window.electron.sendEvent({ type: 'setSelected', index })
     }
 
-    const showItemInfo = (item: ListItem) => {
-        setDialogItem(item)
+    const setInput = (value: string) => {
+        window.electron.sendEvent({ type: 'setInput', value })
+    }
+
+    const back = () => {
+        window.electron.sendEvent({ type: 'back' })
+    }
+
+    const reset = () => {
+        window.electron.sendEvent({ type: 'reset' })
     }
 
     // Keyboard handler
     const onKeyDown = useEffectEvent((e: KeyboardEvent) => {
         if (!uiState) return
 
+        // Close dialog on Escape
+        if (dialogItem) {
+            if (e.key === 'Escape') setDialogItem(null)
+            return
+        }
+
         switch (e.key) {
             case 'Escape':
-                if (dialogItem) setDialogItem(null)
-                else window.electron.back()
+                reset()
                 return
+
+            case 'ArrowLeft':
+                e.preventDefault()
+                back()
+                return
+
             case 'Enter':
                 if (selectedItem) {
-                    if (e.shiftKey) showItemInfo(selectedItem)
-                    else executeItem(selectedItem)
+                    if (e.shiftKey) {
+                        sendTrigger(selectedItem, { type: 'secondary' })
+                    } else {
+                        sendTrigger(selectedItem, { type: 'execute' })
+                    }
                 }
                 return
+
+            case 'ArrowRight':
+                e.preventDefault()
+                if (selectedItem && selectedItem.triggers.includes('browse')) {
+                    sendTrigger(selectedItem, { type: 'browse' })
+                }
+                return
+
             case 'Tab':
                 e.preventDefault()
-                if (selectedItem) navigateItem(selectedItem)
+                if (selectedItem && selectedItem.triggers.includes('sendTo')) {
+                    sendTrigger(selectedItem, { type: 'sendTo' })
+                }
                 return
+
             case 'ArrowDown':
                 e.preventDefault()
                 shouldScrollRef.current = true
-                setSelectedIndex(i => Math.min(i + 1, items.length - 1))
+                setSelected(Math.min(selected + 1, items.length - 1))
                 return
+
             case 'ArrowUp':
                 e.preventDefault()
                 shouldScrollRef.current = true
-                setSelectedIndex(i => Math.max(i - 1, 0))
+                setSelected(Math.max(selected - 1, 0))
                 return
-            case 'Backspace':
-                if (uiState.tag === 'input') {
-                    const newText = uiState.text.slice(0, -1)
-                    window.electron.setInputText(newText)
-                } else if (uiState.tag === 'root' && uiState.query) {
-                    window.electron.setQuery(uiState.query.slice(0, -1))
+
+            case 'Backspace': {
+                const currentInput = uiState.tag === 'input' ? uiState.text : uiState.query
+                if (currentInput) {
+                    setInput(currentInput.slice(0, -1))
+                } else {
+                    back()
                 }
                 return
+            }
+
+            // Ctrl+Right Arrow = actionMenu
+            default:
+                if (e.key === 'ArrowRight' && e.ctrlKey) {
+                    e.preventDefault()
+                    if (selectedItem && selectedItem.triggers.includes('actionMenu')) {
+                        sendTrigger(selectedItem, { type: 'actionMenu' })
+                    }
+                    return
+                }
         }
 
-        // Typing (single char, no modifiers)
+        // Typing (single char, no ctrl/meta)
         if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
-            if (uiState.tag === 'input') {
-                window.electron.setInputText(uiState.text + e.key)
-            } else if (uiState.tag === 'root') {
-                const now = Date.now()
-                const shouldReset = now - lastKeyTime.current > config.queryTimeoutMs
-                const newQuery = shouldReset ? e.key : uiState.query + e.key
-                window.electron.setQuery(newQuery)
-                lastKeyTime.current = now
-            }
+            const currentInput = uiState.tag === 'input' ? uiState.text : uiState.query
+            const now = Date.now()
+            const shouldReset = uiState.tag === 'list' && now - lastKeyTime.current > config.queryTimeoutMs
+            const newValue = shouldReset ? e.key : currentInput + e.key
+            setInput(newValue)
+            lastKeyTime.current = now
         }
     })
 
-    // Keyboard navigation
     useEffect(() => {
         window.addEventListener('keydown', onKeyDown)
         return () => window.removeEventListener('keydown', onKeyDown)
@@ -131,13 +170,12 @@ function useLauncher() {
     return {
         uiState,
         items,
+        selected,
         selectedItem,
-        selectedIndex,
-        setSelectedIndex,
-        executeItem,
-        navigateItem,
-        showItemInfo,
+        setSelected,
+        sendTrigger,
         dialogItem,
+        setDialogItem,
         closeDialog: () => setDialogItem(null),
         shouldScrollRef,
     }
@@ -147,59 +185,56 @@ export default function App() {
     const {
         uiState,
         items,
+        selected,
         selectedItem,
-        selectedIndex,
-        setSelectedIndex,
-        executeItem,
-        navigateItem,
-        showItemInfo,
+        setSelected,
+        sendTrigger,
         dialogItem,
+        setDialogItem,
         closeDialog,
         shouldScrollRef,
     } = useLauncher()
 
     const loading = uiState === null
 
-    // Header text based on state
+    // Header text
     const headerText = (() => {
         if (loading) return 'Aero Launcher'
-        switch (uiState.tag) {
-            case 'root':
-                return selectedItem?.name ?? 'Aero Launcher'
-            case 'input':
-                return uiState.parent.name
-            case 'browse':
-                return uiState.path[uiState.path.length - 1]?.name ?? 'Browse'
-        }
+        if (uiState.tag === 'input') return uiState.parent.name
+        if (uiState.parent) return uiState.parent.name
+        return selectedItem?.name ?? 'Aero Launcher'
+    })()
+
+    // Header icon
+    const headerIcon = (() => {
+        if (loading) return AERO_ICON
+        if (uiState.tag === 'input') return uiState.parent.icon
+        if (uiState.parent) return uiState.parent.icon
+        return selectedItem?.icon ?? AERO_ICON
     })()
 
     // Query/text display
     const queryText = (() => {
         if (loading) return ''
-        switch (uiState.tag) {
-            case 'root':
-                return uiState.query
-            case 'input':
-                return uiState.text
-            case 'browse':
-                return ''
-        }
+        return uiState.tag === 'input' ? uiState.text : uiState.query
     })()
+
+    // Placeholder for input mode
+    const placeholder = uiState?.tag === 'input' ? uiState.placeholder : ''
 
     return (
         <div className="launcher select-none">
             {dialogItem && <ItemDialog item={dialogItem} onClose={closeDialog} />}
+
             <header className={`launcher-header drag-region ${loading ? 'loading' : ''}`}>
-                <img
-                    className="header-icon"
-                    src={selectedItem?.icon ?? AERO_ICON}
-                    alt=""
-                />
+                <img className="header-icon" src={headerIcon} alt="" />
                 <span className="header-title">
                     {headerText}
                     {loading && <LoadingBars />}
                 </span>
-                {!loading && queryText && <span className="header-query">{queryText}</span>}
+                {!loading && (queryText || placeholder) && (
+                    <span className="header-query">{queryText || placeholder}</span>
+                )}
             </header>
 
             {!loading && items.length > 0 && (
@@ -207,25 +242,36 @@ export default function App() {
                     {items.map((item, index) => (
                         <div
                             key={item.id}
-                            ref={index === selectedIndex ? el => {
+                            ref={index === selected ? el => {
                                 if (shouldScrollRef.current && el) {
-                                    el.scrollIntoView({block: 'nearest'})
+                                    el.scrollIntoView({ block: 'nearest' })
                                     shouldScrollRef.current = false
                                 }
                             } : undefined}
-                            className={`item ${index === selectedIndex ? 'selected' : ''}`}
-                            onMouseEnter={() => setSelectedIndex(index)}
-                            onClick={(e) => e.shiftKey ? showItemInfo(item) : executeItem(item)}
+                            className={`item ${index === selected ? 'selected' : ''}`}
+                            onMouseEnter={() => setSelected(index)}
+                            onClick={e => {
+                                if (e.shiftKey) {
+                                    setDialogItem(item)
+                                } else {
+                                    sendTrigger(item, { type: 'execute' })
+                                }
+                            }}
                         >
-                            <img className="item-icon" src={item.icon} alt=""/>
+                            <img className="item-icon" src={item.icon} alt="" />
                             <span className="item-name">{item.name}</span>
-                            <img className="item-chevron" src={Icons.chevron} alt=""/>
+                            {item.triggers.includes('browse') && (
+                                <img className="item-chevron" src={Icons.chevron} alt="" />
+                            )}
                         </div>
                     ))}
                 </div>
             )}
+
             {!loading && items.length === 0 && (
-                <div className="empty">No results found</div>
+                <div className="empty">
+                    {uiState.tag === 'input' ? placeholder : 'No results'}
+                </div>
             )}
         </div>
     )

@@ -1,75 +1,71 @@
-// === List Item ===
+// === Core Types ===
 
-export type ListItem = {
-    sourceId: string
+export type TriggerType = Trigger['type']
+
+export type Item = {
     id: string
     name: string
     icon: string
-    metadata?: Record<string, string>
+    moduleId: string
+    metadata: Record<string, unknown>
+    triggers: TriggerType[]
 }
 
-// === Sources ===
+export type Trigger =
+    | { type: 'execute' }
+    | { type: 'browse' }
+    | { type: 'sendTo' }
+    | { type: 'actionMenu' }
+    | { type: 'secondary' }
+    | { type: 'textChange'; text: string }
 
-type BaseSource = {
+export type Response =
+    | { type: 'pushList'; items: Item[] }
+    | { type: 'pushInput'; placeholder: string }
+    | { type: 'updateItems'; items: Item[] }
+    | { type: 'pop' }
+    | { type: 'reset' }
+    | { type: 'hide' }
+    | { type: 'noop' }
+
+export type Module = {
     id: string
-    getItems: (query: string) => ListItem[]
-    execute: (item: ListItem) => void
+    onTrigger: (item: Item, trigger: Trigger) => Promise<Response>
 }
-
-export type SimpleSource = BaseSource & {
-    type: 'simple'
-}
-
-export type InputableSource = BaseSource & {
-    type: 'inputable'
-    getInputItems: (parent: ListItem, text: string, emit: (items: ListItem[]) => void) => void
-}
-
-export type BrowsableSource = BaseSource & {
-    type: 'browsable'
-    getChildren: (item: ListItem) => ListItem[]
-}
-
-export type Source = SimpleSource | InputableSource | BrowsableSource
 
 // === State ===
 
-export type State =
-    | {tag: 'root'; query: string}
-    | {tag: 'input'; source: InputableSource; parent: ListItem; text: string; items: ListItem[]}
-    | {tag: 'browse'; source: BrowsableSource; path: ListItem[]}
+export type Frame =
+    | { tag: 'list'; items: Item[]; allItems: Item[]; query: string; selected: number; parent?: Item }
+    | { tag: 'input'; items: Item[]; text: string; selected: number; parent: Item; placeholder: string }
+
+export type State = {
+    stack: Frame[]
+}
 
 // === IPC ===
 
+export type UIState = Frame
+
+export type UIEvent =
+    | { type: 'setInput'; value: string }
+    | { type: 'setSelected'; index: number }
+    | { type: 'trigger'; item: Item; trigger: Trigger }
+    | { type: 'back' }
+    | { type: 'reset' }
+
 export const channels = {
     state: 'state',
+    event: 'event',
     requestState: 'request-state',
-    setQuery: 'set-query',
-    execute: 'execute',
-    navigate: 'navigate',
-    setInputText: 'set-input-text',
-    back: 'back',
-    hideWindow: 'hide-window',
 }
-
-// === UI State (sent to renderer) ===
-
-export type UIState =
-    | {tag: 'root'; items: ListItem[]; query: string}
-    | {tag: 'input'; parent: ListItem; text: string; items: ListItem[]; placeholder: string}
-    | {tag: 'browse'; path: ListItem[]; items: ListItem[]}
 
 // === Electron API ===
 
 export type ElectronAPI = {
     onState: (callback: (state: UIState) => void) => void
+    sendEvent: (event: UIEvent) => void
     requestState: () => void
-    setQuery: (query: string) => void
-    execute: (item: ListItem) => void
-    navigate: (item: ListItem) => void
-    setInputText: (text: string) => void
-    back: () => void
-    hideWindow: () => void
 }
 
 declare global {
