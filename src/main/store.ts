@@ -5,6 +5,7 @@ type State = { stack: Frame[] }
 import { appProvider } from './providers/app-provider'
 import { fsProvider } from './providers/fs-provider'
 import { websearchProvider } from './providers/websearch-provider'
+import { createRankingContext, filterAndSort, recordSelection } from './ranking'
 
 // === Provider Registry ===
 
@@ -29,19 +30,13 @@ registerProvider(appProvider)
 registerProvider(fsProvider)
 registerProvider(websearchProvider)
 
-// === Filtering ===
-
-function filterItems(items: Item[], query: string): Item[] {
-    if (!query) return items
-    const lowerQuery = query.toLowerCase()
-    return items.filter(item => item.name.toLowerCase().includes(lowerQuery))
-}
 
 // === Store ===
 
 export const Store = {
     init(window: BrowserWindow): void {
         const rootItems = getRootItems()
+        const ranking = createRankingContext()
 
         let state: State = {
             stack: [{
@@ -140,7 +135,7 @@ export const Store = {
             switch (event.type) {
                 case 'setInput': {
                     if (frame.tag === 'list') {
-                        const filtered = filterItems(rootItems, event.value)
+                        const filtered = filterAndSort(rootItems, event.value, ranking)
                         updateFrame({ query: event.value, items: filtered, selected: 0 })
                     } else if (frame.tag === 'input') {
                         updateFrame({ text: event.value })
