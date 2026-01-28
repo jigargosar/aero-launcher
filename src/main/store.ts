@@ -133,15 +133,24 @@ export const Store = {
             const frame = currentFrame()
 
             switch (event.type) {
-                case 'setInput': {
-                    if (frame.tag === 'list') {
-                        const filtered = filterAndSort(rootItems, event.value, ranking)
-                        updateFrame({ query: event.value, items: filtered, selected: 0 })
-                    } else if (frame.tag === 'input') {
-                        updateFrame({ text: event.value })
-                        const response = await handleTrigger(frame.parent, { type: 'textChange', text: event.value })
-                        await applyResponse(response)
+                case 'setQuery': {
+                    if (frame.tag !== 'list') {
+                        console.error('setQuery requires list frame')
+                        return
                     }
+                    const filtered = filterAndSort(rootItems, event.query, ranking)
+                    updateFrame({ query: event.query, items: filtered, selected: 0 })
+                    break
+                }
+
+                case 'setInputText': {
+                    if (frame.tag !== 'input') {
+                        console.error('setInputText requires input frame')
+                        return
+                    }
+                    updateFrame({ text: event.text })
+                    const response = await handleTrigger(frame.parent, { type: 'textChange', text: event.text })
+                    await applyResponse(response)
                     break
                 }
 

@@ -62,8 +62,12 @@ function useLauncher() {
         window.electron.sendEvent({ type: 'setSelected', index })
     }
 
-    const setInput = (value: string) => {
-        window.electron.sendEvent({ type: 'setInput', value })
+    const setQuery = (query: string) => {
+        window.electron.sendEvent({ type: 'setQuery', query })
+    }
+
+    const setInputText = (text: string) => {
+        window.electron.sendEvent({ type: 'setInputText', text })
     }
 
     const back = () => {
@@ -137,11 +141,18 @@ function useLauncher() {
                 return
 
             case 'Backspace': {
-                const currentInput = uiState.tag === 'input' ? uiState.text : uiState.query
-                if (currentInput) {
-                    setInput(currentInput.slice(0, -1))
+                if (uiState.tag === 'input') {
+                    if (uiState.text) {
+                        setInputText(uiState.text.slice(0, -1))
+                    } else {
+                        back()
+                    }
                 } else {
-                    back()
+                    if (uiState.query) {
+                        setQuery(uiState.query.slice(0, -1))
+                    } else {
+                        back()
+                    }
                 }
                 return
             }
@@ -149,12 +160,15 @@ function useLauncher() {
 
         // Typing (single char, no ctrl/meta)
         if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
-            const currentInput = uiState.tag === 'input' ? uiState.text : uiState.query
-            const now = Date.now()
-            const shouldReset = uiState.tag === 'list' && now - lastKeyTime.current > config.queryTimeoutMs
-            const newValue = shouldReset ? e.key : currentInput + e.key
-            setInput(newValue)
-            lastKeyTime.current = now
+            if (uiState.tag === 'input') {
+                setInputText(uiState.text + e.key)
+            } else {
+                const now = Date.now()
+                const shouldReset = now - lastKeyTime.current > config.queryTimeoutMs
+                const newQuery = shouldReset ? e.key : uiState.query + e.key
+                setQuery(newQuery)
+                lastKeyTime.current = now
+            }
         }
     })
 

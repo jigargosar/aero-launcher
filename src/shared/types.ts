@@ -45,7 +45,8 @@ export type Frame =
 export type UIState = Frame
 
 export type UIEvent =
-    | { type: 'setInput'; value: string }
+    | { type: 'setQuery'; query: string }
+    | { type: 'setInputText'; text: string }
     | { type: 'setSelected'; index: number }
     | { type: 'trigger'; item: Item; trigger: Trigger }
     | { type: 'back' }
