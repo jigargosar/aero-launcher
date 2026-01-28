@@ -180,3 +180,25 @@ type UIEvent =
     | { type: 'setSelected'; index: number }
     | { type: 'trigger'; item: Item; trigger: Trigger }
 ```
+
+---
+
+# Addendum 4: Query vs Text Input
+
+`setQuery` is for list frame, `setText` is for input frame. Mutually exclusive.
+
+**Option 1: Keep both, renderer decides:**
+```ts
+if (frame.tag === 'list') send({ type: 'setQuery', query })
+if (frame.tag === 'input') send({ type: 'setText', text })
+```
+
+**Option 2: Unify into one event:**
+```ts
+type UIEvent =
+    | { type: 'setInput'; value: string }
+    | { type: 'setSelected'; index: number }
+    | { type: 'trigger'; item: Item; trigger: Trigger }
+```
+
+Store knows frame type, applies to `query` or `text` accordingly.
