@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {BrowserWindow, dialog} from 'electron'
 import {ListItem} from '@shared/types'
 

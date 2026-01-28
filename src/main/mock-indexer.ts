@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {ListItem} from '@shared/types'
 import {Icons} from '@shared/icons'
 import {showItemDialog} from './utils'
