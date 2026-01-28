@@ -1,5 +1,5 @@
 import {useEffect, useEffectEvent, useRef, useState} from 'react'
-import {ListItem} from '@shared/types'
+import {ListItem, UIState} from '@shared/types'
 import {Icons} from '@shared/icons'
 import {config} from '@shared/config'
 
@@ -39,67 +39,86 @@ function ItemDialog({item, onClose}: {item: ListItem; onClose: () => void}) {
 }
 
 function useLauncher() {
-    const [items, setItems] = useState<ListItem[] | null>(null)
-    const [query, setQuery] = useState('')
+    const [uiState, setUIState] = useState<UIState | null>(null)
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [dialogItem, setDialogItem] = useState<ListItem | null>(null)
     const lastKeyTime = useRef(0)
     const shouldScrollRef = useRef(false)
 
-    // Subscribe to items and request initial data
+    // Subscribe to state and request initial data
     useEffect(() => {
-        window.electron.onListItemsReceived(setItems)
-        window.electron.requestListItems()
+        window.electron.onState(state => {
+            setUIState(state)
+            setSelectedIndex(0)
+        })
+        window.electron.requestState()
     }, [])
 
-    // Send query to store on change
-    useEffect(() => {
-        window.electron.setQuery(query)
-        setSelectedIndex(0)
-    }, [query])
+    const items = uiState?.items ?? []
+    const selectedItem = items[selectedIndex]
 
-    const selectedItem = items?.[selectedIndex]
+    const executeItem = (item: ListItem) => {
+        window.electron.execute(item)
+    }
 
-    const launchItem = (item: ListItem) => {
-        window.electron.performPrimaryAction(item)
+    const navigateItem = (item: ListItem) => {
+        window.electron.navigate(item)
     }
 
     const showItemInfo = (item: ListItem) => {
         setDialogItem(item)
     }
 
-    // Keyboard handler with access to latest state
+    // Keyboard handler
     const onKeyDown = useEffectEvent((e: KeyboardEvent) => {
+        if (!uiState) return
+
         switch (e.key) {
             case 'Escape':
                 if (dialogItem) setDialogItem(null)
-                else if (query && config.clearQueryOnEsc) setQuery('')
-                else window.electron.hideWindow()
+                else window.electron.back()
                 return
             case 'Enter':
                 if (selectedItem) {
                     if (e.shiftKey) showItemInfo(selectedItem)
-                    else launchItem(selectedItem)
+                    else executeItem(selectedItem)
                 }
+                return
+            case 'Tab':
+                e.preventDefault()
+                if (selectedItem) navigateItem(selectedItem)
                 return
             case 'ArrowDown':
                 e.preventDefault()
                 shouldScrollRef.current = true
-                setSelectedIndex(i => Math.min(i + 1, (items?.length ?? 1) - 1))
+                setSelectedIndex(i => Math.min(i + 1, items.length - 1))
                 return
             case 'ArrowUp':
                 e.preventDefault()
                 shouldScrollRef.current = true
                 setSelectedIndex(i => Math.max(i - 1, 0))
                 return
+            case 'Backspace':
+                if (uiState.tag === 'input') {
+                    const newText = uiState.text.slice(0, -1)
+                    window.electron.setInputText(newText)
+                } else if (uiState.tag === 'root' && uiState.query) {
+                    window.electron.setQuery(uiState.query.slice(0, -1))
+                }
+                return
         }
 
-        // Typing (single char, not space, no modifiers)
-        if (e.key.length === 1 && e.key !== ' ' && !e.ctrlKey && !e.metaKey) {
-            const now = Date.now()
-            const shouldReset = now - lastKeyTime.current > config.queryTimeoutMs
-            setQuery(shouldReset ? e.key : q => q + e.key)
-            lastKeyTime.current = now
+        // Typing (single char, no modifiers)
+        if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+            if (uiState.tag === 'input') {
+                window.electron.setInputText(uiState.text + e.key)
+            } else if (uiState.tag === 'root') {
+                const now = Date.now()
+                const shouldReset = now - lastKeyTime.current > config.queryTimeoutMs
+                const newQuery = shouldReset ? e.key : uiState.query + e.key
+                window.electron.setQuery(newQuery)
+                lastKeyTime.current = now
+            }
         }
     })
 
@@ -110,12 +129,13 @@ function useLauncher() {
     }, [])
 
     return {
-        query,
+        uiState,
         items,
         selectedItem,
         selectedIndex,
         setSelectedIndex,
-        launchItem,
+        executeItem,
+        navigateItem,
         showItemInfo,
         dialogItem,
         closeDialog: () => setDialogItem(null),
@@ -125,19 +145,46 @@ function useLauncher() {
 
 export default function App() {
     const {
-        query,
+        uiState,
         items,
         selectedItem,
         selectedIndex,
         setSelectedIndex,
-        launchItem,
+        executeItem,
+        navigateItem,
         showItemInfo,
         dialogItem,
         closeDialog,
         shouldScrollRef,
     } = useLauncher()
 
-    const loading = items === null
+    const loading = uiState === null
+
+    // Header text based on state
+    const headerText = (() => {
+        if (loading) return 'Aero Launcher'
+        switch (uiState.tag) {
+            case 'root':
+                return selectedItem?.name ?? 'Aero Launcher'
+            case 'input':
+                return uiState.parent.name
+            case 'browse':
+                return uiState.path[uiState.path.length - 1]?.name ?? 'Browse'
+        }
+    })()
+
+    // Query/text display
+    const queryText = (() => {
+        if (loading) return ''
+        switch (uiState.tag) {
+            case 'root':
+                return uiState.query
+            case 'input':
+                return uiState.text
+            case 'browse':
+                return ''
+        }
+    })()
 
     return (
         <div className="launcher select-none">
@@ -149,10 +196,10 @@ export default function App() {
                     alt=""
                 />
                 <span className="header-title">
-                    {selectedItem?.name ?? 'Aero Launcher'}
+                    {headerText}
                     {loading && <LoadingBars />}
                 </span>
-                {!loading && query && <span className="header-query">{query}</span>}
+                {!loading && queryText && <span className="header-query">{queryText}</span>}
             </header>
 
             {!loading && items.length > 0 && (
@@ -160,7 +207,6 @@ export default function App() {
                     {items.map((item, index) => (
                         <div
                             key={item.id}
-                            // Scroll into view only on keyboard navigation
                             ref={index === selectedIndex ? el => {
                                 if (shouldScrollRef.current && el) {
                                     el.scrollIntoView({block: 'nearest'})
@@ -169,7 +215,7 @@ export default function App() {
                             } : undefined}
                             className={`item ${index === selectedIndex ? 'selected' : ''}`}
                             onMouseEnter={() => setSelectedIndex(index)}
-                            onClick={(e) => e.shiftKey ? showItemInfo(item) : launchItem(item)}
+                            onClick={(e) => e.shiftKey ? showItemInfo(item) : executeItem(item)}
                         >
                             <img className="item-icon" src={item.icon} alt=""/>
                             <span className="item-name">{item.name}</span>

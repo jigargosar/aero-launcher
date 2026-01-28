@@ -1,21 +1,30 @@
 import {contextBridge, ipcRenderer} from 'electron'
-import {channels, ElectronAPI} from '@shared/types'
+import {channels, ElectronAPI, UIState, ListItem} from '@shared/types'
 
 const api: ElectronAPI = {
-    onListItemsReceived: (callback) => {
-        ipcRenderer.on(channels.listItems, (_, items) => callback(items))
+    onState: (callback: (state: UIState) => void) => {
+        ipcRenderer.on(channels.state, (_, state) => callback(state))
     },
-    requestListItems: () => {
-        ipcRenderer.send(channels.requestListItems)
+    requestState: () => {
+        ipcRenderer.send(channels.requestState)
+    },
+    setQuery: (query: string) => {
+        ipcRenderer.send(channels.setQuery, query)
+    },
+    execute: (item: ListItem) => {
+        ipcRenderer.send(channels.execute, item)
+    },
+    navigate: (item: ListItem) => {
+        ipcRenderer.send(channels.navigate, item)
+    },
+    setInputText: (text: string) => {
+        ipcRenderer.send(channels.setInputText, text)
+    },
+    back: () => {
+        ipcRenderer.send(channels.back)
     },
     hideWindow: () => {
         ipcRenderer.send(channels.hideWindow)
-    },
-    setQuery: (query) => {
-        ipcRenderer.send(channels.setQuery, query)
-    },
-    performPrimaryAction: (item) => {
-        ipcRenderer.send(channels.performPrimaryAction, item)
     },
 }
 
