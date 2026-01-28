@@ -150,7 +150,10 @@ export const Store = {
                     }
                     updateFrame({ text: event.text })
                     const response = await handleTrigger(frame.parent, { type: 'textChange', text: event.text })
-                    await applyResponse(response)
+                    const curr = currentFrame()
+                    if (curr.tag === 'input' && curr.text === event.text) {
+                        await applyResponse(response)
+                    }
                     break
                 }
 
