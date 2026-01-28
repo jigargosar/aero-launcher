@@ -1,68 +1,88 @@
 import { BrowserWindow, ipcMain } from 'electron'
-import { channels, State, UIState, UIEvent, Frame, Item, Trigger } from '@shared/types'
-import { handleTrigger, getRootItems } from './modules'
-import { createRankingContext, filterAndSort, recordSelection, RankingContext } from './ranking'
+import { channels, State, UIState, UIEvent, Frame, Item, Trigger, Provider, Response } from '@shared/types'
+import { appProvider } from './providers/app-provider'
+import { fsProvider } from './providers/fs-provider'
+import { websearchProvider } from './providers/websearch-provider'
+
+// === Provider Registry ===
+
+const providers = new Map<string, Provider>()
+
+function registerProvider(provider: Provider): void {
+    providers.set(provider.id, provider)
+}
+
+function getRootItems(): Item[] {
+    return [...providers.values()].flatMap(p => p.getRootItems())
+}
+
+async function handleTrigger(item: Item, trigger: Trigger): Promise<Response> {
+    const provider = providers.get(item.moduleId)
+    if (!provider) return { type: 'noop' }
+    return provider.onTrigger(item, trigger)
+}
+
+// Register all providers
+registerProvider(appProvider)
+registerProvider(fsProvider)
+registerProvider(websearchProvider)
+
+// === Filtering ===
+
+function filterItems(items: Item[], query: string): Item[] {
+    if (!query) return items
+    const lowerQuery = query.toLowerCase()
+    return items.filter(item => item.name.toLowerCase().includes(lowerQuery))
+}
 
 // === Store ===
 
 export const Store = {
     init(window: BrowserWindow): void {
         const rootItems = getRootItems()
-        const ranking = createRankingContext()
 
-        // Initial state - root frame with all items
         let state: State = {
             stack: [{
                 tag: 'list',
-                items: filterAndSort(rootItems, '', ranking),
-                allItems: rootItems,
+                items: rootItems,
                 query: '',
                 selected: 0,
             }],
         }
 
-        // Get current frame (top of stack)
         const currentFrame = (): Frame => state.stack[state.stack.length - 1]
 
-        // Build UI state from current frame
         const buildUIState = (): UIState => currentFrame()
 
-        // Commit state to renderer
         const commit = () => {
             window.webContents.send(channels.state, buildUIState())
         }
 
-        // Update current frame
         const updateFrame = (update: Partial<Frame>) => {
             const frame = currentFrame()
             state.stack[state.stack.length - 1] = { ...frame, ...update } as Frame
         }
 
-        // Push new frame
         const pushFrame = (frame: Frame) => {
             state.stack.push(frame)
         }
 
-        // Pop frame (back)
         const popFrame = () => {
             if (state.stack.length > 1) {
                 state.stack.pop()
             }
         }
 
-        // Reset to root
         const resetToRoot = () => {
             state.stack = [{
                 tag: 'list',
-                items: filterAndSort(rootItems, '', ranking),
-                allItems: rootItems,
+                items: rootItems,
                 query: '',
                 selected: 0,
             }]
         }
 
-        // Handle trigger response
-        const applyResponse = async (response: Awaited<ReturnType<typeof handleTrigger>>) => {
+        const applyResponse = async (response: Response) => {
             switch (response.type) {
                 case 'pushList': {
                     const frame = currentFrame()
@@ -70,7 +90,6 @@ export const Store = {
                     pushFrame({
                         tag: 'list',
                         items: response.items,
-                        allItems: response.items,
                         query: '',
                         selected: 0,
                         parent,
@@ -113,20 +132,16 @@ export const Store = {
             }
         }
 
-        // === Event Handlers ===
-
         const handleEvent = async (event: UIEvent) => {
             const frame = currentFrame()
 
             switch (event.type) {
                 case 'setInput': {
                     if (frame.tag === 'list') {
-                        // Filter from allItems with ranking
-                        const filtered = filterAndSort(frame.allItems, event.value, ranking)
+                        const filtered = filterItems(rootItems, event.value)
                         updateFrame({ query: event.value, items: filtered, selected: 0 })
                     } else if (frame.tag === 'input') {
                         updateFrame({ text: event.value })
-                        // Trigger textChange on parent
                         const response = await handleTrigger(frame.parent, { type: 'textChange', text: event.value })
                         await applyResponse(response)
                     }
@@ -139,10 +154,6 @@ export const Store = {
                 }
 
                 case 'trigger': {
-                    // Record selection for ranking when executing from root
-                    if (event.trigger.type === 'execute' && frame.tag === 'list' && !frame.parent) {
-                        recordSelection(ranking, frame.query, event.item.id)
-                    }
                     const response = await handleTrigger(event.item, event.trigger)
                     await applyResponse(response)
                     break
@@ -151,19 +162,15 @@ export const Store = {
                 case 'back': {
                     if (state.stack.length > 1) {
                         popFrame()
+                    } else {
+                        window.blur()
+                        window.hide()
                     }
-                    // At root - do nothing (can't go back further)
                     break
                 }
 
                 case 'reset': {
-                    if (state.stack.length === 1 && currentFrame().tag === 'list' && !(currentFrame() as any).parent) {
-                        // Already at root - hide
-                        window.blur()
-                        window.hide()
-                    } else {
-                        resetToRoot()
-                    }
+                    resetToRoot()
                     break
                 }
             }
@@ -171,12 +178,9 @@ export const Store = {
             commit()
         }
 
-        // === IPC Handlers ===
-
         ipcMain.on(channels.requestState, commit)
         ipcMain.on(channels.event, (_, event: UIEvent) => handleEvent(event))
 
-        // Initial commit
         commit()
     },
 }

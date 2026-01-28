@@ -106,8 +106,14 @@ function useLauncher() {
 
             case 'ArrowRight':
                 e.preventDefault()
-                if (selectedItem && selectedItem.triggers.includes('browse')) {
-                    sendTrigger(selectedItem, { type: 'browse' })
+                if (e.ctrlKey) {
+                    if (selectedItem && selectedItem.triggers.includes('actionMenu')) {
+                        sendTrigger(selectedItem, { type: 'actionMenu' })
+                    }
+                } else {
+                    if (selectedItem && selectedItem.triggers.includes('browse')) {
+                        sendTrigger(selectedItem, { type: 'browse' })
+                    }
                 }
                 return
 
@@ -139,16 +145,6 @@ function useLauncher() {
                 }
                 return
             }
-
-            // Ctrl+Right Arrow = actionMenu
-            default:
-                if (e.key === 'ArrowRight' && e.ctrlKey) {
-                    e.preventDefault()
-                    if (selectedItem && selectedItem.triggers.includes('actionMenu')) {
-                        sendTrigger(selectedItem, { type: 'actionMenu' })
-                    }
-                    return
-                }
         }
 
         // Typing (single char, no ctrl/meta)

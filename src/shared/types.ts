@@ -28,15 +28,16 @@ export type Response =
     | { type: 'hide' }
     | { type: 'noop' }
 
-export type Module = {
+export type Provider = {
     id: string
+    getRootItems: () => Item[]
     onTrigger: (item: Item, trigger: Trigger) => Promise<Response>
 }
 
 // === State ===
 
 export type Frame =
-    | { tag: 'list'; items: Item[]; allItems: Item[]; query: string; selected: number; parent?: Item }
+    | { tag: 'list'; items: Item[]; query: string; selected: number; parent?: Item }
     | { tag: 'input'; items: Item[]; text: string; selected: number; parent: Item; placeholder: string }
 
 export type State = {
