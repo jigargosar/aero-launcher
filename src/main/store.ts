@@ -151,6 +151,12 @@ export const Store = {
                 }
 
                 case 'trigger': {
+                    if (frame.tag === 'list') {
+                        const recordable = ['execute', 'browse', 'sendTo', 'actionMenu', 'secondary']
+                        if (recordable.includes(event.trigger.type)) {
+                            recordSelection(ranking, frame.query, event.item.id)
+                        }
+                    }
                     const response = await handleTrigger(event.item, event.trigger)
                     await applyResponse(response)
                     break
