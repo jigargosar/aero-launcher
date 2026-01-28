@@ -80,3 +80,81 @@ type State = {
 4. Responses tell store what to do - pushList, pushInput, pop, etc.
 5. Pull model - store calls module, module returns response
 6. Items are self-contained - carry all data needed for execution
+
+---
+
+# Addendum 1: Item Triggers & Store Ownership
+
+## Item Triggers
+
+```ts
+// Trigger type names (for item's supported list)
+type TriggerType = Trigger['type']
+
+type Item = {
+    ...
+    triggers: TriggerType[]
+}
+```
+
+UI uses triggers array for visual hints (chevron if `browse` supported, etc.)
+
+## Store Owns All State
+
+Store owns:
+
+```ts
+type State = {
+    stack: Frame[]
+    selected: number
+}
+
+type Frame =
+    | { tag: 'list'; items: Item[]; query: string; parent?: Item }
+    | { tag: 'input'; items: Item[]; text: string; parent: Item; placeholder: string }
+```
+
+UI just renders and sends events:
+
+```
+Store → UIState → Renderer (renders)
+Renderer → Events → Store (updates)
+```
+
+Events from UI:
+
+```ts
+type UIEvent =
+    | { type: 'setQuery'; query: string }
+    | { type: 'setText'; text: string }
+    | { type: 'setSelected'; index: number }
+    | { type: 'trigger'; item: Item; trigger: Trigger }
+```
+
+Flow:
+
+1. Store has state
+2. Store sends UIState to renderer
+3. Renderer renders
+4. User types → renderer sends `{ type: 'setQuery', query: 'goo' }`
+5. Store updates frame.query, filters items, sends new UIState
+6. User presses Enter → renderer sends `{ type: 'trigger', item, trigger: { type: 'execute' } }`
+7. Store routes to module, handles response
+
+UI is dumb. Store is smart.
+
+---
+
+# Addendum 2: Selection Per Frame
+
+`selected` should be per-frame, not global. When user goes back, selection restores.
+
+```ts
+type Frame =
+    | { tag: 'list'; items: Item[]; query: string; parent?: Item; selected: number }
+    | { tag: 'input'; items: Item[]; text: string; parent: Item; placeholder: string; selected: number }
+
+type State = {
+    stack: Frame[]
+}
+```
