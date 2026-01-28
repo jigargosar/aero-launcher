@@ -40,10 +40,6 @@ export type Frame =
     | { tag: 'list'; items: Item[]; query: string; selected: number; parent?: Item }
     | { tag: 'input'; items: Item[]; text: string; selected: number; parent: Item; placeholder: string }
 
-export type State = {
-    stack: Frame[]
-}
-
 // === IPC ===
 
 export type UIState = Frame

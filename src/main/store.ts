@@ -1,5 +1,7 @@
 import { BrowserWindow, ipcMain } from 'electron'
-import { channels, State, UIState, UIEvent, Frame, Item, Trigger, Provider, Response } from '@shared/types'
+import { channels, UIState, UIEvent, Frame, Item, Trigger, Provider, Response } from '@shared/types'
+
+type State = { stack: Frame[] }
 import { appProvider } from './providers/app-provider'
 import { fsProvider } from './providers/fs-provider'
 import { websearchProvider } from './providers/websearch-provider'
