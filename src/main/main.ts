@@ -93,6 +93,19 @@ function createMainWindow(): BrowserWindow {
         window.loadFile(join(__dirname, '../renderer/index.html'))
     }
 
+    // Context menu for text inputs
+    window.webContents.on('context-menu', (_, params) => {
+        if (params.isEditable) {
+            Menu.buildFromTemplate([
+                { role: 'cut' },
+                { role: 'copy' },
+                { role: 'paste' },
+                { type: 'separator' },
+                { role: 'selectAll' },
+            ]).popup()
+        }
+    })
+
     return window
 }
 

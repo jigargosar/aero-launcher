@@ -84,6 +84,32 @@ body {
     color: var(--text-secondary);
 }
 
+/* Header Input (for input frames) */
+.header-input {
+    flex: 1;
+    padding: 8px 12px;
+    font-size: 22px;
+    font-weight: 500;
+    font-family: inherit;
+    letter-spacing: -0.01em;
+    color: var(--text-header);
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    outline: none;
+    caret-color: var(--bg-selected);
+}
+
+.header-input:focus {
+    border-color: var(--bg-selected);
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.header-input::placeholder {
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
 /* List */
 .launcher-list {
     flex: 1;

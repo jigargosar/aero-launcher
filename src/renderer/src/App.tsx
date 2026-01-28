@@ -5,6 +5,8 @@ import { config } from '@shared/config'
 
 import AERO_ICON from '@assets/icon.png'
 
+// === Components ===
+
 function LoadingBars() {
     return (
         <span className="loading-bars">
@@ -39,11 +41,107 @@ function ItemDialog({ item, onClose }: { item: Item; onClose: () => void }) {
     )
 }
 
+type ItemListProps = {
+    items: Item[]
+    selected: number
+    onSelect: (index: number) => void
+    onExecute: (item: Item) => void
+    onShowInfo: (item: Item) => void
+    shouldScrollRef: React.RefObject<boolean | null>
+}
+
+function ItemList({ items, selected, onSelect, onExecute, onShowInfo, shouldScrollRef }: ItemListProps) {
+    if (items.length === 0) return null
+
+    return (
+        <div className="launcher-list">
+            {items.map((item, index) => (
+                <div
+                    key={item.id}
+                    ref={index === selected ? el => {
+                        if (shouldScrollRef.current && el) {
+                            el.scrollIntoView({ block: 'nearest' })
+                            shouldScrollRef.current = false
+                        }
+                    } : undefined}
+                    className={`item ${index === selected ? 'selected' : ''}`}
+                    onMouseEnter={() => onSelect(index)}
+                    onClick={e => e.shiftKey ? onShowInfo(item) : onExecute(item)}
+                >
+                    <img className="item-icon" src={item.icon} alt="" />
+                    <span className="item-name">{item.name}</span>
+                    {item.triggers.includes('browse') && (
+                        <img className="item-chevron" src={Icons.chevron} alt="" />
+                    )}
+                </div>
+            ))}
+        </div>
+    )
+}
+
+type HeaderProps = {
+    icon: string
+    title: string
+    subtitle?: string
+    loading?: boolean
+}
+
+function Header({ icon, title, subtitle, loading }: HeaderProps) {
+    return (
+        <header className={`launcher-header drag-region ${loading ? 'loading' : ''}`}>
+            <img className="header-icon" src={icon} alt="" />
+            <span className="header-title">
+                {title}
+                {loading && <LoadingBars />}
+            </span>
+            {subtitle && <span className="header-query">{subtitle}</span>}
+        </header>
+    )
+}
+
+type InputHeaderProps = {
+    icon: string
+    initialValue: string
+    placeholder: string
+    onTextChange: (value: string) => void
+}
+
+function InputHeader({ icon, initialValue, placeholder, onTextChange }: InputHeaderProps) {
+    const inputRef = useRef<HTMLInputElement>(null)
+    const [localValue, setLocalValue] = useState(initialValue)
+
+    useEffect(() => {
+        inputRef.current?.focus()
+    }, [])
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = e.target.value
+        setLocalValue(newValue)
+        onTextChange(newValue)
+    }
+
+    return (
+        <header className="launcher-header drag-region">
+            <img className="header-icon" src={icon} alt="" />
+            <input
+                ref={inputRef}
+                type="text"
+                value={localValue}
+                placeholder={placeholder}
+                onChange={handleChange}
+                className="header-input no-drag"
+            />
+        </header>
+    )
+}
+
+// === Hook ===
+
 function useLauncher() {
     const [uiState, setUIState] = useState<UIState | null>(null)
     const [dialogItem, setDialogItem] = useState<Item | null>(null)
     const lastKeyTime = useRef(0)
-    const shouldScrollRef = useRef(false)
+    const shouldScrollRef = useRef<boolean | null>(false)
 
     useEffect(() => {
         window.electron.onState(setUIState)
@@ -78,11 +176,9 @@ function useLauncher() {
         window.electron.sendEvent({ type: 'reset' })
     }
 
-    // Keyboard handler
     const onKeyDown = useEffectEvent((e: KeyboardEvent) => {
         if (!uiState) return
 
-        // Close dialog on Escape
         if (dialogItem) {
             if (e.key === 'Escape') setDialogItem(null)
             return
@@ -94,28 +190,28 @@ function useLauncher() {
                 return
 
             case 'ArrowLeft':
+                // Let input handle cursor movement
+                if (uiState.tag === 'input') return
                 e.preventDefault()
                 back()
                 return
 
             case 'Enter':
                 if (selectedItem) {
-                    if (e.shiftKey) {
-                        sendTrigger(selectedItem, { type: 'secondary' })
-                    } else {
-                        sendTrigger(selectedItem, { type: 'execute' })
-                    }
+                    sendTrigger(selectedItem, { type: e.shiftKey ? 'secondary' : 'execute' })
                 }
                 return
 
             case 'ArrowRight':
+                // Let input handle cursor movement (unless plain arrow in list)
+                if (uiState.tag === 'input') return
                 e.preventDefault()
                 if (e.ctrlKey) {
-                    if (selectedItem && selectedItem.triggers.includes('actionMenu')) {
+                    if (selectedItem?.triggers.includes('actionMenu')) {
                         sendTrigger(selectedItem, { type: 'actionMenu' })
                     }
                 } else {
-                    if (selectedItem && selectedItem.triggers.includes('browse')) {
+                    if (selectedItem?.triggers.includes('browse')) {
                         sendTrigger(selectedItem, { type: 'browse' })
                     }
                 }
@@ -123,10 +219,19 @@ function useLauncher() {
 
             case 'Tab':
                 e.preventDefault()
-                if (selectedItem && selectedItem.triggers.includes('sendTo')) {
+                if (selectedItem?.triggers.includes('sendTo')) {
                     sendTrigger(selectedItem, { type: 'sendTo' })
                 }
                 return
+
+            case ' ':
+                if (selectedItem?.triggers.includes('browse')) {
+                    e.preventDefault()
+                    sendTrigger(selectedItem, { type: 'browse' })
+                    return
+                }
+                // Fall through to typing if item doesn't support browse
+                break
 
             case 'ArrowDown':
                 e.preventDefault()
@@ -140,35 +245,22 @@ function useLauncher() {
                 setSelected(Math.max(selected - 1, 0))
                 return
 
-            case 'Backspace': {
+            case 'Backspace':
+                // Input frame handles its own backspace via input element
                 if (uiState.tag === 'input') {
-                    if (uiState.text) {
-                        setInputText(uiState.text.slice(0, -1))
-                    } else {
-                        back()
-                    }
-                } else {
-                    if (uiState.query) {
-                        setQuery(uiState.query.slice(0, -1))
-                    } else {
-                        back()
-                    }
+                    if (!uiState.text) back()
+                    return
                 }
+                uiState.query ? setQuery(uiState.query.slice(0, -1)) : back()
                 return
-            }
         }
 
-        // Typing (single char, no ctrl/meta)
-        if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
-            if (uiState.tag === 'input') {
-                setInputText(uiState.text + e.key)
-            } else {
-                const now = Date.now()
-                const shouldReset = now - lastKeyTime.current > config.queryTimeoutMs
-                const newQuery = shouldReset ? e.key : uiState.query + e.key
-                setQuery(newQuery)
-                lastKeyTime.current = now
-            }
+        // Typing for list frame only (input frame handles via input element)
+        if (uiState.tag === 'list' && e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+            const now = Date.now()
+            const shouldReset = now - lastKeyTime.current > config.queryTimeoutMs
+            setQuery(shouldReset ? e.key : uiState.query + e.key)
+            lastKeyTime.current = now
         }
     })
 
@@ -191,6 +283,8 @@ function useLauncher() {
     }
 }
 
+// === App ===
+
 export default function App() {
     const {
         uiState,
@@ -207,81 +301,67 @@ export default function App() {
 
     const loading = uiState === null
 
-    // Header text
-    const headerText = (() => {
-        if (loading) return 'Aero Launcher'
-        if (uiState.tag === 'input') return uiState.parent.name
-        if (uiState.parent) return uiState.parent.name
-        return selectedItem?.name ?? 'Aero Launcher'
-    })()
-
-    // Header icon
     const headerIcon = (() => {
         if (loading) return AERO_ICON
-        if (uiState.tag === 'input') return uiState.parent.icon
         if (uiState.parent) return uiState.parent.icon
         return selectedItem?.icon ?? AERO_ICON
     })()
 
-    // Query/text display
-    const queryText = (() => {
-        if (loading) return ''
-        return uiState.tag === 'input' ? uiState.text : uiState.query
+    const headerTitle = (() => {
+        if (loading) return 'Aero Launcher'
+        if (uiState.parent) return uiState.parent.name
+        return selectedItem?.name ?? 'Aero Launcher'
     })()
 
-    // Placeholder for input mode
-    const placeholder = uiState?.tag === 'input' ? uiState.placeholder : ''
+    const headerSubtitle = (() => {
+        if (loading || uiState.tag === 'input') return undefined
+        return uiState.query || undefined
+    })()
+
+    const emptyMessage = (() => {
+        if (uiState?.tag === 'input') return uiState.placeholder
+        return 'No results'
+    })()
 
     return (
         <div className="launcher select-none">
             {dialogItem && <ItemDialog item={dialogItem} onClose={closeDialog} />}
 
-            <header className={`launcher-header drag-region ${loading ? 'loading' : ''}`}>
-                <img className="header-icon" src={headerIcon} alt="" />
-                <span className="header-title">
-                    {headerText}
-                    {loading && <LoadingBars />}
-                </span>
-                {!loading && (queryText || placeholder) && (
-                    <span className="header-query">{queryText || placeholder}</span>
-                )}
-            </header>
-
-            {!loading && items.length > 0 && (
-                <div className="launcher-list">
-                    {items.map((item, index) => (
-                        <div
-                            key={item.id}
-                            ref={index === selected ? el => {
-                                if (shouldScrollRef.current && el) {
-                                    el.scrollIntoView({ block: 'nearest' })
-                                    shouldScrollRef.current = false
-                                }
-                            } : undefined}
-                            className={`item ${index === selected ? 'selected' : ''}`}
-                            onMouseEnter={() => setSelected(index)}
-                            onClick={e => {
-                                if (e.shiftKey) {
-                                    setDialogItem(item)
-                                } else {
-                                    sendTrigger(item, { type: 'execute' })
-                                }
-                            }}
-                        >
-                            <img className="item-icon" src={item.icon} alt="" />
-                            <span className="item-name">{item.name}</span>
-                            {item.triggers.includes('browse') && (
-                                <img className="item-chevron" src={Icons.chevron} alt="" />
-                            )}
-                        </div>
-                    ))}
-                </div>
+            {loading && (
+                <Header icon={AERO_ICON} title="Aero Launcher" loading />
             )}
 
-            {!loading && items.length === 0 && (
-                <div className="empty">
-                    {uiState.tag === 'input' ? placeholder : 'No results'}
-                </div>
+            {!loading && uiState.tag === 'input' && (
+                <InputHeader
+                    key={uiState.parent.id}
+                    icon={uiState.parent.icon}
+                    initialValue={uiState.text}
+                    placeholder={uiState.placeholder}
+                    onTextChange={text => window.electron.sendEvent({ type: 'setInputText', text })}
+                />
+            )}
+
+            {!loading && uiState.tag === 'list' && (
+                <Header
+                    icon={headerIcon}
+                    title={headerTitle}
+                    subtitle={headerSubtitle}
+                />
+            )}
+
+            {!loading && (
+                <ItemList
+                    items={items}
+                    selected={selected}
+                    onSelect={setSelected}
+                    onExecute={item => sendTrigger(item, { type: 'execute' })}
+                    onShowInfo={setDialogItem}
+                    shouldScrollRef={shouldScrollRef}
+                />
+            )}
+
+            {!loading && items.length === 0 && uiState.tag === 'list' && (
+                <div className="empty">{emptyMessage}</div>
             )}
         </div>
     )
