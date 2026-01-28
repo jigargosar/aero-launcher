@@ -158,3 +158,25 @@ type State = {
     stack: Frame[]
 }
 ```
+
+---
+
+# Addendum 3: IPC Channels
+
+Two channels, one each direction:
+
+```ts
+// Main → Renderer
+send('state', uiState: UIState)
+
+// Renderer → Main
+send('event', event: UIEvent)
+
+type UIState = Frame  // current frame from top of stack
+
+type UIEvent =
+    | { type: 'setQuery'; query: string }
+    | { type: 'setText'; text: string }
+    | { type: 'setSelected'; index: number }
+    | { type: 'trigger'; item: Item; trigger: Trigger }
+```
