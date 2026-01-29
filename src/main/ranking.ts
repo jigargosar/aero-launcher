@@ -13,6 +13,7 @@ export type RankingContext = {
 
 const MAX_COUNT = 3
 const MIN_COUNT_FOR_BOOST = 2
+const MAX_HISTORY_SIZE = 50
 
 export function createRankingContext(): RankingContext {
     return {
@@ -22,6 +23,8 @@ export function createRankingContext(): RankingContext {
 }
 
 export function recordSelection(context: RankingContext, query: string, itemId: string): void {
+    context.history = [itemId, ...context.history.filter(id => id !== itemId)].slice(0, MAX_HISTORY_SIZE)
+
     if (!query) return
 
     const q = query.toLowerCase()
