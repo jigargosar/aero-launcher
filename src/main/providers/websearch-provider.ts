@@ -54,13 +54,30 @@ const SEARCH_TEMPLATES: Item[] = [
     { id: 'ws-maps', name: 'Google Maps Search', icon: Icons.search, moduleId: 'websearch', metadata: { url: 'https://www.google.com/maps/search/{query}', placeholder: 'Search Maps...', suggest: 'google' }, triggers: ['browse'] },
 ]
 
+const WEB_SEARCH_CATEGORY: Item = {
+    id: 'ws-category',
+    name: 'Web Search',
+    icon: Icons.search,
+    moduleId: 'websearch',
+    metadata: { kind: 'category' },
+    triggers: ['browse'],
+}
+
 export const websearchProvider: Provider = {
     id: 'websearch',
 
-    getRootItems: () => SEARCH_TEMPLATES,
+    getRootItems: () => [WEB_SEARCH_CATEGORY, ...SEARCH_TEMPLATES],
 
     onTrigger: async (item, trigger) => {
         const kind = item.metadata.kind as string | undefined
+
+        // Category item
+        if (kind === 'category') {
+            if (trigger.type === 'browse') {
+                return { type: 'pushList', items: SEARCH_TEMPLATES }
+            }
+            return { type: 'noop' }
+        }
 
         // Suggestion item (from text input)
         if (kind === 'suggestion') {
