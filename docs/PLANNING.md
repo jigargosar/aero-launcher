@@ -3,7 +3,7 @@
 # Ready
 
 # Next Actions
-
+- simplify apps fetching and icons fetching, including desktop folder. 
 
 # Done
 - Implement real app provider (Get-StartApps, icons, caching, async getRootItems)
