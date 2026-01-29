@@ -1,41 +1,46 @@
 import { BrowserWindow, ipcMain } from 'electron'
 import { channels, UIState, UIEvent, Frame, Item, Trigger, Provider, Response } from '@shared/types'
-
-type State = { stack: Frame[] }
 import { appProvider } from './providers/app-provider'
 import { fsProvider } from './providers/fs-provider'
 import { websearchProvider } from './providers/websearch-provider'
 import { createRankingContext, filterAndSort, recordSelection } from './ranking'
 
-// === Provider Registry ===
+// === Types ===
 
-const providers = new Map<string, Provider>()
+type State = { stack: Frame[] }
 
-function registerProvider(provider: Provider): void {
-    providers.set(provider.id, provider)
+type Providers = {
+    registry: Map<string, Provider>
 }
 
-function getRootItems(): Item[] {
-    return [...providers.values()].flatMap(p => p.getRootItems())
-}
+// === Providers ===
 
-async function handleTrigger(item: Item, trigger: Trigger): Promise<Response> {
-    const provider = providers.get(item.moduleId)
-    if (!provider) return { type: 'noop' }
-    return provider.onTrigger(item, trigger)
-}
+const Providers = {
+    init: (): Providers => {
+        const list = [appProvider, fsProvider, websearchProvider]
+        return { registry: new Map(list.map(p => [p.id, p])) }
+    },
 
-// Register all providers
-registerProvider(appProvider)
-registerProvider(fsProvider)
-registerProvider(websearchProvider)
+    getRootItems: (p: Providers): Item[] =>
+        [...p.registry.values()].flatMap(pr => pr.getRootItems()),
+
+    handleTrigger: async (p: Providers, item: Item, trigger: Trigger): Promise<Response> => {
+        const provider = p.registry.get(item.moduleId)
+        if (!provider) {
+            console.error(`Provider not found: ${item.moduleId}`)
+            return { type: 'noop' }
+        }
+        return provider.onTrigger(item, trigger)
+    },
+}
 
 
 // === Store ===
 
 export const Store = {
     init(window: BrowserWindow): void {
-        const rootItems = getRootItems()
+        const providers = Providers.init()
+        const rootItems = Providers.getRootItems(providers)
         const ranking = createRankingContext()
 
         let state: State = {
@@ -149,7 +154,7 @@ export const Store = {
                         return
                     }
                     updateFrame({ text: event.text })
-                    const response = await handleTrigger(frame.parent, { type: 'textChange', text: event.text })
+                    const response = await Providers.handleTrigger(providers, frame.parent, { type: 'textChange', text: event.text })
                     const curr = currentFrame()
                     if (curr.tag === 'input' && curr.text === event.text) {
                         await applyResponse(response)
@@ -169,7 +174,7 @@ export const Store = {
                             recordSelection(ranking, frame.query, event.item.id)
                         }
                     }
-                    const response = await handleTrigger(event.item, event.trigger)
+                    const response = await Providers.handleTrigger(providers, event.item, event.trigger)
                     await applyResponse(response)
                     break
                 }
