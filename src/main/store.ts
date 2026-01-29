@@ -33,29 +33,29 @@ const Providers = {
 // === State ===
 
 type State = {
-    stack: Frame[]
-    ranking: Ranking
-    rootItems: Item[]
+    _stack: Frame[]
+    _ranking: Ranking
+    _rootItems: Item[]
 }
 
 const State = {
     create: (rootItems: Item[]): State => {
         const ranking = Ranking.create()
         return {
-            stack: [{
+            _stack: [{
                 tag: 'list',
                 items: Ranking.filterAndSort(ranking, rootItems, ''),
                 query: '',
                 selected: 0,
             }],
-            ranking,
-            rootItems,
+            _ranking: ranking,
+            _rootItems: rootItems,
         }
     },
 
-    currentFrame: (s: State): Frame => s.stack[s.stack.length - 1],
+    currentFrame: (s: State): Frame => s._stack[s._stack.length - 1],
 
-    isAtRoot: (s: State): boolean => s.stack.length === 1,
+    isAtRoot: (s: State): boolean => s._stack.length === 1,
 
     setQuery: (s: State, query: string): State => {
         const frame = State.currentFrame(s)
@@ -63,9 +63,9 @@ const State = {
             console.error('setQuery requires list frame')
             return s
         }
-        const filtered = Ranking.filterAndSort(s.ranking, s.rootItems, query)
+        const filtered = Ranking.filterAndSort(s._ranking, s._rootItems, query)
         const newFrame = { ...frame, query, items: filtered, selected: 0 }
-        return { ...s, stack: [...s.stack.slice(0, -1), newFrame] }
+        return { ...s, _stack: [...s._stack.slice(0, -1), newFrame] }
     },
 
     setInputText: (s: State, text: string): State => {
@@ -75,13 +75,13 @@ const State = {
             return s
         }
         const newFrame = { ...frame, text }
-        return { ...s, stack: [...s.stack.slice(0, -1), newFrame] }
+        return { ...s, _stack: [...s._stack.slice(0, -1), newFrame] }
     },
 
     setSelected: (s: State, index: number): State => {
         const frame = State.currentFrame(s)
         const newFrame = { ...frame, selected: index }
-        return { ...s, stack: [...s.stack.slice(0, -1), newFrame] }
+        return { ...s, _stack: [...s._stack.slice(0, -1), newFrame] }
     },
 
     pushList: (s: State, items: Item[]): State => {
@@ -94,7 +94,7 @@ const State = {
             selected: 0,
             parent,
         }
-        return { ...s, stack: [...s.stack, newFrame] }
+        return { ...s, _stack: [...s._stack, newFrame] }
     },
 
     pushInput: (s: State, placeholder: string): State => {
@@ -108,22 +108,22 @@ const State = {
             parent,
             placeholder,
         }
-        return { ...s, stack: [...s.stack, newFrame] }
+        return { ...s, _stack: [...s._stack, newFrame] }
     },
 
     pop: (s: State): State => {
-        if (s.stack.length <= 1) {
+        if (s._stack.length <= 1) {
             console.error('Cannot pop root frame')
             return s
         }
-        return { ...s, stack: s.stack.slice(0, -1) }
+        return { ...s, _stack: s._stack.slice(0, -1) }
     },
 
     reset: (s: State): State => ({
         ...s,
-        stack: [{
+        _stack: [{
             tag: 'list',
-            items: Ranking.filterAndSort(s.ranking, s.rootItems, ''),
+            items: Ranking.filterAndSort(s._ranking, s._rootItems, ''),
             query: '',
             selected: 0,
         }],
@@ -132,13 +132,13 @@ const State = {
     updateItems: (s: State, items: Item[]): State => {
         const frame = State.currentFrame(s)
         const newFrame = { ...frame, items, selected: 0 }
-        return { ...s, stack: [...s.stack.slice(0, -1), newFrame] }
+        return { ...s, _stack: [...s._stack.slice(0, -1), newFrame] }
     },
 
     recordSelection: (s: State, itemId: string): void => {
         const frame = State.currentFrame(s)
         if (frame.tag === 'list') {
-            Ranking.recordSelection(s.ranking, frame.query, itemId)
+            Ranking.recordSelection(s._ranking, frame.query, itemId)
         }
     },
 }
