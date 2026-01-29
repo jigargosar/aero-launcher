@@ -1,5 +1,7 @@
 # Inbox
 
+- UI state/Frame is abhorrently used UI, we need to send proper ViewModel. to remove convoluted code.   
+
 # Next Actions
 
 # Done
