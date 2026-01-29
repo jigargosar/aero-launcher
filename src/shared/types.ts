@@ -17,6 +17,7 @@ export type Trigger =
     | { type: 'sendTo' }
     | { type: 'actionMenu' }
     | { type: 'secondary' }
+    | { type: 'info' }
     | { type: 'textChange'; text: string }
 
 export type Response =

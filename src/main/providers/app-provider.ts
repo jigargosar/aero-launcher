@@ -42,7 +42,7 @@ async function fetchAppsFolder(): Promise<Item[]> {
         icon: Icons.app,
         moduleId: 'app',
         metadata: { appId: i.Path },
-        triggers: ['execute', 'actionMenu'] as const,
+        triggers: ['execute', 'actionMenu', 'info'] as const,
     }))
 }
 
@@ -95,7 +95,7 @@ async function fetchAllItems(): Promise<Item[]> {
                 icon: Icons.app,
                 moduleId: 'app',
                 metadata: { appId: itemId, isDesktop: true },
-                triggers: ['execute', 'actionMenu'] as const,
+                triggers: ['execute', 'actionMenu', 'info'],
             })
         }
     }
@@ -235,6 +235,17 @@ export const appProvider: Provider = {
                     { id: `${item.id}-open`, name: 'Open', icon: Icons.action, moduleId: 'app', metadata: { kind: 'action', action: 'open', appId, isDesktop }, triggers: ['execute'] },
                     { id: `${item.id}-admin`, name: 'Run as Administrator', icon: Icons.action, moduleId: 'app', metadata: { kind: 'action', action: 'admin', appId, isDesktop }, triggers: ['execute'] },
                     { id: `${item.id}-location`, name: 'Open File Location', icon: Icons.action, moduleId: 'app', metadata: { kind: 'action', action: 'reveal', appId, isDesktop }, triggers: ['execute'] },
+                ],
+            }
+        }
+
+        if (trigger.type === 'info') {
+            return {
+                type: 'pushList',
+                items: [
+                    { id: `${item.id}-info-path`, name: 'Path: C:\\mock\\path\\app.exe', icon: Icons.action, moduleId: 'app', metadata: { kind: 'info' }, triggers: ['execute'] },
+                    { id: `${item.id}-info-version`, name: 'Version: 1.0.0', icon: Icons.action, moduleId: 'app', metadata: { kind: 'info' }, triggers: ['execute'] },
+                    { id: `${item.id}-info-appid`, name: `AppID: ${appId}`, icon: Icons.action, moduleId: 'app', metadata: { kind: 'info' }, triggers: ['execute'] },
                 ],
             }
         }

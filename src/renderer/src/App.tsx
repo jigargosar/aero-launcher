@@ -224,6 +224,14 @@ function useLauncher() {
                 }
                 return
 
+            case 'i':
+                if (e.ctrlKey && selectedItem?.triggers.includes('info')) {
+                    e.preventDefault()
+                    sendTrigger(selectedItem, { type: 'info' })
+                    return
+                }
+                break
+
             case ' ':
                 if (selectedItem?.triggers.includes('browse')) {
                     e.preventDefault()
