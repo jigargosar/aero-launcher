@@ -36,9 +36,25 @@ export type Provider = {
 
 // === State ===
 
-export type Frame =
-    | { tag: 'list'; sourceItems: Item[]; filteredSourceItems: Item[]; query: string; selected: number; parent?: Item }
-    | { tag: 'input'; items: Item[]; text: string; selected: number; parent: Item; placeholder: string }
+export type ListFrame = {
+    tag: 'list'
+    sourceItems: Item[]
+    filteredSourceItems: Item[]
+    query: string
+    selected: number
+    parent?: Item
+}
+
+export type InputFrame = {
+    tag: 'input'
+    items: Item[]
+    text: string
+    selected: number
+    parent: Item
+    placeholder: string
+}
+
+export type Frame = ListFrame | InputFrame
 
 // === IPC ===
 

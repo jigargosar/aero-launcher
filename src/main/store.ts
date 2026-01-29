@@ -1,5 +1,5 @@
 import { BrowserWindow, ipcMain } from 'electron'
-import { channels, UIEvent, Frame, Item, Trigger, Provider, Response } from '@shared/types'
+import { channels, UIEvent, Frame, ListFrame, Item, Trigger, Provider, Response } from '@shared/types'
 import { appProvider } from './providers/app-provider'
 import { fsProvider } from './providers/fs-provider'
 import { websearchProvider } from './providers/websearch-provider'
@@ -33,12 +33,13 @@ const Providers = {
 // === State ===
 
 type State = {
-    _stack: Frame[]
+    _rootFrame: ListFrame
+    _restStack: Frame[]
     _ranking: Ranking
 }
 
 const State = {
-    _createRootFrame: (sourceItems: Item[], ranking: Ranking): Frame => ({
+    _createRootFrame: (sourceItems: Item[], ranking: Ranking): ListFrame => ({
         tag: 'list',
         sourceItems,
         filteredSourceItems: Ranking.filterAndSort(ranking, sourceItems, ''),
@@ -49,14 +50,27 @@ const State = {
     create: (rootItems: Item[]): State => {
         const ranking = Ranking.create()
         return {
-            _stack: [State._createRootFrame(rootItems, ranking)],
+            _rootFrame: State._createRootFrame(rootItems, ranking),
+            _restStack: [],
             _ranking: ranking,
         }
     },
 
-    currentFrame: (s: State): Frame => s._stack[s._stack.length - 1],
+    currentFrame: (s: State): Frame =>
+        s._restStack.length > 0 ? s._restStack[s._restStack.length - 1] : s._rootFrame,
 
-    isAtRoot: (s: State): boolean => s._stack.length === 1,
+    isAtRoot: (s: State): boolean => s._restStack.length === 0,
+
+    _updateCurrentFrame: (s: State, newFrame: Frame): State => {
+        if (State.isAtRoot(s)) {
+            if (newFrame.tag !== 'list') {
+                console.error('Root frame must be list')
+                return s
+            }
+            return { ...s, _rootFrame: newFrame }
+        }
+        return { ...s, _restStack: [...s._restStack.slice(0, -1), newFrame] }
+    },
 
     setQuery: (s: State, query: string): State => {
         const frame = State.currentFrame(s)
@@ -66,7 +80,7 @@ const State = {
         }
         const filtered = Ranking.filterAndSort(s._ranking, frame.sourceItems, query)
         const newFrame = { ...frame, query, filteredSourceItems: filtered, selected: 0 }
-        return { ...s, _stack: [...s._stack.slice(0, -1), newFrame] }
+        return State._updateCurrentFrame(s, newFrame)
     },
 
     setInputText: (s: State, text: string): State => {
@@ -76,13 +90,13 @@ const State = {
             return s
         }
         const newFrame = { ...frame, text }
-        return { ...s, _stack: [...s._stack.slice(0, -1), newFrame] }
+        return State._updateCurrentFrame(s, newFrame)
     },
 
     setSelected: (s: State, index: number): State => {
         const frame = State.currentFrame(s)
         const newFrame = { ...frame, selected: index }
-        return { ...s, _stack: [...s._stack.slice(0, -1), newFrame] }
+        return State._updateCurrentFrame(s, newFrame)
     },
 
     pushList: (s: State, items: Item[]): State => {
@@ -96,7 +110,7 @@ const State = {
             selected: 0,
             parent,
         }
-        return { ...s, _stack: [...s._stack, newFrame] }
+        return { ...s, _restStack: [...s._restStack, newFrame] }
     },
 
     pushInput: (s: State, placeholder: string): State => {
@@ -110,33 +124,27 @@ const State = {
             parent,
             placeholder,
         }
-        return { ...s, _stack: [...s._stack, newFrame] }
+        return { ...s, _restStack: [...s._restStack, newFrame] }
     },
 
     pop: (s: State): State => {
-        if (s._stack.length <= 1) {
+        if (s._restStack.length === 0) {
             console.error('Cannot pop root frame')
             return s
         }
-        return { ...s, _stack: s._stack.slice(0, -1) }
+        return { ...s, _restStack: s._restStack.slice(0, -1) }
     },
 
-    reset: (s: State): State => {
-        const rootFrame = s._stack[0]
-        if (rootFrame.tag !== 'list') {
-            console.error('Root frame must be list')
-            return s
-        }
-        return {
-            ...s,
-            _stack: [State._createRootFrame(rootFrame.sourceItems, s._ranking)],
-        }
-    },
+    reset: (s: State): State => ({
+        ...s,
+        _rootFrame: State._createRootFrame(s._rootFrame.sourceItems, s._ranking),
+        _restStack: [],
+    }),
 
     updateItems: (s: State, items: Item[]): State => {
         const frame = State.currentFrame(s)
         const newFrame = { ...frame, items, selected: 0 }
-        return { ...s, _stack: [...s._stack.slice(0, -1), newFrame] }
+        return State._updateCurrentFrame(s, newFrame)
     },
 
     recordSelection: (s: State, itemId: string): void => {
