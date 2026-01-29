@@ -2,7 +2,6 @@
 
 # Ready
 
-- Header shows selected item, remove parent from UIState
 - Decouple Frame from UIState - Split internal/external types
     - UI state/Frame is abhorrently used UI, we need to send proper ViewModel. to remove convoluted code.
 - Add breadcrumbs to UIState - Navigation path display
@@ -11,6 +10,7 @@
 # Next Actions
 
 - bug/enforcement: input frame only makes sense if it is at top of stack.
+- Header should show selected item
 
 # Done
 
