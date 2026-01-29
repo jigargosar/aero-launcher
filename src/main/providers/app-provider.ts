@@ -26,7 +26,7 @@ export const appProvider: Provider = {
                 const action = item.metadata.action as string
                 const targetPath = item.metadata.targetPath as string
                 console.log(`[app] Action: ${action} on ${targetPath}`)
-                return { type: 'hide' }
+                return { type: 'resetAndHide' }
             }
             return { type: 'noop' }
         }
@@ -34,7 +34,7 @@ export const appProvider: Provider = {
         // Regular app item
         if (trigger.type === 'execute') {
             console.log(`[app] Launching: ${item.metadata.path}`)
-            return { type: 'hide' }
+            return { type: 'resetAndHide' }
         }
 
         if (trigger.type === 'actionMenu') {

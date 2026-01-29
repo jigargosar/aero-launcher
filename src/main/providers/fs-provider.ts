@@ -24,7 +24,7 @@ export const fsProvider: Provider = {
                     return { type: 'pushInput', placeholder: 'New name...' }
                 }
                 console.log(`[fs] Action: ${action} on ${item.metadata.targetPath}`)
-                return { type: 'hide' }
+                return { type: 'resetAndHide' }
             }
             if (trigger.type === 'textChange') {
                 // Rename confirmation would go here
@@ -37,7 +37,7 @@ export const fsProvider: Provider = {
         if (kind === 'folder') {
             if (trigger.type === 'execute') {
                 console.log(`[fs] Opening folder: ${item.metadata.path}`)
-                return { type: 'hide' }
+                return { type: 'resetAndHide' }
             }
             if (trigger.type === 'browse') {
                 const path = item.metadata.path as string
@@ -65,7 +65,7 @@ export const fsProvider: Provider = {
         if (kind === 'file') {
             if (trigger.type === 'execute') {
                 console.log(`[fs] Opening file: ${item.metadata.path}`)
-                return { type: 'hide' }
+                return { type: 'resetAndHide' }
             }
             if (trigger.type === 'actionMenu') {
                 const path = item.metadata.path as string

@@ -84,7 +84,7 @@ export const websearchProvider: Provider = {
             if (trigger.type === 'execute') {
                 const url = item.metadata.url as string
                 shell.openExternal(url)
-                return { type: 'hide' }
+                return { type: 'resetAndHide' }
             }
             return { type: 'noop' }
         }

@@ -61,6 +61,9 @@ const State = {
 
     isAtRoot: (s: State): boolean => s._restStack.length === 0,
 
+    isAtRootWithoutQuery: (s: State): boolean =>
+        State.isAtRoot(s) && s._rootFrame.query === '',
+
     _updateCurrentFrame: (s: State, newFrame: Frame): State => {
         if (State.isAtRoot(s)) {
             if (newFrame.tag !== 'list') {
@@ -127,11 +130,8 @@ const State = {
         return { ...s, _restStack: [...s._restStack, newFrame] }
     },
 
-    pop: (s: State): State => {
-        if (s._restStack.length === 0) {
-            console.error('Cannot pop root frame')
-            return s
-        }
+    pop: (s: State): State | null => {
+        if (s._restStack.length === 0) return null
         return { ...s, _restStack: s._restStack.slice(0, -1) }
     },
 
@@ -171,9 +171,9 @@ export const Store = {
                 case 'pushList':    state = State.pushList(state, response.items); break
                 case 'pushInput':   state = State.pushInput(state, response.placeholder); break
                 case 'updateItems': state = State.updateItems(state, response.items); break
-                case 'pop':         state = State.pop(state); break
+                case 'pop':         state = State.pop(state) ?? state; break
                 case 'reset':       state = State.reset(state); break
-                case 'hide':
+                case 'resetAndHide':
                     window.blur()
                     window.hide()
                     state = State.reset(state)
@@ -224,16 +224,16 @@ export const Store = {
                 }
 
                 case 'back':
-                    if (State.isAtRoot(state)) {
+                    state = State.pop(state) ?? State.setQuery(state, '')
+                    break
+
+                case 'resetOrHide':
+                    if (State.isAtRootWithoutQuery(state)) {
                         window.blur()
                         window.hide()
                     } else {
-                        state = State.pop(state)
+                        state = State.reset(state)
                     }
-                    break
-
-                case 'reset':
-                    state = State.reset(state)
                     break
             }
 

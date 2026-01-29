@@ -25,7 +25,7 @@ export type Response =
     | { type: 'updateItems'; items: Item[] }
     | { type: 'pop' }
     | { type: 'reset' }
-    | { type: 'hide' }
+    | { type: 'resetAndHide' }
     | { type: 'noop' }
 
 export type Provider = {
@@ -66,7 +66,7 @@ export type UIEvent =
     | { type: 'setSelected'; index: number }
     | { type: 'trigger'; item: Item; trigger: Trigger }
     | { type: 'back' }
-    | { type: 'reset' }
+    | { type: 'resetOrHide' }
 
 export const channels = {
     state: 'state',

@@ -172,8 +172,8 @@ function useLauncher() {
         window.electron.sendEvent({ type: 'back' })
     }
 
-    const reset = () => {
-        window.electron.sendEvent({ type: 'reset' })
+    const resetOrHide = () => {
+        window.electron.sendEvent({ type: 'resetOrHide' })
     }
 
     const onKeyDown = useEffectEvent((e: KeyboardEvent) => {
@@ -186,7 +186,7 @@ function useLauncher() {
 
         switch (e.key) {
             case 'Escape':
-                reset()
+                resetOrHide()
                 return
 
             case 'ArrowLeft':

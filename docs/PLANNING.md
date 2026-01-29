@@ -5,11 +5,14 @@
 # Next Actions
 
 - bug/enforcement: input frame only makes sense if it is at top of stack.
-- bug back navigation closes window.
-- each escape key should, reset, clear query if exists, then close app. in order.
+
 
 # Done
-
+- pop return null instead of erroring out. and back clears query when backing out of root with query.
+- back, should cleary query on root frame.
+- Clear naming of UIEvent and ProviderResponse tags. 
+- bug back navigation closes window.
+- each escape key should, reset, clear query if exists, then close app. in order.
 - Header should always show selected item
 - Add sourceItems/filteredSourceItems to ListFrame - Fix nested frame filtering bug
 - remove duplication, from create root frame. only reason to so is ranking might have changed based on history. we are
