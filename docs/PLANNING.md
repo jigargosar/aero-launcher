@@ -10,6 +10,8 @@
 # Next Actions
 
 - Add sourceItems/filteredSourceItems to ListFrame - Fix nested frame filtering bug
+- bug/enforcement: input frame only makes sense if it is at top of stack.
+- remove duplication, from create root frame. only reason to so is ranking might have changed based on history. we are not refreshing root items.
 
 # Done
 

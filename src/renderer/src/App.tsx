@@ -148,7 +148,7 @@ function useLauncher() {
         window.electron.requestState()
     }, [])
 
-    const items = uiState?.items ?? []
+    const items = uiState ? (uiState.tag === 'list' ? uiState.filteredSourceItems : uiState.items) : []
     const selected = uiState?.selected ?? 0
     const selectedItem = items[selected]
 

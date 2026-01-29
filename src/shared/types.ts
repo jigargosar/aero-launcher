@@ -37,7 +37,7 @@ export type Provider = {
 // === State ===
 
 export type Frame =
-    | { tag: 'list'; items: Item[]; query: string; selected: number; parent?: Item }
+    | { tag: 'list'; sourceItems: Item[]; filteredSourceItems: Item[]; query: string; selected: number; parent?: Item }
     | { tag: 'input'; items: Item[]; text: string; selected: number; parent: Item; placeholder: string }
 
 // === IPC ===

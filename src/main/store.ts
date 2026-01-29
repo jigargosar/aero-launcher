@@ -35,21 +35,22 @@ const Providers = {
 type State = {
     _stack: Frame[]
     _ranking: Ranking
-    _rootItems: Item[]
 }
 
 const State = {
+    _createRootFrame: (sourceItems: Item[], ranking: Ranking): Frame => ({
+        tag: 'list',
+        sourceItems,
+        filteredSourceItems: Ranking.filterAndSort(ranking, sourceItems, ''),
+        query: '',
+        selected: 0,
+    }),
+
     create: (rootItems: Item[]): State => {
         const ranking = Ranking.create()
         return {
-            _stack: [{
-                tag: 'list',
-                items: Ranking.filterAndSort(ranking, rootItems, ''),
-                query: '',
-                selected: 0,
-            }],
+            _stack: [State._createRootFrame(rootItems, ranking)],
             _ranking: ranking,
-            _rootItems: rootItems,
         }
     },
 
@@ -63,8 +64,8 @@ const State = {
             console.error('setQuery requires list frame')
             return s
         }
-        const filtered = Ranking.filterAndSort(s._ranking, s._rootItems, query)
-        const newFrame = { ...frame, query, items: filtered, selected: 0 }
+        const filtered = Ranking.filterAndSort(s._ranking, frame.sourceItems, query)
+        const newFrame = { ...frame, query, filteredSourceItems: filtered, selected: 0 }
         return { ...s, _stack: [...s._stack.slice(0, -1), newFrame] }
     },
 
@@ -86,10 +87,11 @@ const State = {
 
     pushList: (s: State, items: Item[]): State => {
         const frame = State.currentFrame(s)
-        const parent = frame.items[frame.selected]
+        const parent = frame.tag === 'list' ? frame.filteredSourceItems[frame.selected] : frame.items[frame.selected]
         const newFrame: Frame = {
             tag: 'list',
-            items,
+            sourceItems: items,
+            filteredSourceItems: Ranking.filterAndSort(s._ranking, items, ''),
             query: '',
             selected: 0,
             parent,
@@ -99,7 +101,7 @@ const State = {
 
     pushInput: (s: State, placeholder: string): State => {
         const frame = State.currentFrame(s)
-        const parent = frame.items[frame.selected]
+        const parent = frame.tag === 'list' ? frame.filteredSourceItems[frame.selected] : frame.items[frame.selected]
         const newFrame: Frame = {
             tag: 'input',
             items: [],
@@ -119,15 +121,17 @@ const State = {
         return { ...s, _stack: s._stack.slice(0, -1) }
     },
 
-    reset: (s: State): State => ({
-        ...s,
-        _stack: [{
-            tag: 'list',
-            items: Ranking.filterAndSort(s._ranking, s._rootItems, ''),
-            query: '',
-            selected: 0,
-        }],
-    }),
+    reset: (s: State): State => {
+        const rootFrame = s._stack[0]
+        if (rootFrame.tag !== 'list') {
+            console.error('Root frame must be list')
+            return s
+        }
+        return {
+            ...s,
+            _stack: [State._createRootFrame(rootFrame.sourceItems, s._ranking)],
+        }
+    },
 
     updateItems: (s: State, items: Item[]): State => {
         const frame = State.currentFrame(s)
