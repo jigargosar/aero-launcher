@@ -47,9 +47,11 @@ async function fetchAppsFolder(): Promise<Item[]> {
 }
 
 async function fetchDesktop(): Promise<DesktopItem[]> {
-    const script = `(New-Object -ComObject Shell.Application).Namespace([Environment]::GetFolderPath('Desktop')).Items() | Select-Object Name, Path, @{N='Target';E={$_.GetLink.Path}} | ConvertTo-Json`
+    const script = `(New-Object -ComObject Shell.Application).Namespace([Environment]::GetFolderPath('Desktop')).Items() | Where-Object { $_.Path -match '\\.(lnk|url|exe)$' } | Select-Object Name, Path, @{N='Target';E={$_.GetLink.Path}} | ConvertTo-Json`
     const stdout = await runPs(script)
-    return JSON.parse(stdout) as DesktopItem[]
+    const items = JSON.parse(stdout)
+    // Handle single item (PS returns object not array)
+    return Array.isArray(items) ? items : [items]
 }
 
 function getDesktopItemId(item: DesktopItem): string {
