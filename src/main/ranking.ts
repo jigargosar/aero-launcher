@@ -6,7 +6,7 @@ import {Item} from '@shared/types'
 
 // --- Types ---
 
-export type RankingContext = {
+type RankingContext = {
     learned: Map<string, Map<string, number>> // query → (itemId → count)
     history: string[] // itemIds ordered by recency, most recent first
 }
@@ -15,14 +15,14 @@ const MAX_COUNT = 3
 const MIN_COUNT_FOR_BOOST = 2
 const MAX_HISTORY_SIZE = 50
 
-export function createRankingContext(): RankingContext {
+function createRankingContext(): RankingContext {
     return {
         learned: new Map(),
         history: []
     }
 }
 
-export function recordSelection(context: RankingContext, query: string, itemId: string): void {
+function recordSelection(context: RankingContext, query: string, itemId: string): void {
     context.history = [itemId, ...context.history.filter(id => id !== itemId)].slice(0, MAX_HISTORY_SIZE)
 
     if (!query) return
@@ -213,7 +213,7 @@ const matchers: Matcher[] = [matchLearned, matchUnified]
 
 // --- Main ---
 
-export function filterAndSort(
+function filterAndSort(
     items: Item[],
     query: string,
     context: RankingContext
@@ -244,6 +244,20 @@ export function filterAndSort(
     )
 
     return result.map(si => si.item)
+}
+
+// --- Namespace ---
+
+export type Ranking = RankingContext
+
+export const Ranking = {
+    create: (): Ranking => createRankingContext(),
+
+    filterAndSort: (r: Ranking, items: Item[], query: string): Item[] =>
+        filterAndSort(items, query, r),
+
+    recordSelection: (r: Ranking, query: string, itemId: string): void =>
+        recordSelection(r, query, itemId),
 }
 
 // --- Exports for testing ---

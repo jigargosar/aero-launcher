@@ -3,7 +3,7 @@ import { channels, UIEvent, Frame, Item, Trigger, Provider, Response } from '@sh
 import { appProvider } from './providers/app-provider'
 import { fsProvider } from './providers/fs-provider'
 import { websearchProvider } from './providers/websearch-provider'
-import { createRankingContext, filterAndSort, recordSelection, RankingContext } from './ranking'
+import { Ranking } from './ranking'
 
 // === Providers ===
 
@@ -34,17 +34,17 @@ const Providers = {
 
 type State = {
     stack: Frame[]
-    ranking: RankingContext
+    ranking: Ranking
     rootItems: Item[]
 }
 
 const State = {
     create: (rootItems: Item[]): State => {
-        const ranking = createRankingContext()
+        const ranking = Ranking.create()
         return {
             stack: [{
                 tag: 'list',
-                items: filterAndSort(rootItems, '', ranking),
+                items: Ranking.filterAndSort(ranking, rootItems, ''),
                 query: '',
                 selected: 0,
             }],
@@ -63,7 +63,7 @@ const State = {
             console.error('setQuery requires list frame')
             return s
         }
-        const filtered = filterAndSort(s.rootItems, query, s.ranking)
+        const filtered = Ranking.filterAndSort(s.ranking, s.rootItems, query)
         const newFrame = { ...frame, query, items: filtered, selected: 0 }
         return { ...s, stack: [...s.stack.slice(0, -1), newFrame] }
     },
@@ -123,7 +123,7 @@ const State = {
         ...s,
         stack: [{
             tag: 'list',
-            items: filterAndSort(s.rootItems, '', s.ranking),
+            items: Ranking.filterAndSort(s.ranking, s.rootItems, ''),
             query: '',
             selected: 0,
         }],
@@ -138,7 +138,7 @@ const State = {
     recordSelection: (s: State, itemId: string): void => {
         const frame = State.currentFrame(s)
         if (frame.tag === 'list') {
-            recordSelection(s.ranking, frame.query, itemId)
+            Ranking.recordSelection(s.ranking, frame.query, itemId)
         }
     },
 }
