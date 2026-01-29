@@ -41,7 +41,7 @@ export const Store = {
         let state: State = {
             stack: [{
                 tag: 'list',
-                items: rootItems,
+                items: filterAndSort(rootItems, '', ranking),
                 query: '',
                 selected: 0,
             }],
@@ -73,7 +73,7 @@ export const Store = {
         const resetToRoot = () => {
             state.stack = [{
                 tag: 'list',
-                items: rootItems,
+                items: filterAndSort(rootItems, '', ranking),
                 query: '',
                 selected: 0,
             }]
