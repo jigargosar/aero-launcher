@@ -202,7 +202,7 @@ const matchUnified: Matcher = (items, query, context) => {
         byStart,
         Order.combine(
             byCharSpan,
-            Order.combine(byGaps, Order.combine(byHistory(context), byName))
+            Order.combine(byGaps, byName)
         )
     )
 
