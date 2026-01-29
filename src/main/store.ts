@@ -1,19 +1,15 @@
 import { BrowserWindow, ipcMain } from 'electron'
-import { channels, UIState, UIEvent, Frame, Item, Trigger, Provider, Response } from '@shared/types'
+import { channels, UIEvent, Frame, Item, Trigger, Provider, Response } from '@shared/types'
 import { appProvider } from './providers/app-provider'
 import { fsProvider } from './providers/fs-provider'
 import { websearchProvider } from './providers/websearch-provider'
-import { createRankingContext, filterAndSort, recordSelection } from './ranking'
+import { createRankingContext, filterAndSort, recordSelection, RankingContext } from './ranking'
 
-// === Types ===
-
-type State = { stack: Frame[] }
+// === Providers ===
 
 type Providers = {
     registry: Map<string, Provider>
 }
-
-// === Providers ===
 
 const Providers = {
     init: (): Providers => {
@@ -34,165 +30,199 @@ const Providers = {
     },
 }
 
+// === State ===
 
-// === Store ===
+type State = {
+    stack: Frame[]
+    ranking: RankingContext
+    rootItems: Item[]
+}
 
-export const Store = {
-    init(window: BrowserWindow): void {
-        const providers = Providers.init()
-        const rootItems = Providers.getRootItems(providers)
+const State = {
+    create: (rootItems: Item[]): State => {
         const ranking = createRankingContext()
-
-        let state: State = {
+        return {
             stack: [{
                 tag: 'list',
                 items: filterAndSort(rootItems, '', ranking),
                 query: '',
                 selected: 0,
             }],
+            ranking,
+            rootItems,
         }
+    },
 
-        const currentFrame = (): Frame => state.stack[state.stack.length - 1]
+    currentFrame: (s: State): Frame => s.stack[s.stack.length - 1],
 
-        const buildUIState = (): UIState => currentFrame()
+    isAtRoot: (s: State): boolean => s.stack.length === 1,
+
+    setQuery: (s: State, query: string): State => {
+        const frame = State.currentFrame(s)
+        if (frame.tag !== 'list') {
+            console.error('setQuery requires list frame')
+            return s
+        }
+        const filtered = filterAndSort(s.rootItems, query, s.ranking)
+        const newFrame = { ...frame, query, items: filtered, selected: 0 }
+        return { ...s, stack: [...s.stack.slice(0, -1), newFrame] }
+    },
+
+    setInputText: (s: State, text: string): State => {
+        const frame = State.currentFrame(s)
+        if (frame.tag !== 'input') {
+            console.error('setInputText requires input frame')
+            return s
+        }
+        const newFrame = { ...frame, text }
+        return { ...s, stack: [...s.stack.slice(0, -1), newFrame] }
+    },
+
+    setSelected: (s: State, index: number): State => {
+        const frame = State.currentFrame(s)
+        const newFrame = { ...frame, selected: index }
+        return { ...s, stack: [...s.stack.slice(0, -1), newFrame] }
+    },
+
+    pushList: (s: State, items: Item[]): State => {
+        const frame = State.currentFrame(s)
+        const parent = frame.items[frame.selected]
+        const newFrame: Frame = {
+            tag: 'list',
+            items,
+            query: '',
+            selected: 0,
+            parent,
+        }
+        return { ...s, stack: [...s.stack, newFrame] }
+    },
+
+    pushInput: (s: State, placeholder: string): State => {
+        const frame = State.currentFrame(s)
+        const parent = frame.items[frame.selected]
+        const newFrame: Frame = {
+            tag: 'input',
+            items: [],
+            text: '',
+            selected: 0,
+            parent,
+            placeholder,
+        }
+        return { ...s, stack: [...s.stack, newFrame] }
+    },
+
+    pop: (s: State): State => {
+        if (s.stack.length <= 1) {
+            console.error('Cannot pop root frame')
+            return s
+        }
+        return { ...s, stack: s.stack.slice(0, -1) }
+    },
+
+    reset: (s: State): State => ({
+        ...s,
+        stack: [{
+            tag: 'list',
+            items: filterAndSort(s.rootItems, '', s.ranking),
+            query: '',
+            selected: 0,
+        }],
+    }),
+
+    updateItems: (s: State, items: Item[]): State => {
+        const frame = State.currentFrame(s)
+        const newFrame = { ...frame, items, selected: 0 }
+        return { ...s, stack: [...s.stack.slice(0, -1), newFrame] }
+    },
+
+    recordSelection: (s: State, itemId: string): void => {
+        const frame = State.currentFrame(s)
+        if (frame.tag === 'list') {
+            recordSelection(s.ranking, frame.query, itemId)
+        }
+    },
+}
+
+// === Store ===
+
+export const Store = {
+    init(window: BrowserWindow): void {
+        const providers = Providers.init()
+        let state = State.create(Providers.getRootItems(providers))
 
         const commit = () => {
-            window.webContents.send(channels.state, buildUIState())
+            window.webContents.send(channels.state, State.currentFrame(state))
         }
 
-        const updateFrame = (update: Partial<Frame>) => {
-            const frame = currentFrame()
-            state.stack[state.stack.length - 1] = { ...frame, ...update } as Frame
-        }
-
-        const pushFrame = (frame: Frame) => {
-            state.stack.push(frame)
-        }
-
-        const popFrame = () => {
-            if (state.stack.length > 1) {
-                state.stack.pop()
-            }
-        }
-
-        const resetToRoot = () => {
-            state.stack = [{
-                tag: 'list',
-                items: filterAndSort(rootItems, '', ranking),
-                query: '',
-                selected: 0,
-            }]
-        }
-
-        const applyResponse = async (response: Response) => {
+        const applyResponse = (response: Response) => {
             switch (response.type) {
-                case 'pushList': {
-                    const frame = currentFrame()
-                    const parent = frame.items[frame.selected]
-                    pushFrame({
-                        tag: 'list',
-                        items: response.items,
-                        query: '',
-                        selected: 0,
-                        parent,
-                    })
-                    break
-                }
-                case 'pushInput': {
-                    const frame = currentFrame()
-                    const parent = frame.items[frame.selected]
-                    pushFrame({
-                        tag: 'input',
-                        items: [],
-                        text: '',
-                        selected: 0,
-                        parent,
-                        placeholder: response.placeholder,
-                    })
-                    break
-                }
-                case 'updateItems': {
-                    updateFrame({ items: response.items, selected: 0 })
-                    break
-                }
-                case 'pop': {
-                    popFrame()
-                    break
-                }
-                case 'reset': {
-                    resetToRoot()
-                    break
-                }
-                case 'hide': {
+                case 'pushList':    state = State.pushList(state, response.items); break
+                case 'pushInput':   state = State.pushInput(state, response.placeholder); break
+                case 'updateItems': state = State.updateItems(state, response.items); break
+                case 'pop':         state = State.pop(state); break
+                case 'reset':       state = State.reset(state); break
+                case 'hide':
                     window.blur()
                     window.hide()
-                    resetToRoot()
+                    state = State.reset(state)
                     break
-                }
                 case 'noop':
                     break
             }
         }
 
         const handleEvent = async (event: UIEvent) => {
-            const frame = currentFrame()
+            const frame = State.currentFrame(state)
 
             switch (event.type) {
-                case 'setQuery': {
+                case 'setQuery':
                     if (frame.tag !== 'list') {
                         console.error('setQuery requires list frame')
                         return
                     }
-                    const filtered = filterAndSort(rootItems, event.query, ranking)
-                    updateFrame({ query: event.query, items: filtered, selected: 0 })
+                    state = State.setQuery(state, event.query)
                     break
-                }
 
                 case 'setInputText': {
                     if (frame.tag !== 'input') {
                         console.error('setInputText requires input frame')
                         return
                     }
-                    updateFrame({ text: event.text })
+                    state = State.setInputText(state, event.text)
                     const response = await Providers.handleTrigger(providers, frame.parent, { type: 'textChange', text: event.text })
-                    const curr = currentFrame()
+                    const curr = State.currentFrame(state)
                     if (curr.tag === 'input' && curr.text === event.text) {
-                        await applyResponse(response)
+                        applyResponse(response)
                     }
                     break
                 }
 
-                case 'setSelected': {
-                    updateFrame({ selected: event.index })
+                case 'setSelected':
+                    state = State.setSelected(state, event.index)
                     break
-                }
 
                 case 'trigger': {
-                    if (frame.tag === 'list') {
-                        const recordable = ['execute', 'browse', 'sendTo', 'actionMenu', 'secondary']
-                        if (recordable.includes(event.trigger.type)) {
-                            recordSelection(ranking, frame.query, event.item.id)
-                        }
+                    const recordable = ['execute', 'browse', 'sendTo', 'actionMenu', 'secondary']
+                    if (recordable.includes(event.trigger.type)) {
+                        State.recordSelection(state, event.item.id)
                     }
                     const response = await Providers.handleTrigger(providers, event.item, event.trigger)
-                    await applyResponse(response)
+                    applyResponse(response)
                     break
                 }
 
-                case 'back': {
-                    if (state.stack.length > 1) {
-                        popFrame()
-                    } else {
+                case 'back':
+                    if (State.isAtRoot(state)) {
                         window.blur()
                         window.hide()
+                    } else {
+                        state = State.pop(state)
                     }
                     break
-                }
 
-                case 'reset': {
-                    resetToRoot()
+                case 'reset':
+                    state = State.reset(state)
                     break
-                }
             }
 
             commit()
