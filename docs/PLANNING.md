@@ -10,10 +10,10 @@
 # Next Actions
 
 - bug/enforcement: input frame only makes sense if it is at top of stack.
-- Header should show selected item
 
 # Done
 
+- Header should always show selected item
 - Add sourceItems/filteredSourceItems to ListFrame - Fix nested frame filtering bug
 - remove duplication, from create root frame. only reason to so is ranking might have changed based on history. we are not refreshing root items.
 - ISI, root frame is separate, not part of stack

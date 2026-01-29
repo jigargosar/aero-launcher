@@ -299,13 +299,11 @@ export default function App() {
 
     const headerIcon = (() => {
         if (loading) return AERO_ICON
-        if (uiState.parent) return uiState.parent.icon
         return selectedItem?.icon ?? AERO_ICON
     })()
 
     const headerTitle = (() => {
         if (loading) return 'Aero Launcher'
-        if (uiState.parent) return uiState.parent.name
         return selectedItem?.name ?? 'Aero Launcher'
     })()
 
