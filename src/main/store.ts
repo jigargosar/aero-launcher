@@ -104,7 +104,11 @@ const State = {
 
     pushList: (s: State, items: Item[]): State => {
         const frame = State.currentFrame(s)
-        const parent = frame.tag === 'list' ? frame.filteredSourceItems[frame.selected] : frame.items[frame.selected]
+        if (frame.tag === 'input') {
+            console.error('Cannot push list on top of input frame')
+            return s
+        }
+        const parent = frame.filteredSourceItems[frame.selected]
         const newFrame: Frame = {
             tag: 'list',
             sourceItems: items,
@@ -118,7 +122,11 @@ const State = {
 
     pushInput: (s: State, placeholder: string): State => {
         const frame = State.currentFrame(s)
-        const parent = frame.tag === 'list' ? frame.filteredSourceItems[frame.selected] : frame.items[frame.selected]
+        if (frame.tag === 'input') {
+            console.error('Cannot push input on top of input frame')
+            return s
+        }
+        const parent = frame.filteredSourceItems[frame.selected]
         const newFrame: Frame = {
             tag: 'input',
             items: [],

@@ -4,10 +4,9 @@
 
 # Next Actions
 
-- bug/enforcement: input frame only makes sense if it is at top of stack.
-
 
 # Done
+- Enforce input frame can only be at top of stack (pushList/pushInput check)
 - pop return null instead of erroring out. and back clears query when backing out of root with query.
 - back, should cleary query on root frame.
 - Clear naming of UIEvent and ProviderResponse tags. 
