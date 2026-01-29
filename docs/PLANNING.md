@@ -2,13 +2,14 @@
 
 # Ready
 
-- Add sourceItems/filteredSourceItems to ListFrame - Fix nested frame filtering bug
 - Header shows selected item, remove parent from UIState
 - Decouple Frame from UIState - Split internal/external types
+    - UI state/Frame is abhorrently used UI, we need to send proper ViewModel. to remove convoluted code.
 - Add breadcrumbs to UIState - Navigation path display
-- UI state/Frame is abhorrently used UI, we need to send proper ViewModel. to remove convoluted code.
 
 # Next Actions
+
+- Add sourceItems/filteredSourceItems to ListFrame - Fix nested frame filtering bug
 
 # Done
 
