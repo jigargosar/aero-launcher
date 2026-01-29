@@ -66,7 +66,7 @@ const WEB_SEARCH_CATEGORY: Item = {
 export const websearchProvider: Provider = {
     id: 'websearch',
 
-    getRootItems: () => [WEB_SEARCH_CATEGORY, ...SEARCH_TEMPLATES],
+    getRootItems: async () => [WEB_SEARCH_CATEGORY, ...SEARCH_TEMPLATES],
 
     onTrigger: async (item, trigger) => {
         const kind = item.metadata.kind as string | undefined

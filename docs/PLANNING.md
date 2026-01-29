@@ -6,6 +6,7 @@
 
 
 # Done
+- Implement real app provider (Get-StartApps, icons, caching, async getRootItems)
 - Enforce input frame can only be at top of stack (pushList/pushInput check)
 - pop return null instead of erroring out. and back clears query when backing out of root with query.
 - back, should cleary query on root frame.

@@ -30,7 +30,7 @@ export type Response =
 
 export type Provider = {
     id: string
-    getRootItems: () => Item[]
+    getRootItems: () => Promise<Item[]>
     onTrigger: (item: Item, trigger: Trigger) => Promise<Response>
 }
 

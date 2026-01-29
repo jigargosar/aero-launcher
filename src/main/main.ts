@@ -165,7 +165,7 @@ function registerHotkeys(window: BrowserWindow): void {
 if (!app.requestSingleInstanceLock()) {
     app.quit()
 } else {
-    app.whenReady().then(() => {
+    app.whenReady().then(async () => {
         const mainWindow = createMainWindow()
 
         app.on('second-instance', () => {
@@ -175,7 +175,7 @@ if (!app.requestSingleInstanceLock()) {
 
         setupTray(mainWindow)
         registerHotkeys(mainWindow)
-        Store.init(mainWindow)
+        await Store.init(mainWindow)
     })
 
     app.on('window-all-closed', () => {

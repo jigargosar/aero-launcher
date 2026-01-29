@@ -17,8 +17,12 @@ const Providers = {
         return { registry: new Map(list.map(p => [p.id, p])) }
     },
 
-    getRootItems: (p: Providers): Item[] =>
-        [...p.registry.values()].flatMap(pr => pr.getRootItems()),
+    getRootItems: async (p: Providers): Promise<Item[]> => {
+        const itemArrays = await Promise.all(
+            [...p.registry.values()].map(pr => pr.getRootItems())
+        )
+        return itemArrays.flat()
+    },
 
     handleTrigger: async (p: Providers, item: Item, trigger: Trigger): Promise<Response> => {
         const provider = p.registry.get(item.moduleId)
@@ -166,9 +170,10 @@ const State = {
 // === Store ===
 
 export const Store = {
-    init(window: BrowserWindow): void {
+    async init(window: BrowserWindow): Promise<void> {
         const providers = Providers.init()
-        let state = State.create(Providers.getRootItems(providers))
+        const rootItems = await Providers.getRootItems(providers)
+        let state = State.create(rootItems)
 
         const commit = () => {
             window.webContents.send(channels.state, State.currentFrame(state))

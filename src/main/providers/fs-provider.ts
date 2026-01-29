@@ -11,7 +11,7 @@ const MOCK_FS: Item[] = [
 export const fsProvider: Provider = {
     id: 'fs',
 
-    getRootItems: () => MOCK_FS,
+    getRootItems: async () => MOCK_FS,
 
     onTrigger: async (item, trigger) => {
         const kind = item.metadata.kind as string
