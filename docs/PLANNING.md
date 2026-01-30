@@ -6,10 +6,9 @@
 
 # Next Actions
 
-- remove selection on mouse hover.
-
 # Done
 
+- remove selection on mouse hover.
 - pending integration: Add info trigger with mock data (Ctrl+I shows metadata list)
 - Add desktop items to app provider (shell:AppsFolder + Desktop .lnk/.url/.exe with proper dedup)
 - Implement real app provider (Get-StartApps, icons, caching, async getRootItems)

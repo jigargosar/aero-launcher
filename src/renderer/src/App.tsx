@@ -65,7 +65,6 @@ function ItemList({ items, selected, onSelect, onExecute, onShowInfo, shouldScro
                         }
                     } : undefined}
                     className={`item ${index === selected ? 'selected' : ''}`}
-                    onMouseEnter={() => onSelect(index)}
                     onClick={e => e.shiftKey ? onShowInfo(item) : onExecute(item)}
                 >
                     <img className="item-icon" src={item.icon} alt="" />
