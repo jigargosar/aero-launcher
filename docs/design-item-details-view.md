@@ -1,8 +1,54 @@
-# Simplified
+# Simplified (Current Implementation)
+
+## App Categorization
+
+shell:AppsFolder items are categorized by their Path property:
+
+| Category   | Detection                                  | Example Path                              |
+|------------|-------------------------------------------|-------------------------------------------|
+| FilePath   | `Path -match "^[A-Z]:\\"`                 | `C:\Program Files\App\app.exe`            |
+| UWP        | `Path -match "!"`                         | `MSTeams_8wekyb3d8bbwe!MSTeams`           |
+| HasTarget  | `ExtendedProperty("System.Link.TargetParsingPath")` exists | `Google.Antigravity` → resolves to exe |
+
+## Two-Phase Loading
+
+**Startup** (`fetch-shell-apps.ps1`): Fast indexing - returns Name, Path, Category only.
+
+**On-demand** (`fetch-app-details.ps1`): Called when info trigger fires - fetches full details.
+
+## Detail Extraction by Category
+
+| Category   | Source                                                    |
+|------------|-----------------------------------------------------------|
+| FilePath   | GetDetailsOf on file directly                             |
+| UWP        | Get-AppxPackage → AppxManifest.xml (parsed in Node.js)    |
+| HasTarget  | ExtendedProperty to get target path → GetDetailsOf on exe |
+
+## Whitelist (File Properties)
+
+GetDetailsOf returns 320+ indices. Only these are kept:
+
+```
+Name, Size, Type, File extension, Filename, Date modified, Date created,
+Date accessed, Attributes, Owner, Kind, Company, File description,
+Product name, Product version, File version, Language, File location, Path, Computer
+```
+
+## Blacklist (Manifest Properties)
+
+Manifest XML is flattened and filtered. These patterns are removed:
+
+```
+xmlns, build:Metadata, InProcessServer, ActivatableClass, ThreadingModel, mp:PhoneIdentity
+```
+
+## Status
+
+Info trigger currently disabled (`triggers: ['execute', 'actionMenu']`) pending manifest blacklist review.
 
 ---
 
-Archived
+# Archived
 
 # 1. Overview
 
