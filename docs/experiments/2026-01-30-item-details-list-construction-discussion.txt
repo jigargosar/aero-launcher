@@ -1,0 +1,3054 @@
+
+ ▐▛███▜▌   Claude Code v2.1.22
+▝▜█████▛▘  Opus 4.5 · Claude Max
+  ▘▘ ▝▝    ~\projects\launch-bar-v2
+
+✻ Conversation compacted (ctrl+o for history)
+
+
+❯ /compact 
+  ⎿  Compacted (ctrl+o to see full summary)
+  ⎿  Read docs\PLANNING.md (31 lines)
+  ⎿  Read src\main\providers\app-provider.ts (245 lines)
+  ⎿  Read src\main\main.ts (190 lines)
+  ⎿  Read src\main\store.ts (262 lines)
+  ⎿  Read src\shared\types.ts (90 lines)
+  ⎿  Skills restored (restate)
+
+❯ you need to do thorough research in launchbar docs foldr,                 
+  @docs/launchbar-docs-grouped.md then actual docs folder                   
+  ⎿  Read docs\launchbar-docs-grouped.md (532 lines)
+
+● Let me do thorough research on the actual LaunchBar docs.
+
+● Searched for 1 pattern, read 9 files (ctrl+o to expand)
+
+● Research Summary
+
+  LaunchBar Browse Patterns (Right Arrow)
+  ┌────────────┬───────────────────────────────────────────────────┐
+  │ Item Type  │                 Right Arrow Shows                 │
+  ├────────────┼───────────────────────────────────────────────────┤
+  │ Apps       │ Recent documents (Cocoa apps only)                │
+  ├────────────┼───────────────────────────────────────────────────┤
+  │ Contacts   │ Details (email, phone, address) - each actionable │
+  ├────────────┼───────────────────────────────────────────────────┤
+  │ Folders    │ Contents (files, subfolders)                      │
+  ├────────────┼───────────────────────────────────────────────────┤
+  │ Text Files │ Line/paragraph content                            │
+  ├────────────┼───────────────────────────────────────────────────┤
+  │ URLs       │ Other URLs from same domain                       │
+  ├────────────┼───────────────────────────────────────────────────┤
+  │ Playlists  │ Tracks                                            │
+  └────────────┴───────────────────────────────────────────────────┘
+  Key Insight
+
+  Contacts pattern is closest to what you want:
+  - Contact → Right Arrow → details list (email, phone, address)
+  - Each detail is actionable (email opens composer, phone shows large type)
+  - Preferred item shown first
+
+  LaunchBar does NOT show app metadata - it shows recent docs.
+
+  Your Ask vs LaunchBar
+
+  LaunchBar apps: App → Right Arrow → Recent Documents
+  Your ask: App → Right Arrow → Metadata (path, version, AppID)
+
+  Recommended Pattern (Contact-style)
+
+  App → browse (Right Arrow) → metadata items:
+    - Path: C:\...        (execute = copy, actionMenu = reveal)
+    - AppID: com.foo      (execute = copy)
+    - Version: 1.0.0      (execute = copy)
+
+  Each metadata item is actionable like contact details.
+
+  Alternative: Action Menu (Ctrl-Right Arrow)
+
+  LaunchBar's action menu (Ctrl-Right Arrow) already shows context actions:
+  - Open, Rename, Move to Trash, etc.
+
+  Could add metadata display there instead of browse.
+
+  ---
+  Which pattern?
+  1. Browse (Right Arrow) - metadata as sublist like contacts
+  2. Action Menu - metadata alongside actions
+
+✻ Cogitated for 1m 6s
+
+❯ ctl I is the the only to get info about an item for app it will show      
+  path, and other metada. we currently dont have any info setup for an app, 
+  but we could add that if only we preserve metadata for an app!            
+
+● You're right. Current app metadata is minimal:
+
+  // AppsFolder items
+  metadata: { appId: i.Path }
+
+  // Desktop items  
+  metadata: { appId: itemId, isDesktop: true }
+
+  We're not preserving:
+  - Install path
+  - Target path (for .lnk)
+  - Working directory
+  - Arguments
+  - Publisher/version (if available)
+
+  Prerequisite: Enrich metadata during indexing, THEN we can show it via Ctrl+I
+  (or browse).
+
+  What metadata do you want to preserve for apps?
+
+❯ isDesktop? what is that! we just have chosen to add apps from index,      
+  currently index is main apps + desktop apps, extract all metadata for an  
+  item, and then on ctrl+I push a list item, wihth each metadata item, what 
+  ever it might be that we have preserved. so approach                      
+
+● You're right, isDesktop is implementation detail leaking into data model.
+
+  Approach
+
+  1. Indexing: Extract all available metadata
+    - AppsFolder: Name, AppID, (explore what else Shell.Application exposes)
+    - .lnk: Target, Arguments, WorkingDirectory, Description, IconLocation (via
+  shell.readShortcutLink)
+    - .url: Target URL
+    - .exe: Path
+  2. Store flat: All metadata in metadata: Record<string, unknown> 
+  3. New trigger: info (or reuse existing?)
+    - On Ctrl+I → { type: 'info' }
+    - Provider returns pushList with metadata items:
+    Path: C:\Program Files\...
+  AppID: Microsoft.WindowsTerminal
+  Target: ...
+  4. Metadata items: Each is actionable
+    - Execute → copy to clipboard
+    - Or just display
+
+  /restate?
+
+❯ what is 1 appsfolder? 
+
+● shell:AppsFolder is Windows special folder containing all installed apps
+  (Win32 + UWP/Store apps).
+
+  Currently we fetch only Name, Path from it:
+  .Namespace("shell:AppsFolder").Items() | Select-Object Name, Path
+
+  We could explore what other properties Shell.Application exposes for these
+  items - likely limited compared to .lnk files.
+
+  Want me to research what properties are available on AppsFolder items?
+
+❯ I want info on all app items not jsut apps folder, for e.g. for links we  
+  will have location/path of its placement, and stuff, so for each app item 
+  we need to extract all fields that we can get for that item. /restate     
+
+● /restate
+
+  1. Goal: Show app metadata on Ctrl+I trigger
+  2. Requirement: For each app item, extract ALL available metadata during
+  indexing
+    - .lnk files: location, target, arguments, working directory, description,
+  icon location, etc.
+    - .url files: location, target URL
+    - .exe files: path
+    - AppsFolder items: AppID, name, whatever Shell.Application exposes
+  3. On Ctrl+I: Push list with each metadata field as an item
+  (copyable/actionable)
+  4. Remove: isDesktop distinction - all are just app items with their
+  respective metadata
+
+❯ exe files, path, version, created modified, etc. /restate  
+
+● /restate
+
+  1. Goal: Show app metadata on Ctrl+I trigger
+  2. Requirement: Extract ALL available metadata during indexing per item type:
+    - .lnk: location, target, arguments, working directory, description, icon
+  location
+    - .url: location, target URL
+    - .exe: path, version, created date, modified date, size, etc.
+    - AppsFolder: AppID, name, whatever Shell.Application exposes
+  3. On Ctrl+I: Push list with each metadata field as an item
+  (copyable/actionable)
+  4. Remove: isDesktop flag - all are app items with their respective metadata
+
+❯ and desktop is just a folder for indexing apps in that folder, so desktop 
+  is only used as a path to index apps withing it ,but all the apps will    
+  be at root level.                                                         
+
+● /restate
+
+  1. Goal: Show app metadata on Ctrl+I trigger
+  2. Indexing sources (implementation detail, not exposed):
+    - AppsFolder (shell:AppsFolder)
+    - Desktop folder (just another path to scan)
+    - All apps merged at root level
+  3. Extract ALL metadata per item type:
+    - .lnk: location, target, arguments, working directory, description, icon
+  location
+    - .url: location, target URL
+    - .exe: path, version, created date, modified date, size, etc.
+    - AppsFolder items: AppID, name, whatever Shell.Application exposes
+  4. On Ctrl+I: Push list with each metadata field as an item
+  (copyable/actionable)
+  5. Remove: isDesktop flag - source folder is irrelevant to the item
+
+❯ also, think of desktop as a folder for scanning, we can add as many       
+  folders for app scanning, this will be configurable later, i.e. which     
+  folders to scan for apps.                                                 
+
+● /restate
+
+  1. Goal: Show app metadata on Ctrl+I trigger
+  2. Indexing sources:
+    - AppsFolder (shell:AppsFolder) - system apps
+    - Configurable folders (currently: Desktop) - scanned for .lnk/.url/.exe
+    - All apps merged at root level
+  3. Extract ALL metadata per item type:
+    - .lnk: location, target, arguments, working directory, description, icon
+  location
+    - .url: location, target URL
+    - .exe: path, version, created date, modified date, size, etc.
+    - AppsFolder items: AppID, name, whatever Shell.Application exposes
+  4. On Ctrl+I: Push list with each metadata field as an item
+  (copyable/actionable)
+  5. Architecture: Folder scanning is generic (list of paths), not hardcoded to
+  Desktop
+
+❯  approach 
+
+● Approach
+
+  1. Generalize folder scanning
+    - Replace fetchDesktop() with fetchFolder(path) 
+    - Currently hardcode [Desktop], later configurable
+  2. Enrich metadata extraction
+    - .lnk: Use shell.readShortcutLink() - extract all fields
+    - .url: Parse file for target URL + file stats
+    - .exe: File stats + version info (need to research Windows API/PowerShell
+  for version)
+    - AppsFolder: Research available Shell.Application properties
+  3. Remove isDesktop
+    - Store source-agnostic metadata only
+  4. Add info trigger
+    - Add to Trigger type: | { type: 'info' }
+    - Add to app items' triggers array
+  5. Implement onTrigger for info
+    - Return pushList with metadata items
+    - Each item: { name: "Path: C:\...", ... } or { name: "Path", subtitle: 
+  "C:\..." }
+  6. Wire Ctrl+I in renderer
+    - Map to { type: 'info' } trigger
+
+❯ also instead of storing all metadata in metadata prop, create a subitem   
+  called info, and populate it will all info. /restate                      
+
+● /restate
+
+  1. Goal: Show app metadata on Ctrl+I trigger
+  2. Indexing sources:
+    - AppsFolder (shell:AppsFolder) - system apps
+    - Configurable folders (currently: Desktop) - scanned for .lnk/.url/.exe
+    - All apps merged at root level
+  3. Extract ALL metadata per item type:
+    - .lnk: location, target, arguments, working directory, description, icon
+  location
+    - .url: location, target URL
+    - .exe: path, version, created date, modified date, size, etc.
+    - AppsFolder items: AppID, name, whatever Shell.Application exposes
+  4. Storage structure:
+  metadata: {
+    appId: "...",           // for execution
+    info: {                 // for display on Ctrl+I
+      path: "...",
+      target: "...",
+      version: "...",
+      // ...all extracted fields
+    }
+  }
+  5. On Ctrl+I: Push list from metadata.info - each field as an item
+  6. Architecture: Folder scanning is generic (list of paths)
+
+❯ we can also show appid, in info list. or we could have appId in flat      
+  metadata. approach                                                        
+
+● Approach
+
+  Option 1: Flat operational + info for display (duplication)
+  metadata: {
+    appId: "...",        // for execution
+    info: { appId, path, version, ... }  // for display (includes appId)
+  }
+
+  Option 2: Everything in info, reference for execution
+  metadata: {
+    info: { appId, path, version, ... }
+  }
+  // execution reads metadata.info.appId
+
+  Recommend Option 2 - single source of truth, no duplication.
+
+❯ then we dont need to have prefix info, or we should since we might need   
+  other metadata fields!                                                    
+
+● Right. Keep info prefix for separation:
+
+  metadata: {
+    info: { appId, path, version, ... },  // displayable on Ctrl+I
+    // future: other operational fields if needed
+  }
+
+  info is the namespace for "stuff to show user". Clean.
+
+  /steps?
+
+❯ should we keep appid at top level, since we might not want to show.       
+  /restate                                                                  
+
+● /restate
+
+  1. Goal: Show app metadata on Ctrl+I trigger
+  2. Indexing sources:
+    - AppsFolder (shell:AppsFolder) - system apps
+    - Configurable folders (currently: Desktop) - scanned for .lnk/.url/.exe
+    - All apps merged at root level
+  3. Extract ALL metadata per item type:
+    - .lnk: location, target, arguments, working directory, description, icon
+  location
+    - .url: location, target URL
+    - .exe: path, version, created date, modified date, size, etc.
+    - AppsFolder items: name, whatever Shell.Application exposes
+  4. Storage structure:
+  metadata: {
+    appId: "...",           // operational, for execution (not displayed)
+    info: {                 // displayable on Ctrl+I
+      path: "...",
+      target: "...",
+      version: "...",
+      // ...all user-facing fields
+    }
+  }
+  5. On Ctrl+I: Push list from metadata.info only
+  6. Architecture: Folder scanning is generic (list of paths)
+
+❯ steps 
+
+● /steps
+
+  1. Add info trigger type
+    - Update Trigger in types.ts
+    - Add to app items' triggers array
+  2. Refactor folder scanning
+    - Replace fetchDesktop() → fetchFolder(path: string)
+    - Call with Desktop path (later: configurable list)
+  3. Enrich metadata extraction
+    - .lnk: shell.readShortcutLink() → populate info
+    - .url: Parse file + fs.stat() → populate info
+    - .exe: fs.stat() + version via PowerShell → populate info
+    - AppsFolder: Research Shell.Application properties → populate info
+  4. Remove isDesktop flag
+  5. Implement onTrigger for info
+    - Read metadata.info
+    - Return pushList with each field as item
+  6. Wire Ctrl+I in renderer
+    - Map keypress to { type: 'info' } trigger
+
+  Affected files:
+  - src/shared/types.ts
+  - src/main/providers/app-provider.ts
+  - src/renderer/ (keyboard handling)
+
+❯ for now, just send mock items for any app, in info to test it visually    
+  then we will work on populating it                                        
+
+● /steps
+
+  1. Add info trigger type
+    - Update Trigger in types.ts
+  2. Add info to app items' triggers array
+    - In app-provider.ts
+  3. Implement onTrigger for info
+    - Return pushList with mock items:
+    { name: 'Path', subtitle: 'C:\\mock\\path' }
+  { name: 'Version', subtitle: '1.0.0' }
+  { name: 'AppID', subtitle: 'mock.app.id' }
+  4. Wire Ctrl+I in renderer
+    - Map keypress to { type: 'info' } trigger on selected item
+
+  Affected files:
+  - src/shared/types.ts
+  - src/main/providers/app-provider.ts
+  - src/renderer/ (keyboard handling)
+
+❯ I am not sure if info will have name value, just list of values should be 
+  enough                                                                    
+
+● Just values without labels?
+
+  C:\mock\path
+  1.0.0
+  mock.app.id
+
+  vs labeled:
+
+  Path: C:\mock\path
+  Version: 1.0.0
+  AppID: mock.app.id
+
+  User won't know what each value means without labels. Recommend labels.
+
+  Options:
+  1. Label in name: { name: 'Path: C:\\mock\\path' }
+  2. Name + subtitle: { name: 'Path', subtitle: 'C:\\...' }
+  3. Just values (user figures it out)
+
+❯ ok add labels.  
+
+● /steps (final)
+
+  1. Add info trigger type - types.ts
+  2. Add info to app items' triggers - app-provider.ts
+  3. Implement onTrigger for info - return mock labeled items
+  4. Wire Ctrl+I in renderer - trigger info on selected item
+
+  go?
+
+❯ go 
+
+● User said go — proceeding.
+
+● Update(src\shared\types.ts)
+  ⎿  Added 1 line
+      17      | { type: 'sendTo' }
+      18      | { type: 'actionMenu' }
+      19      | { type: 'secondary' }
+      20 +    | { type: 'info' }                                         
+      21      | { type: 'textChange'; text: string }
+      22  
+      23  export type Response =
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Error editing file
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 2 lines, removed 2 lines
+      42          icon: Icons.app,
+      43          moduleId: 'app',
+      44          metadata: { appId: i.Path },
+      45 -        triggers: ['execute', 'actionMenu'] as const,          
+      45 +        triggers: ['execute', 'actionMenu', 'info'] as const,  
+      46      }))
+      47  }
+      48  
+     ...
+       95                  icon: Icons.app,
+       96                  moduleId: 'app',
+       97                  metadata: { appId: itemId, isDesktop: true },
+       98 -                triggers: ['execute', 'actionMenu'] as const, 
+       98 +                triggers: ['execute', 'actionMenu', 'info'] as
+          + const,                                                       
+       99              })
+      100          }
+      101      }
+
+● Read 1 file (ctrl+o to expand)
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 11 lines
+      239              }
+      240          }
+      241  
+      242 +        if (trigger.type === 'info') {                        
+      243 +            return {                                          
+      244 +                type: 'pushList',                             
+      245 +                items: [                                      
+      246 +                    { id: `${item.id}-info-path`, name: 'Path:
+          + C:\\mock\\path\\app.exe', icon: Icons.action, moduleId: 'app'
+          +, metadata: { kind: 'info' }, triggers: ['execute'] },        
+      247 +                    { id: `${item.id}-info-version`, name: 'Ve
+          +rsion: 1.0.0', icon: Icons.action, moduleId: 'app', metadata: 
+          +{ kind: 'info' }, triggers: ['execute'] },                    
+      248 +                    { id: `${item.id}-info-appid`, name: `AppI
+          +D: ${appId}`, icon: Icons.action, moduleId: 'app', metadata: {
+          + kind: 'info' }, triggers: ['execute'] },                     
+      249 +                ],                                            
+      250 +            }                                                 
+      251 +        }                                                     
+      252 +                                                              
+      253          return { type: 'noop' }
+      254      },
+      255  }
+
+● Searched for 1 pattern, read 1 file (ctrl+o to expand)
+
+● Update(src\renderer\src\App.tsx)
+  ⎿  Added 8 lines
+      224                  }
+      225                  return
+      226  
+      227 +            case 'i':                                         
+      228 +                if (e.ctrlKey && selectedItem?.triggers.includ
+          +es('info')) {                                                 
+      229 +                    e.preventDefault()                        
+      230 +                    sendTrigger(selectedItem, { type: 'info' }
+          +)                                                             
+      231 +                    return                                    
+      232 +                }                                             
+      233 +                break                                         
+      234 +                                                              
+      235              case ' ':
+      236                  if (selectedItem?.triggers.includes('browse'))
+            {
+      237                      e.preventDefault()
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && pnpm lint && pnpm build)
+  ⎿  Error: Exit code 1
+     'lint' is not recognized as an internal or external command,
+     operable program or batch file.
+
+     undefined
+      ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "lint" not found
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && pnpm run)
+  ⎿  Commands available via "pnpm run":
+       dev
+         electron-vite dev --watch
+     … +6 lines (ctrl+o to expand)
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && pnpm build)
+  ⎿  > aero-launcher@1.0.0 build C:\Users\jigar\projects\launch-bar-v2
+     > tsc --noEmit && electron-vite build
+     … +21 lines (ctrl+o to expand)
+
+● Done. Changes:
+
+  1. types.ts: Added info trigger type
+  2. app-provider.ts:
+    - Added info to app items' triggers
+    - Implemented mock info handler returning 3 items (Path, Version, AppID)
+  3. App.tsx: Wired Ctrl+I to trigger info
+
+  Build passes. Test with pnpm dev, select an app, press Ctrl+I.
+
+✻ Cogitated for 1m 43s
+
+❯ commit, then add real info 
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && git status && git diff
+      --stat)
+  ⎿  On branch main
+     Your branch is ahead of 'origin/main' by 8 commits.
+       (use "git push" to publish your local commits)
+     … +13 lines (ctrl+o to expand)
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && git log --oneline -5)
+  ⎿  afcadce Filter desktop items to only .lnk, .url, .exe
+     85b48bd Add desktop items with proper deduplication
+     ced268e updated next action
+     … +2 lines (ctrl+o to expand)
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && git add
+      src/main/providers/app-provider.ts src/renderer/src/App.tsx
+      src/shared/types.ts && git commit -m "Add info t…)
+  ⎿  Interrupted · What should Claude do instead?
+
+❯ uodate planning  
+
+● Read 1 file (ctrl+o to expand)
+
+● Update(docs\PLANNING.md)
+  ⎿  Added 1 line
+       5  # Next Actions
+       6  
+       7  # Done
+       8 +- Add info trigger with mock data (Ctrl+I shows metadata list) 
+       9  - Add desktop items to app provider (shell:AppsFolder + Desktop
+           .lnk/.url/.exe with proper dedup)
+      10  - Implement real app provider (Get-StartApps, icons, caching, a
+          sync getRootItems)
+      11  - Enforce input frame can only be at top of stack (pushList/pus
+          hInput check)
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && git add
+      src/main/providers/app-provider.ts src/renderer/src/App.tsx
+      src/shared/types.ts docs/PLANNING.md && git comm…)
+  ⎿  Interrupted · What should Claude do instead?
+
+❯ and next action too 
+
+● Update(docs\PLANNING.md)
+  ⎿  Added 1 line
+      3  # Ready
+      4  
+      5  # Next Actions
+      6 +- Populate real metadata for app items (info trigger) - extract 
+        +all fields per item type (.lnk, .url, .exe, AppsFolder)         
+      7  
+      8  # Done
+      9  - Add info trigger with mock data (Ctrl+I shows metadata list)
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && git add
+      src/main/providers/app-provider.ts src/renderer/src/App.tsx
+      src/shared/types.ts docs/PLANNING.md && git comm…)
+  ⎿  [main fce3e85] Add info trigger with mock data (Ctrl+I)
+      4 files changed, 24 insertions(+), 2 deletions(-)
+
+● Committed. Now for real info extraction.
+
+  /steps
+
+  1. .lnk files: Use shell.readShortcutLink() - extract target, args, cwd,
+  description
+  2. .url files: Parse file content for URL + fs.stat() for dates
+  3. .exe files: fs.stat() + PowerShell for version info
+  4. AppsFolder: Research what Shell.Application exposes
+
+  Start with which item type?
+
+❯ all? 
+
+● Read 1 file (ctrl+o to expand)
+
+● I'll implement all at once. The approach:
+
+  1. Store metadata.info during indexing per item type
+  2. onTrigger('info') reads from metadata.info dynamically
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 2 lines, removed 2 lines
+      1  import { exec, spawn } from 'child_process'
+      2  import { promisify } from 'util'
+      3 -import { join, extname } from 'path'                            
+      4 -import { readFile, writeFile, mkdir } from 'fs/promises'        
+      3 +import { join, extname, basename } from 'path'                  
+      4 +import { readFile, writeFile, mkdir, stat } from 'fs/promises'  
+      5  import { app, shell } from 'electron'
+      6  import { Item, Provider } from '@shared/types'
+      7  import { Icons } from '@shared/icons'
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 68 lines
+      18  
+      19  type ShellItem = { Name: string; Path: string }
+      20  type DesktopItem = { Name: string; Path: string; Target: string
+           | null }
+      21 +type AppInfo = Record<string, string>                          
+      22  
+      23 +// === Info Extraction ===                                     
+      24 +                                                               
+      25 +function formatDate(date: Date): string {                      
+      26 +    return date.toLocaleDateString('en-US', { year: 'numeric', 
+         +month: 'short', day: 'numeric' })                              
+      27 +}                                                              
+      28 +                                                               
+      29 +function formatSize(bytes: number): string {                   
+      30 +    if (bytes < 1024) return `${bytes} B`                      
+      31 +    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1
+         +)} KB`                                                         
+      32 +    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`          
+      33 +}                                                              
+      34 +                                                               
+      35 +async function getLnkInfo(path: string): Promise<AppInfo> {    
+      36 +    const info: AppInfo = { Location: path }                   
+      37 +    try {                                                      
+      38 +        const shortcut = shell.readShortcutLink(path)          
+      39 +        if (shortcut.target) info['Target'] = shortcut.target  
+      40 +        if (shortcut.cwd) info['Working Directory'] = shortcut.
+         +cwd                                                            
+      41 +        if (shortcut.args) info['Arguments'] = shortcut.args   
+      42 +        if (shortcut.appUserModelId) info['AppUserModelId'] = s
+         +hortcut.appUserModelId                                         
+      43 +    } catch { /* ignore */ }                                   
+      44 +    try {                                                      
+      45 +        const stats = await stat(path)                         
+      46 +        info['Modified'] = formatDate(stats.mtime)             
+      47 +        info['Created'] = formatDate(stats.birthtime)          
+      48 +    } catch { /* ignore */ }                                   
+      49 +    return info                                                
+      50 +}                                                              
+      51 +                                                               
+      52 +async function getUrlInfo(path: string): Promise<AppInfo> {    
+      53 +    const info: AppInfo = { Location: path }                   
+      54 +    try {                                                      
+      55 +        const content = await readFile(path, 'utf-8')          
+      56 +        const match = content.match(/URL=(.+)/i)               
+      57 +        if (match) info['URL'] = match[1].trim()               
+      58 +    } catch { /* ignore */ }                                   
+      59 +    try {                                                      
+      60 +        const stats = await stat(path)                         
+      61 +        info['Modified'] = formatDate(stats.mtime)             
+      62 +        info['Created'] = formatDate(stats.birthtime)          
+      63 +    } catch { /* ignore */ }                                   
+      64 +    return info                                                
+      65 +}                                                              
+      66 +                                                               
+      67 +async function getExeInfo(path: string): Promise<AppInfo> {    
+      68 +    const info: AppInfo = { Path: path }                       
+      69 +    try {                                                      
+      70 +        const stats = await stat(path)                         
+      71 +        info['Size'] = formatSize(stats.size)                  
+      72 +        info['Modified'] = formatDate(stats.mtime)             
+      73 +        info['Created'] = formatDate(stats.birthtime)          
+      74 +    } catch { /* ignore */ }                                   
+      75 +    try {                                                      
+      76 +        const script = `(Get-Item '${path.replace(/'/g, "''")}'
+         +).VersionInfo | Select-Object FileVersion, ProductName, Company
+         +Name | ConvertTo-Json`                                         
+      77 +        const stdout = await runPs(script)                     
+      78 +        const ver = JSON.parse(stdout)                         
+      79 +        if (ver.FileVersion) info['Version'] = ver.FileVersion 
+      80 +        if (ver.ProductName) info['Product'] = ver.ProductName 
+      81 +        if (ver.CompanyName) info['Company'] = ver.CompanyName 
+      82 +    } catch { /* ignore */ }                                   
+      83 +    return info                                                
+      84 +}                                                              
+      85 +                                                               
+      86 +function getAppsFolderInfo(appId: string): AppInfo {           
+      87 +    return { AppID: appId }                                    
+      88 +}                                                              
+      89 +                                                               
+      90  // === PowerShell ===
+      91  
+      92  async function runPs(script: string): Promise<string> {
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 1 line, removed 1 line
+      109          name: i.Name,
+      110          icon: Icons.app,
+      111          moduleId: 'app',
+      112 -        metadata: { appId: i.Path },                          
+      112 +        metadata: { appId: i.Path, info: getAppsFolderInfo(i.P
+          +ath) },                                                       
+      113          triggers: ['execute', 'actionMenu', 'info'] as const,
+      114      }))
+      115  }
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 22 lines, removed 17 lines
+      141      return item.Target || item.Path
+      142  }
+      143  
+      144 +async function getDesktopItemInfo(d: DesktopItem): Promise<App
+          +Info> {                                                       
+      145 +    const ext = extname(d.Path).toLowerCase()                 
+      146 +    switch (ext) {                                            
+      147 +        case '.lnk': return getLnkInfo(d.Path)                
+      148 +        case '.url': return getUrlInfo(d.Path)                
+      149 +        case '.exe': return getExeInfo(d.Path)                
+      150 +        default: return { Path: d.Path }                      
+      151 +    }                                                         
+      152 +}                                                             
+      153 +                                                              
+      154  async function fetchAllItems(): Promise<Item[]> {
+      155      const [apps, desktop] = await Promise.all([fetchAppsFolder
+           (), fetchDesktop()])
+      156  
+      157      // Build set of app IDs for deduplication
+      158      const appIds = new Set(apps.map(a => a.metadata.appId as s
+           tring))
+      159  
+      150 -    // Process desktop items                                  
+      151 -    const uniqueDesktop: Item[] = []                          
+      152 -    let dupeCount = 0                                         
+      160 +    // Process desktop items (filter dupes first, then extract
+          + info in parallel)                                            
+      161 +    const uniqueDesktopRaw = desktop.filter(d => !appIds.has(g
+          +etDesktopItemId(d)))                                          
+      162  
+      154 -    for (const d of desktop) {                                
+      163 +    const uniqueDesktop = await Promise.all(uniqueDesktopRaw.m
+          +ap(async d => {                                               
+      164          const itemId = getDesktopItemId(d)
+      156 -                                                              
+      157 -        if (appIds.has(itemId)) {                             
+      158 -            dupeCount++                                       
+      159 -        } else {                                              
+      160 -            uniqueDesktop.push({                              
+      161 -                id: `desktop:${d.Path}`,                      
+      162 -                name: d.Name.replace(/ - Shortcut$/, ''),     
+      163 -                icon: Icons.app,                              
+      164 -                moduleId: 'app',                              
+      165 -                metadata: { appId: itemId, isDesktop: true }, 
+      166 -                triggers: ['execute', 'actionMenu', 'info'],  
+      167 -            })                                                
+      165 +        const info = await getDesktopItemInfo(d)              
+      166 +        return {                                              
+      167 +            id: `desktop:${d.Path}`,                          
+      168 +            name: d.Name.replace(/ - Shortcut$/, ''),         
+      169 +            icon: Icons.app,                                  
+      170 +            moduleId: 'app',                                  
+      171 +            metadata: { appId: itemId, info },                
+      172 +            triggers: ['execute', 'actionMenu', 'info'] as con
+          +st,                                                           
+      173          }
+      169 -    }                                                         
+      174 +    }))                                                       
+      175  
+      176      console.log(`[app] Found: ${apps.length} apps, ${uniqueDes
+           ktop.length} desktop items`)
+      177  
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 13 lines, removed 8 lines
+      313          }
+      314  
+      315          if (trigger.type === 'info') {
+      316 -            return {                                          
+      317 -                type: 'pushList',                             
+      318 -                items: [                                      
+      319 -                    { id: `${item.id}-info-path`, name: 'Path:
+          - C:\\mock\\path\\app.exe', icon: Icons.action, moduleId: 'app'
+          -, metadata: { kind: 'info' }, triggers: ['execute'] },        
+      320 -                    { id: `${item.id}-info-version`, name: 'Ve
+          -rsion: 1.0.0', icon: Icons.action, moduleId: 'app', metadata: 
+          -{ kind: 'info' }, triggers: ['execute'] },                    
+      321 -                    { id: `${item.id}-info-appid`, name: `AppI
+          -D: ${appId}`, icon: Icons.action, moduleId: 'app', metadata: {
+          - kind: 'info' }, triggers: ['execute'] },                     
+      322 -                ],                                            
+      323 -            }                                                 
+      316 +            const info = item.metadata.info as AppInfo | undef
+          +ined                                                          
+      317 +            if (!info) return { type: 'noop' }                
+      318 +                                                              
+      319 +            const infoItems = Object.entries(info).map(([key, 
+          +value]) => ({                                                 
+      320 +                id: `${item.id}-info-${key}`,                 
+      321 +                name: `${key}: ${value}`,                     
+      322 +                icon: Icons.action,                           
+      323 +                moduleId: 'app',                              
+      324 +                metadata: { kind: 'info', value },            
+      325 +                triggers: ['execute'] as const,               
+      326 +            }))                                               
+      327 +                                                              
+      328 +            return { type: 'pushList', items: infoItems }     
+      329          }
+      330  
+      331          return { type: 'noop' }
+
+● Searched for 1 pattern (ctrl+o to expand)
+
+● Now let me remove isDesktop - we can determine execution method from appId
+  format:
+
+● Read 1 file (ctrl+o to expand)
+
+❯ what is get desktop item info? 
+
+● getDesktopItemInfo is a helper I added - it routes to the appropriate
+  extractor based on file extension:
+
+  async function getDesktopItemInfo(d: DesktopItem): Promise<AppInfo> {
+      const ext = extname(d.Path).toLowerCase()
+      switch (ext) {
+          case '.lnk': return getLnkInfo(d.Path)
+          case '.url': return getUrlInfo(d.Path)
+          case '.exe': return getExeInfo(d.Path)
+          default: return { Path: d.Path }
+      }
+  }
+
+  It's called during indexing to populate metadata.info for each desktop item.
+
+  Want me to continue removing isDesktop or build first to test?
+
+✻ Cooked for 1m 52s
+
+❯ yes, scanning folders is a list! which we hardcode as constant in module 
+
+● Read 1 file (ctrl+o to expand)
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 4 lines
+      13      : join(__dirname, 'ShellIcon.dll')
+      14  const CACHE_DIR = join(app.getPath('userData'), 'cache')
+      15  const CACHE_FILE = join(CACHE_DIR, 'apps.json')
+      16 +const SCAN_FOLDERS = ['Desktop'] // folder names relative to us
+         +er profile                                                     
+      17  
+      18 +// Check if appId is a file path (vs AppsFolder ID)            
+      19 +const isFilePath = (appId: string) => /^[A-Z]:\\|^\\\\/.test(ap
+         +pId)                                                           
+      20 +                                                               
+      21  // === Types ===
+      22  
+      23  type ShellItem = { Name: string; Path: string }
+
+● Read 1 file (ctrl+o to expand)
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 23 lines, removed 17 lines
+      118      }))
+      119  }
+      120  
+      121 -async function fetchDesktop(): Promise<DesktopItem[]> {       
+      122 -    const script = `(New-Object -ComObject Shell.Application).
+          -Namespace([Environment]::GetFolderPath('Desktop')).Items() | W
+          -here-Object { $_.Path -match '\\.(lnk|url|exe)$' } | Select-Ob
+          -ject Name, Path, @{N='Target';E={$_.GetLink.Path}} | ConvertTo
+          --Json`                                                        
+      123 -    const stdout = await runPs(script)                        
+      124 -    const items = JSON.parse(stdout)                          
+      125 -    // Handle single item (PS returns object not array)       
+      126 -    return Array.isArray(items) ? items : [items]             
+      121 +async function fetchFolder(folderName: string): Promise<Deskto
+          +pItem[]> {                                                    
+      122 +    const script = `(New-Object -ComObject Shell.Application).
+          +Namespace([Environment]::GetFolderPath('${folderName}')).Items
+          +() | Where-Object { $_.Path -match '\\.(lnk|url|exe)$' } | Sel
+          +ect-Object Name, Path, @{N='Target';E={$_.GetLink.Path}} | Con
+          +vertTo-Json`                                                  
+      123 +    try {                                                     
+      124 +        const stdout = await runPs(script)                    
+      125 +        if (!stdout) return []                                
+      126 +        const items = JSON.parse(stdout)                      
+      127 +        return Array.isArray(items) ? items : [items]         
+      128 +    } catch {                                                 
+      129 +        return []                                             
+      130 +    }                                                         
+      131  }
+      132  
+      129 -function getDesktopItemId(item: DesktopItem): string {        
+      133 +function getFolderItemId(item: DesktopItem): string {         
+      134      const ext = extname(item.Path).toLowerCase()
+      135  
+      136      // For .lnk files, try to get appUserModelId from Electron
+     ...
+      149      return item.Target || item.Path
+      150  }
+      151  
+      148 -async function getDesktopItemInfo(d: DesktopItem): Promise<App
+          -Info> {                                                       
+      152 +async function getFolderItemInfo(d: DesktopItem): Promise<AppI
+          +nfo> {                                                        
+      153      const ext = extname(d.Path).toLowerCase()
+      154      switch (ext) {
+      155          case '.lnk': return getLnkInfo(d.Path)
+     ...
+      160  }
+      161  
+      162  async function fetchAllItems(): Promise<Item[]> {
+      159 -    const [apps, desktop] = await Promise.all([fetchAppsFolder
+          -(), fetchDesktop()])                                          
+      163 +    const folderResults = await Promise.all(SCAN_FOLDERS.map(f
+          +etchFolder))                                                  
+      164 +    const folderItems = folderResults.flat()                  
+      165 +    const apps = await fetchAppsFolder()                      
+      166  
+      167      // Build set of app IDs for deduplication
+      168      const appIds = new Set(apps.map(a => a.metadata.appId as s
+           tring))
+      169  
+      164 -    // Process desktop items (filter dupes first, then extract
+          - info in parallel)                                            
+      165 -    const uniqueDesktopRaw = desktop.filter(d => !appIds.has(g
+          -etDesktopItemId(d)))                                          
+      170 +    // Process folder items (filter dupes first, then extract 
+          +info in parallel)                                             
+      171 +    const uniqueFolderRaw = folderItems.filter(d => !appIds.ha
+          +s(getFolderItemId(d)))                                        
+      172  
+      167 -    const uniqueDesktop = await Promise.all(uniqueDesktopRaw.m
+          -ap(async d => {                                               
+      168 -        const itemId = getDesktopItemId(d)                    
+      169 -        const info = await getDesktopItemInfo(d)              
+      173 +    const uniqueFolder = await Promise.all(uniqueFolderRaw.map
+          +(async d => {                                                 
+      174 +        const itemId = getFolderItemId(d)                     
+      175 +        const info = await getFolderItemInfo(d)               
+      176          return {
+      171 -            id: `desktop:${d.Path}`,                          
+      177 +            id: `folder:${d.Path}`,                           
+      178              name: d.Name.replace(/ - Shortcut$/, ''),
+      179              icon: Icons.app,
+      180              moduleId: 'app',
+     ...
+      183          }
+      184      }))
+      185  
+      180 -    console.log(`[app] Found: ${apps.length} apps, ${uniqueDes
+          -ktop.length} desktop items`)                                  
+      186 +    console.log(`[app] Found: ${apps.length} apps, ${uniqueFol
+          +der.length} folder items`)                                    
+      187  
+      182 -    return [...apps, ...uniqueDesktop]                        
+      188 +    return [...apps, ...uniqueFolder]                         
+      189  }
+      190  
+      191  // === Icons ===
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 1 line, removed 2 lines
+      195  
+      196      const iconPaths = items.map(i => {
+      197          const appId = i.metadata.appId as string
+      198 -        const isDesktop = i.metadata.isDesktop as boolean | un
+          -defined                                                       
+      199 -        return isDesktop ? appId : `shell:AppsFolder\\${appId}
+          -`                                                             
+      198 +        return isFilePath(appId) ? appId : `shell:AppsFolder\\
+          +${appId}`                                                     
+      199      })
+      200      const pathsDelimited = iconPaths.join('|')
+      201  
+
+● Read 1 file (ctrl+o to expand)
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 13 lines, removed 14 lines
+      278      onTrigger: async (item, trigger) => {
+      279          const kind = item.metadata.kind as string | undefined
+      280          const appId = item.metadata.appId as string
+      281 -        const isDesktop = item.metadata.isDesktop as boolean |
+          - undefined                                                    
+      281  
+      282 +        const execApp = (id: string) => {                     
+      283 +            if (isFilePath(id)) {                             
+      284 +                exec(`start "" "${id}"`)                      
+      285 +            } else {                                          
+      286 +                exec(`start "" "shell:AppsFolder\\${id}"`)    
+      287 +            }                                                 
+      288 +        }                                                     
+      289 +                                                              
+      290          // Action menu item
+      291          if (kind === 'action') {
+      292              if (trigger.type === 'execute') {
+      293                  const action = item.metadata.action as string
+      294                  if (action === 'open') {
+      288 -                    if (isDesktop) {                          
+      289 -                        exec(`start "" "${appId}"`)           
+      290 -                    } else {                                  
+      291 -                        exec(`start "" "shell:AppsFolder\\${ap
+          -pId}"`)                                                       
+      292 -                    }                                         
+      295 +                    execApp(appId)                            
+      296                  } else if (action === 'admin') {
+      297                      console.log(`[app] Run as admin: ${appId}`
+           )
+      298                  } else if (action === 'reveal') {
+     ...
+      305  
+      306          // Regular app item
+      307          if (trigger.type === 'execute') {
+      305 -            if (isDesktop) {                                  
+      306 -                exec(`start "" "${appId}"`)                   
+      307 -            } else {                                          
+      308 -                exec(`start "" "shell:AppsFolder\\${appId}"`) 
+      309 -            }                                                 
+      308 +            execApp(appId)                                    
+      309              return { type: 'resetAndHide' }
+      310          }
+      311  
+     ...
+      313              return {
+      314                  type: 'pushList',
+      315                  items: [
+      317 -                    { id: `${item.id}-open`, name: 'Open', ico
+          -n: Icons.action, moduleId: 'app', metadata: { kind: 'action', 
+          -action: 'open', appId, isDesktop }, triggers: ['execute'] },  
+      318 -                    { id: `${item.id}-admin`, name: 'Run as Ad
+          -ministrator', icon: Icons.action, moduleId: 'app', metadata: {
+          - kind: 'action', action: 'admin', appId, isDesktop }, triggers
+          -: ['execute'] },                                              
+      319 -                    { id: `${item.id}-location`, name: 'Open F
+          -ile Location', icon: Icons.action, moduleId: 'app', metadata: 
+          -{ kind: 'action', action: 'reveal', appId, isDesktop }, trigge
+          -rs: ['execute'] },                                            
+      316 +                    { id: `${item.id}-open`, name: 'Open', ico
+          +n: Icons.action, moduleId: 'app', metadata: { kind: 'action', 
+          +action: 'open', appId }, triggers: ['execute'] },             
+      317 +                    { id: `${item.id}-admin`, name: 'Run as Ad
+          +ministrator', icon: Icons.action, moduleId: 'app', metadata: {
+          + kind: 'action', action: 'admin', appId }, triggers: ['execute
+          +'] },                                                         
+      318 +                    { id: `${item.id}-location`, name: 'Open F
+          +ile Location', icon: Icons.action, moduleId: 'app', metadata: 
+          +{ kind: 'action', action: 'reveal', appId }, triggers: ['execu
+          +te'] },                                                       
+      319                  ],
+      320              }
+      321          }
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && pnpm build)
+  ⎿  Error: Exit code 1
+
+     > aero-launcher@1.0.0 build C:\Users\jigar\projects\launch-bar-v2
+     > tsc --noEmit && electron-vite build
+
+     src/main/providers/app-provider.ts(188,5): error TS2322: Type '(Item | { id
+      string; name: string; icon: string; moduleId: string; metadata: { appId: 
+     string; info: AppInfo; }; triggers: readonly ["execute", "actionMenu", 
+     "info"]; })[]' is not assignable to type 'Item[]'.
+       Type 'Item | { id: string; name: string; icon: string; moduleId: string; 
+     metadata: { appId: string; info: AppInfo; }; triggers: readonly ["execute",
+     "actionMenu", "info"]; }' is not assignable to type 'Item'.
+         Type '{ id: string; name: string; icon: string; moduleId: string; 
+     metadata: { appId: string; info: AppInfo; }; triggers: readonly ["execute",
+     "actionMenu", "info"]; }' is not assignable to type 'Item'.
+           Types of property 'triggers' are incompatible.
+             The type 'readonly ["execute", "actionMenu", "info"]' is 'readonly'
+     and cannot be assigned to the mutable type '("execute" | "browse" | "sendTo
+      | "actionMenu" | "secondary" | "info" | "textChange")[]'.
+
+
+
+     … +11 lines (ctrl+o to see all)
+
+❯ no we need full folder name, with path, other wise it wont be treated as  
+  folder in metadata.                                                       
+
+● Let me fix both the type errors and the folder path issue. I'll use full paths
+   for SCAN_FOLDERS.
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 3 lines, removed 1 line
+      13      : join(__dirname, 'ShellIcon.dll')
+      14  const CACHE_DIR = join(app.getPath('userData'), 'cache')
+      15  const CACHE_FILE = join(CACHE_DIR, 'apps.json')
+      16 -const SCAN_FOLDERS = ['Desktop'] // folder names relative to us
+         -er profile                                                     
+      16 +const SCAN_FOLDERS = [                                         
+      17 +    join(app.getPath('home'), 'Desktop'),                      
+      18 +]                                                              
+      19  
+      20  // Check if appId is a file path (vs AppsFolder ID)
+      21  const isFilePath = (appId: string) => /^[A-Z]:\\|^\\\\/.test(ap
+          pId)
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 2 lines, removed 2 lines
+      120      }))
+      121  }
+      122  
+      123 -async function fetchFolder(folderName: string): Promise<Deskto
+          -pItem[]> {                                                    
+      124 -    const script = `(New-Object -ComObject Shell.Application).
+          -Namespace([Environment]::GetFolderPath('${folderName}')).Items
+          -() | Where-Object { $_.Path -match '\\.(lnk|url|exe)$' } | Sel
+          -ect-Object Name, Path, @{N='Target';E={$_.GetLink.Path}} | Con
+          -vertTo-Json`                                                  
+      123 +async function fetchFolder(folderPath: string): Promise<Deskto
+          +pItem[]> {                                                    
+      124 +    const script = `(New-Object -ComObject Shell.Application).
+          +Namespace('${folderPath.replace(/'/g, "''")}').Items() | Where
+          +-Object { $_.Path -match '\\.(lnk|url|exe)$' } | Select-Object
+          + Name, Path, @{N='Target';E={$_.GetLink.Path}} | ConvertTo-Jso
+          +n`                                                            
+      125      try {
+      126          const stdout = await runPs(script)
+      127          if (!stdout) return []
+
+● Read 1 file (ctrl+o to expand)
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 2 lines, removed 2 lines
+      116          icon: Icons.app,
+      117          moduleId: 'app',
+      118          metadata: { appId: i.Path, info: getAppsFolderInfo(i.P
+           ath) },
+      119 -        triggers: ['execute', 'actionMenu', 'info'] as const, 
+      120 -    }))                                                       
+      119 +        triggers: ['execute', 'actionMenu', 'info'],          
+      120 +    } as Item))                                               
+      121  }
+      122  
+      123  async function fetchFolder(folderPath: string): Promise<Deskto
+           pItem[]> {
+
+● Read 1 file (ctrl+o to expand)
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 2 lines, removed 2 lines
+      172      // Process folder items (filter dupes first, then extract 
+           info in parallel)
+      173      const uniqueFolderRaw = folderItems.filter(d => !appIds.ha
+           s(getFolderItemId(d)))
+      174  
+      175 -    const uniqueFolder = await Promise.all(uniqueFolderRaw.map
+          -(async d => {                                                 
+      175 +    const uniqueFolder: Item[] = await Promise.all(uniqueFolde
+          +rRaw.map(async d => {                                         
+      176          const itemId = getFolderItemId(d)
+      177          const info = await getFolderItemInfo(d)
+      178          return {
+     ...
+      181              icon: Icons.app,
+      182              moduleId: 'app',
+      183              metadata: { appId: itemId, info },
+      184 -            triggers: ['execute', 'actionMenu', 'info'] as con
+          -st,                                                           
+      184 +            triggers: ['execute', 'actionMenu', 'info'],      
+      185          }
+      186      }))
+      187  
+
+● Read 1 file (ctrl+o to expand)
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 2 lines, removed 2 lines
+      326              const info = item.metadata.info as AppInfo | undef
+           ined
+      327              if (!info) return { type: 'noop' }
+      328  
+      329 -            const infoItems = Object.entries(info).map(([key, 
+          -value]) => ({                                                 
+      329 +            const infoItems: Item[] = Object.entries(info).map
+          +(([key, value]) => ({                                         
+      330                  id: `${item.id}-info-${key}`,
+      331                  name: `${key}: ${value}`,
+      332                  icon: Icons.action,
+      333                  moduleId: 'app',
+      334                  metadata: { kind: 'info', value },
+      335 -                triggers: ['execute'] as const,               
+      335 +                triggers: ['execute'],                        
+      336              }))
+      337  
+      338              return { type: 'pushList', items: infoItems }
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && pnpm build)
+  ⎿  > aero-launcher@1.0.0 build C:\Users\jigar\projects\launch-bar-v2
+     > tsc --noEmit && electron-vite build
+     … +21 lines (ctrl+o to expand)
+
+● Build passes.
+
+  Summary of changes:
+  1. Added SCAN_FOLDERS constant with full path to Desktop
+  2. Renamed fetchDesktop → fetchFolder(folderPath) - generic
+  3. Renamed getDesktopItem* → getFolderItem*
+  4. Removed isDesktop flag - now uses isFilePath(appId) to detect
+  5. Added real metadata extraction: .lnk, .url, .exe, AppsFolder
+  6. onTrigger('info') reads from metadata.info dynamically
+
+  Test with pnpm dev. Delete cache first to re-index with metadata:
+  rm -rf ~/.config/aero-launcher-dev/cache
+
+✻ Baked for 3m 44s
+
+❯ there is only appid in info, what about other metadata items? 
+
+● Let me check the info extraction. For AppsFolder items, we only return AppID:
+
+  function getAppsFolderInfo(appId: string): AppInfo {
+      return { AppID: appId }
+  }
+
+  For folder items (.lnk, .url, .exe), the async info extraction should populate
+   more fields.
+
+  Are you testing on:
+  1. An AppsFolder item (only has AppID) - expected
+  2. A desktop .lnk/.exe item (should have Path, Target, etc.)
+
+  If desktop items also show only AppID, let me check if the info is being
+  extracted properly. Can you check console logs for any errors?
+
+  Or - are you testing with cached data? The cache won't have the new info
+  field. Need to clear cache first.
+
+❯ AppsFolder need more infor for thees apps. 
+
+● You're right. Let me fetch more properties from Shell.Application for
+  AppsFolder items.
+
+● Read 1 file (ctrl+o to expand)
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 1 line, removed 1 line
+      22  
+      23  // === Types ===
+      24  
+      25 -type ShellItem = { Name: string; Path: string }                
+      25 +type ShellItem = { Name: string; Path: string; Type: string | n
+         +ull; ModifyDate: string | null }                               
+      26  type DesktopItem = { Name: string; Path: string; Target: string
+           | null }
+      27  type AppInfo = Record<string, string>
+      28  
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 14 lines, removed 9 lines
+      106  // === Fetching ===
+      107  
+      108  async function fetchAppsFolder(): Promise<Item[]> {
+      109 -    const script = `(New-Object -ComObject Shell.Application).
+          -Namespace("shell:AppsFolder").Items() | Select-Object Name, Pa
+          -th | ConvertTo-Json`                                          
+      109 +    const script = `(New-Object -ComObject Shell.Application).
+          +Namespace("shell:AppsFolder").Items() | Select-Object Name, Pa
+          +th, Type, ModifyDate | ConvertTo-Json`                        
+      110      const stdout = await runPs(script)
+      111      const items = JSON.parse(stdout) as ShellItem[]
+      112  
+      113 -    return items.map(i => ({                                  
+      114 -        id: `app:${i.Path}`,                                  
+      115 -        name: i.Name,                                         
+      116 -        icon: Icons.app,                                      
+      117 -        moduleId: 'app',                                      
+      118 -        metadata: { appId: i.Path, info: getAppsFolderInfo(i.P
+          -ath) },                                                       
+      119 -        triggers: ['execute', 'actionMenu', 'info'],          
+      120 -    } as Item))                                               
+      113 +    return items.map(i => {                                   
+      114 +        const info: AppInfo = { AppID: i.Path }               
+      115 +        if (i.Type) info['Type'] = i.Type                     
+      116 +        if (i.ModifyDate) info['Modified'] = i.ModifyDate     
+      117 +        return {                                              
+      118 +            id: `app:${i.Path}`,                              
+      119 +            name: i.Name,                                     
+      120 +            icon: Icons.app,                                  
+      121 +            moduleId: 'app',                                  
+      122 +            metadata: { appId: i.Path, info },                
+      123 +            triggers: ['execute', 'actionMenu', 'info'],      
+      124 +        } as Item                                             
+      125 +    })                                                        
+      126  }
+      127  
+      128  async function fetchFolder(folderPath: string): Promise<Deskto
+           pItem[]> {
+
+● Searched for 1 pattern (ctrl+o to expand)
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Error editing file
+
+● Read 1 file (ctrl+o to expand)
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Removed 4 lines
+      89      return info
+      90  }
+      91  
+      92 -function getAppsFolderInfo(appId: string): AppInfo {           
+      93 -    return { AppID: appId }                                    
+      94 -}                                                              
+      95 -                                                               
+      92  // === PowerShell ===
+      93  
+      94  async function runPs(script: string): Promise<string> {
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && pnpm build)
+  ⎿  > aero-launcher@1.0.0 build C:\Users\jigar\projects\launch-bar-v2
+     > tsc --noEmit && electron-vite build
+     … +21 lines (ctrl+o to expand)
+
+❯ DesktopItem, what is this hardcoding again!! 
+
+● You're right - DesktopItem should be renamed since it's used for any scanned
+  folder, not just Desktop.
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 4 lines, removed 4 lines
+      23  // === Types ===
+      24  
+      25  type ShellItem = { Name: string; Path: string; Type: string | n
+          ull; ModifyDate: string | null }
+      26 -type DesktopItem = { Name: string; Path: string; Target: string
+         - | null }                                                      
+      26 +type FolderItem = { Name: string; Path: string; Target: string 
+         +| null }                                                       
+      27  type AppInfo = Record<string, string>
+      28  
+      29  // === Info Extraction ===
+     ...
+      121      })
+      122  }
+      123  
+      124 -async function fetchFolder(folderPath: string): Promise<Deskto
+          -pItem[]> {                                                    
+      124 +async function fetchFolder(folderPath: string): Promise<Folder
+          +Item[]> {                                                     
+      125      const script = `(New-Object -ComObject Shell.Application).
+           Namespace('${folderPath.replace(/'/g, "''")}').Items() | Where
+           -Object { $_.Path -match '\\.(lnk|url|exe)$' } | Select-Object
+            Name, Path, @{N='Target';E={$_.GetLink.Path}} | ConvertTo-Jso
+           n`
+      126      try {
+      127          const stdout = await runPs(script)
+     ...
+      133      }
+      134  }
+      135  
+      136 -function getFolderItemId(item: DesktopItem): string {         
+      136 +function getFolderItemId(item: FolderItem): string {          
+      137      const ext = extname(item.Path).toLowerCase()
+      138  
+      139      // For .lnk files, try to get appUserModelId from Electron
+     ...
+      152      return item.Target || item.Path
+      153  }
+      154  
+      155 -async function getFolderItemInfo(d: DesktopItem): Promise<AppI
+          -nfo> {                                                        
+      155 +async function getFolderItemInfo(d: FolderItem): Promise<AppIn
+          +fo> {                                                         
+      156      const ext = extname(d.Path).toLowerCase()
+      157      switch (ext) {
+      158          case '.lnk': return getLnkInfo(d.Path)
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && pnpm build)
+  ⎿  > aero-launcher@1.0.0 build C:\Users\jigar\projects\launch-bar-v2
+     > tsc --noEmit && electron-vite build
+     … +21 lines (ctrl+o to expand)
+
+● Done. Now AppsFolder items will have:
+  - AppID
+  - Type (if available)
+  - Modified (if available)
+
+  Clear cache and test: rm -rf ~/.config/aero-launcher-dev/cache
+
+✻ Brewed for 2m 47s
+
+❯ too little information for apps info! 
+
+● Let me research what properties are available on AppsFolder items and extract
+  more.
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 10 lines, removed 1 line
+      22  
+      23  // === Types ===
+      24  
+      25 -type ShellItem = { Name: string; Path: string; Type: string | n
+         -ull; ModifyDate: string | null }                               
+      25 +type ShellItem = {                                             
+      26 +    Name: string                                               
+      27 +    Path: string                                               
+      28 +    Type: string | null                                        
+      29 +    ModifyDate: string | null                                  
+      30 +    Size: number | null                                        
+      31 +    InstallLocation: string | null                             
+      32 +    Publisher: string | null                                   
+      33 +    Version: string | null                                     
+      34 +}                                                              
+      35  type FolderItem = { Name: string; Path: string; Target: string 
+          | null }
+      36  type AppInfo = Record<string, string>
+      37  
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 32 lines, removed 1 line
+      111  // === Fetching ===
+      112  
+      113  async function fetchAppsFolder(): Promise<Item[]> {
+      114 -    const script = `(New-Object -ComObject Shell.Application).
+          -Namespace("shell:AppsFolder").Items() | Select-Object Name, Pa
+          -th, Type, ModifyDate | ConvertTo-Json`                        
+      114 +    // Get apps with extended properties                      
+      115 +    const script = `                                          
+      116 +$shell = New-Object -ComObject Shell.Application              
+      117 +$apps = $shell.Namespace("shell:AppsFolder").Items()          
+      118 +$results = @()                                                
+      119 +foreach ($app in $apps) {                                     
+      120 +    $obj = @{                                                 
+      121 +        Name = $app.Name                                      
+      122 +        Path = $app.Path                                      
+      123 +        Type = $app.Type                                      
+      124 +        ModifyDate = if ($app.ModifyDate) { $app.ModifyDate.To
+          +String() } else { $null }                                     
+      125 +    }                                                         
+      126 +    # Try to get UWP package info                             
+      127 +    $appId = $app.Path                                        
+      128 +    if ($appId -match '^([^!]+)!') {                          
+      129 +        $pfn = $matches[1]                                    
+      130 +        try {                                                 
+      131 +            $pkg = Get-AppxPackage | Where-Object { $_.Package
+          +FamilyName -eq $pfn } | Select-Object -First 1                
+      132 +            if ($pkg) {                                       
+      133 +                $obj.InstallLocation = $pkg.InstallLocation   
+      134 +                $obj.Publisher = $pkg.Publisher               
+      135 +                $obj.Version = $pkg.Version.ToString()        
+      136 +            }                                                 
+      137 +        } catch {}                                            
+      138 +    }                                                         
+      139 +    $results += [PSCustomObject]$obj                          
+      140 +}                                                             
+      141 +$results | ConvertTo-Json -Depth 2                            
+      142 +`                                                             
+      143      const stdout = await runPs(script)
+      144      const items = JSON.parse(stdout) as ShellItem[]
+      145  
+     ...
+      147          const info: AppInfo = { AppID: i.Path }
+      148          if (i.Type) info['Type'] = i.Type
+      149          if (i.ModifyDate) info['Modified'] = i.ModifyDate
+      150 +        if (i.InstallLocation) info['Install Location'] = i.In
+          +stallLocation                                                 
+      151 +        if (i.Publisher) info['Publisher'] = i.Publisher      
+      152 +        if (i.Version) info['Version'] = i.Version            
+      153          return {
+      154              id: `app:${i.Path}`,
+      155              name: i.Name,
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && pnpm build)
+  ⎿  > aero-launcher@1.0.0 build C:\Users\jigar\projects\launch-bar-v2
+     > tsc --noEmit && electron-vite build
+     … +21 lines (ctrl+o to expand)
+
+● Build passes. Now AppsFolder items will have (for UWP apps):
+  - AppID
+  - Type
+  - Modified
+  - Install Location
+  - Publisher
+  - Version
+
+  Note: Indexing will be slower due to Get-AppxPackage queries. Clear cache and
+  test.
+
+  For Win32 apps in AppsFolder, we still only get what Shell.Application exposes
+   (AppID, Type, Modified).
+
+✻ Worked for 1m 11s
+
+❯ no type publisher verion info available, are you using proper command,    
+  and fetching all info?                                                    
+
+● Let me test the PowerShell script directly to see what's available.
+
+● Bash(powershell -NoProfile -Command "(New-Object -ComObject
+      Shell.Application).Namespace('shell:AppsFolder').Items() | Select-Object
+      -First 3 Name, Path, Type, Modif…)
+  ⎿ Name                     Path                                  Type Mod
+    ifyDate             Size
+    ----                     ----                                  ---- ---
+    … +7 lines (ctrl+o to expand)
+
+
+
+● Bash(powershell -NoProfile -Command "$app = (New-Object -ComObject
+      Shell.Application).Namespace('shell:AppsFolder').Items() | Select-Object
+      -First 1; $app | Get-Memb…)
+  ⎿  Error: Exit code 1
+     At line:1 char:111
+     + ... pace('shell:AppsFolder').Items() | Select-Object -First 1;  | Get-Mem
+     ...
+     +                                                                 ~
+     An empty pipe element is not allowed.
+         + CategoryInfo          : ParserError: (:) [], 
+     ParentContainsErrorRecordException
+         + FullyQualifiedErrorId : EmptyPipeElement
+
+
+● Bash(powershell -NoProfile -Command "$app = (New-Object -ComObject
+      Shell.Application).Namespace('shell:AppsFolder').Items() | Select-Object
+      -First 1; $app | Get-Memb…)
+  ⎿  Error: Exit code 1
+     At line:1 char:111
+     + ... pace('shell:AppsFolder').Items() | Select-Object -First 1;  | Get-Mem
+     ...
+     +                                                                 ~
+     An empty pipe element is not allowed.
+         + CategoryInfo          : ParserError: (:) [], 
+     ParentContainsErrorRecordException
+         + FullyQualifiedErrorId : EmptyPipeElement
+
+
+● Bash(powershell -NoProfile -Command "$items = (New-Object -ComObject
+      Shell.Application).Namespace('shell:AppsFolder').Items(); $items.Item(0) |
+       Get-Member -MemberTyp…)
+  ⎿  Error: Exit code 1
+     = : The term '=' is not recognized as the name of a cmdlet, function, scrip
+      file, or operable program. Check the 
+     spelling of the name, or if a path was included, verify that the path is 
+     correct and try again.
+     At line:1 char:2
+     +  = (New-Object -ComObject Shell.Application).Namespace('shell:AppsFol ...
+     +  ~
+         + CategoryInfo          : ObjectNotFound: (=:String) [], 
+     CommandNotFoundException
+         + FullyQualifiedErrorId : CommandNotFoundException
+      
+     .Item : The term '.Item' is not recognized as the name of a cmdlet, 
+     function, script file, or operable program. Check 
+     … +6 lines (ctrl+o to see all)
+
+● Bash(powershell -NoProfile -Command '(New-Object -ComObject
+      Shell.Application).Namespace("shell:AppsFolder").Items().Item(0) |
+      Get-Member -MemberType Property')
+  ⎿     TypeName: System.__ComObject#{edc817aa-92b8-11d1-b075-00c04fc33aa5}
+
+     Name         MemberType Definition
+     … +14 lines (ctrl+o to expand)
+
+● Bash(powershell -NoProfile -Command 'Get-AppxPackage | Select-Object -First 3
+      Name, PackageFamilyName, Version, Publisher, InstallLocation')
+  ⎿  Name              : 1527c705-839a-4832-9118-54d4Bd6a0c89
+     PackageFamilyName : 1527c705-839a-4832-9118-54d4Bd6a0c89_cw5n1h2txyewy
+     Version           : 10.0.19640.1000
+     … +20 lines (ctrl+o to expand)
+
+● Bash(powershell -NoProfile -Command '(New-Object -ComObject
+      Shell.Application).Namespace("shell:AppsFolder").Items() | Where-Object {
+      $_.Path -match "!" } | Select-O…)
+  ⎿  Name                        Path
+
+     ----                        ----
+     … +11 lines (ctrl+o to expand)
+
+● Bash(powershell -NoProfile -Command '$pfn =
+      "MicrosoftCorporationII.QuickAssist_8wekyb3d8bbwe"; Get-AppxPackage |
+      Where-Object { $_.PackageFamilyName -eq $pfn } | Se…)
+  ⎿  Name                               Version  Publisher
+
+     ----                               -------  ---------
+     … +3 lines (ctrl+o to expand)
+
+● The data is there, but my script might not be running correctly. Let me
+  simplify - fetch shell properties first, then query AppxPackage info
+  separately.
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 27 lines, removed 35 lines
+      111  // === Fetching ===
+      112  
+      113  async function fetchAppsFolder(): Promise<Item[]> {
+      114 -    // Get apps with extended properties                      
+      115 -    const script = `                                          
+      116 -$shell = New-Object -ComObject Shell.Application              
+      117 -$apps = $shell.Namespace("shell:AppsFolder").Items()          
+      118 -$results = @()                                                
+      119 -foreach ($app in $apps) {                                     
+      120 -    $obj = @{                                                 
+      121 -        Name = $app.Name                                      
+      122 -        Path = $app.Path                                      
+      123 -        Type = $app.Type                                      
+      124 -        ModifyDate = if ($app.ModifyDate) { $app.ModifyDate.To
+          -String() } else { $null }                                     
+      125 -    }                                                         
+      126 -    # Try to get UWP package info                             
+      127 -    $appId = $app.Path                                        
+      128 -    if ($appId -match '^([^!]+)!') {                          
+      129 -        $pfn = $matches[1]                                    
+      130 -        try {                                                 
+      131 -            $pkg = Get-AppxPackage | Where-Object { $_.Package
+          -FamilyName -eq $pfn } | Select-Object -First 1                
+      132 -            if ($pkg) {                                       
+      133 -                $obj.InstallLocation = $pkg.InstallLocation   
+      134 -                $obj.Publisher = $pkg.Publisher               
+      135 -                $obj.Version = $pkg.Version.ToString()        
+      136 -            }                                                 
+      137 -        } catch {}                                            
+      138 -    }                                                         
+      139 -    $results += [PSCustomObject]$obj                          
+      140 -}                                                             
+      141 -$results | ConvertTo-Json -Depth 2                            
+      142 -`                                                             
+      143 -    const stdout = await runPs(script)                        
+      144 -    const items = JSON.parse(stdout) as ShellItem[]           
+      114 +    // Get shell apps                                         
+      115 +    const shellScript = `(New-Object -ComObject Shell.Applicat
+          +ion).Namespace("shell:AppsFolder").Items() | Select-Object Nam
+          +e, Path, Type, @{N='ModifyDate';E={if($_.ModifyDate){$_.Modify
+          +Date.ToString()}else{$null}}} | ConvertTo-Json`               
+      116 +    const shellStdout = await runPs(shellScript)              
+      117 +    const shellItems = JSON.parse(shellStdout) as ShellItem[] 
+      118  
+      146 -    return items.map(i => {                                   
+      119 +    // Get UWP package info in one query                      
+      120 +    const pkgScript = `Get-AppxPackage | Select-Object Package
+          +FamilyName, Name, Version, Publisher, InstallLocation | Conver
+          +tTo-Json`                                                     
+      121 +    let pkgMap = new Map<string, { Name: string; Version: stri
+          +ng; Publisher: string; InstallLocation: string }>()           
+      122 +    try {                                                     
+      123 +        const pkgStdout = await runPs(pkgScript)              
+      124 +        const pkgs = JSON.parse(pkgStdout) as { PackageFamilyN
+          +ame: string; Name: string; Version: string; Publisher: string;
+          + InstallLocation: string }[]                                  
+      125 +        pkgMap = new Map(pkgs.map(p => [p.PackageFamilyName, p
+          +]))                                                           
+      126 +    } catch { /* ignore */ }                                  
+      127 +                                                              
+      128 +    return shellItems.map(i => {                              
+      129          const info: AppInfo = { AppID: i.Path }
+      130          if (i.Type) info['Type'] = i.Type
+      131          if (i.ModifyDate) info['Modified'] = i.ModifyDate
+      150 -        if (i.InstallLocation) info['Install Location'] = i.In
+          -stallLocation                                                 
+      151 -        if (i.Publisher) info['Publisher'] = i.Publisher      
+      152 -        if (i.Version) info['Version'] = i.Version            
+      132 +                                                              
+      133 +        // Match UWP apps (format: PackageFamilyName!AppId)   
+      134 +        const match = i.Path.match(/^([^!]+)!/)               
+      135 +        if (match) {                                          
+      136 +            const pkg = pkgMap.get(match[1])                  
+      137 +            if (pkg) {                                        
+      138 +                info['Package'] = pkg.Name                    
+      139 +                info['Version'] = pkg.Version                 
+      140 +                info['Publisher'] = pkg.Publisher             
+      141 +                info['Install Location'] = pkg.InstallLocation
+      142 +            }                                                 
+      143 +        }                                                     
+      144 +                                                              
+      145          return {
+      146              id: `app:${i.Path}`,
+      147              name: i.Name,
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Removed 4 lines
+      27      Path: string
+      28      Type: string | null
+      29      ModifyDate: string | null
+      30 -    Size: number | null                                        
+      31 -    InstallLocation: string | null                             
+      32 -    Publisher: string | null                                   
+      33 -    Version: string | null                                     
+      30  }
+      31  type FolderItem = { Name: string; Path: string; Target: string 
+          | null }
+      32  type AppInfo = Record<string, string>
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && pnpm build)
+  ⎿  > aero-launcher@1.0.0 build C:\Users\jigar\projects\launch-bar-v2
+     > tsc --noEmit && electron-vite build
+     … +21 lines (ctrl+o to expand)
+
+● Build passes. Now:
+
+  UWP apps (path contains !):
+  - AppID, Type, Modified
+  - Package, Version, Publisher, Install Location
+
+  Win32 apps in AppsFolder:
+  - AppID, Type, Modified (limited - Shell.Application doesn't expose more)
+
+  Clear cache and test. UWP apps like "Settings", "Microsoft Teams" should show
+  full info.
+
+✻ Crunched for 3m 1s
+
+❯ bypass cache 
+
+● Read 1 file (ctrl+o to expand)
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 2 lines, removed 11 lines
+      288      id: 'app',
+      289  
+      290      getRootItems: async () => {
+      291 -        const cached = await readCache()                      
+      292 -        if (cached.length > 0) {                              
+      293 -            // Refresh in background                          
+      294 -            fetchAllItems()                                   
+      295 -                .then(loadIcons)                              
+      296 -                .then(writeCache)                             
+      297 -                .catch(err => console.error('[app] Refresh err
+          -or:', err))                                                   
+      298 -            return cached                                     
+      299 -        }                                                     
+      300 -                                                              
+      301 -        console.log('[app] Indexing...')                      
+      291 +        // BYPASS CACHE FOR TESTING                           
+      292 +        console.log('[app] Indexing (cache bypassed)...')     
+      293          const items = await fetchAllItems()
+      294          const withIcons = await loadIcons(items)
+      295          await writeCache(withIcons)
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && pnpm build)
+  ⎿  > aero-launcher@1.0.0 build C:\Users\jigar\projects\launch-bar-v2
+     > tsc --noEmit && electron-vite build
+     … +21 lines (ctrl+o to expand)
+
+● Done. Cache bypassed. Test with pnpm dev.
+
+✻ Worked for 1m 8s
+
+❯ still too littleinfo, for antigravity only two fielsd, appid and modified 
+  at?                                                                       
+
+● Antigravity is a Win32 app (no ! in path). Let me check what extended
+  properties Shell.Application can provide.
+
+● Bash(powershell -NoProfile -Command '$folder = (New-Object -ComObject
+      Shell.Application).Namespace("shell:AppsFolder"); $item = $folder.Items()
+      | Where-Object { $_.N…)
+  ⎿  {
+         "Path":  "Google.Antigravity",
+         "Name":  "Antigravity",
+     … +2 lines (ctrl+o to expand)
+
+● Bash(powershell -NoProfile -Command '$folder = (New-Object -ComObject
+      Shell.Application).Namespace("shell:AppsFolder"); $item = $folder.Items()
+      | Where-Object { $_.N…)
+  ⎿  0 : Google.Antigravity
+     1 : Antigravity
+     4 : Antigravity
+
+● Bash(powershell -NoProfile -Command '$folder = (New-Object -ComObject
+      Shell.Application).Namespace("shell:AppsFolder"); $item = $folder.Items()
+      | Where-Object { $_.N…)
+  ⎿ 0 : {6D809377-6AF0-444B-8957-A3773F02200E}\WSL\wslsettings\wslsettings.
+    exe
+    1 : WSL Settings
+    4 : wslsettings
+
+
+● Bash(powershell -NoProfile -Command '$folder = (New-Object -ComObject
+      Shell.Application).Namespace("shell:AppsFolder"); $item = $folder.Items()
+      | Where-Object { $_.P…)
+  ⎿ 0 : windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immer
+    sivecontrolpanel
+    1 : Settings
+    2 : Settings
+
+
+● Bash(powershell -NoProfile -Command 'Get-StartApps | Where-Object { $_.Name
+      -like "*Antigravity*" }')
+  ⎿  Name        AppID
+     ----        -----
+     Antigravity Google.Antigravity
+
+● Bash(powershell -NoProfile -Command 'Get-ItemProperty
+      "HKCU:\Software\Classes\ActivatableClasses\Package\Google.Antigravity*"
+      -ErrorAction SilentlyContinue')
+  ⎿  Error: Exit code 1
+
+● Bash(powershell -NoProfile -Command 'Get-ChildItem
+      "HKCU:\Software\Classes\Applications" | Where-Object { $_.Name -like
+      "*Google*" -or $_.Name -like "*Antigravity*"…)
+  ⎿  Name
+     ----
+     HKEY_CURRENT_USER\Software\Classes\Applications\Antigravity.exe
+
+● Bash(powershell -NoProfile -Command 'Get-ChildItem
+      "HKCU:\Software\Classes\Applications\Antigravity.exe" -Recurse |
+      ForEach-Object { $_.Name; $_ | Get-ItemProperty }…)
+  ⎿ HKEY_CURRENT_USER\Software\Classes\Applications\Antigravity.exe\Default
+    Icon
+    … +37 lines (ctrl+o to expand)
+
+
+● Bash(powershell -NoProfile -Command 'Get-ItemProperty
+      "HKCU:\Software\Classes\Google.Antigravity*" -ErrorAction
+      SilentlyContinue')
+  ⎿  (No content)
+
+● Bash(powershell -NoProfile -Command 'Get-ChildItem
+      "HKCU:\Software\Microsoft\Windows\CurrentVersion\App Paths" | Where-Object
+       { $_.Name -like "*Antigravity*" } | For…)
+  ⎿  (No content)
+
+● Bash(powershell -NoProfile -Command 'reg query HKCU /s /f "Google.Antigravity"
+       2>$null | Select-Object -First 20')
+  ⎿ HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\CloudStore\
+    Store\DefaultAccount\Cloud\{73744430-1486-4fc3-b822-359357380bde}$windo
+    ws.data.apps.appleveltileinfo$appleveltilelist\windows.data.apps.applev
+    … +25 lines (ctrl+o to expand)
+
+
+
+
+● Bash(powershell -NoProfile -Command 'Get-ChildItem
+      "$env:APPDATA\Microsoft\Windows\Start Menu" -Recurse -Filter
+      "*Antigravity*" | Select-Object FullName')
+  ⎿  FullName
+
+     --------
+     … +5 lines (ctrl+o to expand)
+
+● Bash(powershell -NoProfile -Command '$shell = New-Object -ComObject
+      WScript.Shell; $lnk = $shell.CreateShortcut("C:\Users\jigar\AppData\Roamin
+      g\Microsoft\Windows\Sta…)
+  ⎿ TargetPath                                                        Argum
+    ents WorkingDirectory
+    ----------                                                        -----
+    … +3 lines (ctrl+o to expand)
+
+
+
+❯ you are trying adhoc stuffk , get deep understand of phods that might be  
+  useful                                                                    
+
+● You're right, let me do proper research on Windows app info APIs.
+
+● Bash(powershell -NoProfile -Command 'Get-Package | Where-Object { $_.Name
+      -like "*Antigravity*" } | Select-Object *')
+  ⎿  Error: Exit code 1
+     Get-Package : The term 'Get-Package' is not recognized as the name of a 
+     cmdlet, function, script file, or operable 
+     program. Check the spelling of the name, or if a path was included, verify 
+     that the path is correct and try again.
+     At line:1 char:1
+     + Get-Package | Where-Object { $_.Name -like "*Antigravity*" } | Select ...
+     + ~~~~~~~~~~~
+         + CategoryInfo          : ObjectNotFound: (Get-Package:String) [], 
+     CommandNotFoundException
+         + FullyQualifiedErrorId : CommandNotFoundException
+
+● Bash(powershell -NoProfile -Command 'Get-ItemProperty
+      "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*",
+      "HKCU:\Software\Microsoft\Windows\CurrentVersion…)
+  ⎿  DisplayName     : Antigravity (User)
+     DisplayVersion  : 1.11.14
+     Publisher       : Google
+     … +2 lines (ctrl+o to expand)
+
+● Bash(powershell -NoProfile -Command 'Get-ItemProperty
+      "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*",
+      "HKCU:\Software\Microsoft\Windows\CurrentVersion…)
+  ⎿ DisplayName                                     DisplayVersion Publishe
+    r                     InstallLocation
+    -----------                                     -------------- --------
+    … +21 lines (ctrl+o to expand)
+
+
+
+● Found it! Uninstall Registry has rich Win32 app info:
+  - DisplayName, DisplayVersion, Publisher, InstallLocation, InstallDate
+
+  Approach:
+  1. Fetch shell:AppsFolder items
+  2. Fetch Uninstall registry entries
+  3. Match by name (fuzzy)
+  4. Enrich with version/publisher/location
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  Added 37 lines, removed 4 lines
+      106  
+      107  // === Fetching ===
+      108  
+      109 +type UninstallEntry = {                                       
+      110 +    DisplayName: string | null                                
+      111 +    DisplayVersion: string | null                             
+      112 +    Publisher: string | null                                  
+      113 +    InstallLocation: string | null                            
+      114 +    InstallDate: string | null                                
+      115 +}                                                             
+      116 +                                                              
+      117  async function fetchAppsFolder(): Promise<Item[]> {
+      118      // Get shell apps
+      119      const shellScript = `(New-Object -ComObject Shell.Applicat
+           ion).Namespace("shell:AppsFolder").Items() | Select-Object Nam
+           e, Path, Type, @{N='ModifyDate';E={if($_.ModifyDate){$_.Modify
+           Date.ToString()}else{$null}}} | ConvertTo-Json`
+      120      const shellStdout = await runPs(shellScript)
+      121      const shellItems = JSON.parse(shellStdout) as ShellItem[]
+      122  
+      115 -    // Get UWP package info in one query                      
+      123 +    // Get UWP package info                                   
+      124      const pkgScript = `Get-AppxPackage | Select-Object Package
+           FamilyName, Name, Version, Publisher, InstallLocation | Conver
+           tTo-Json`
+      125      let pkgMap = new Map<string, { Name: string; Version: stri
+           ng; Publisher: string; InstallLocation: string }>()
+      126      try {
+     ...
+      129          pkgMap = new Map(pkgs.map(p => [p.PackageFamilyName, p
+           ]))
+      130      } catch { /* ignore */ }
+      131  
+      132 +    // Get Win32 app info from Uninstall registry             
+      133 +    const uninstallScript = `Get-ItemProperty "HKLM:\\Software
+          +\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*", "HKCU:\\S
+          +oftware\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*" -Er
+          +rorAction SilentlyContinue | Where-Object { $_.DisplayName } |
+          + Select-Object DisplayName, DisplayVersion, Publisher, Install
+          +Location, InstallDate | ConvertTo-Json`                       
+      134 +    let uninstallMap = new Map<string, UninstallEntry>()      
+      135 +    try {                                                     
+      136 +        const uninstallStdout = await runPs(uninstallScript)  
+      137 +        const entries = JSON.parse(uninstallStdout) as Uninsta
+          +llEntry[]                                                     
+      138 +        for (const e of entries) {                            
+      139 +            if (e.DisplayName) {                              
+      140 +                // Index by lowercase name for fuzzy matching 
+      141 +                uninstallMap.set(e.DisplayName.toLowerCase(), 
+          +e)                                                            
+      142 +            }                                                 
+      143 +        }                                                     
+      144 +    } catch { /* ignore */ }                                  
+      145 +                                                              
+      146      return shellItems.map(i => {
+      147          const info: AppInfo = { AppID: i.Path }
+      148          if (i.Type) info['Type'] = i.Type
+      149          if (i.ModifyDate) info['Modified'] = i.ModifyDate
+      150  
+      151          // Match UWP apps (format: PackageFamilyName!AppId)
+      130 -        const match = i.Path.match(/^([^!]+)!/)               
+      131 -        if (match) {                                          
+      132 -            const pkg = pkgMap.get(match[1])                  
+      152 +        const uwpMatch = i.Path.match(/^([^!]+)!/)            
+      153 +        if (uwpMatch) {                                       
+      154 +            const pkg = pkgMap.get(uwpMatch[1])               
+      155              if (pkg) {
+      156                  info['Package'] = pkg.Name
+      157                  info['Version'] = pkg.Version
+      158                  info['Publisher'] = pkg.Publisher
+      159                  info['Install Location'] = pkg.InstallLocation
+      160              }
+      161 +        } else {                                              
+      162 +            // Try to match Win32 app from Uninstall registry 
+          +by name                                                       
+      163 +            const nameLower = i.Name.toLowerCase()            
+      164 +            const uninstall = uninstallMap.get(nameLower)     
+      165 +                || [...uninstallMap.entries()].find(([k]) => k
+          +.includes(nameLower) || nameLower.includes(k))?.[1]           
+      166 +            if (uninstall) {                                  
+      167 +                if (uninstall.DisplayVersion) info['Version'] 
+          += uninstall.DisplayVersion                                    
+      168 +                if (uninstall.Publisher) info['Publisher'] = u
+          +ninstall.Publisher                                            
+      169 +                if (uninstall.InstallLocation) info['Install L
+          +ocation'] = uninstall.InstallLocation                         
+      170 +                if (uninstall.InstallDate) info['Install Date'
+          +] = uninstall.InstallDate                                     
+      171 +            }                                                 
+      172          }
+      173  
+      174          return {
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && pnpm build)
+  ⎿  > aero-launcher@1.0.0 build C:\Users\jigar\projects\launch-bar-v2
+     > tsc --noEmit && electron-vite build
+     … +21 lines (ctrl+o to expand)
+
+● Build passes. Now Win32 apps will get info from Uninstall Registry:
+  - Version, Publisher, Install Location, Install Date
+
+  Test with pnpm dev - Antigravity should show full info now.
+
+✻ Baked for 5m 10s
+
+❯ what does our current code diff contain? 
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && git diff --stat && echo "---"
+       && git diff)
+  ⎿  src/main/providers/app-provider.ts | 297 +++++++++++++++++++++++++++--
+    --------
+     1 file changed, 219 insertions(+), 78 deletions(-)
+    … +458 lines (ctrl+o to expand)
+
+
+● Summary of changes:
+
+  1. New constants: SCAN_FOLDERS (configurable), isFilePath() helper
+  2. New info extractors: getLnkInfo, getUrlInfo, getExeInfo with file stats
+  3. Enhanced fetchAppsFolder:
+    - UWP apps: Get-AppxPackage → Package, Version, Publisher, Install Location
+    - Win32 apps: Uninstall registry → Version, Publisher, Install Location,
+  Install Date
+  4. Renamed: Desktop* → Folder* (generic)
+  5. Removed: isDesktop flag - uses isFilePath(appId) instead
+  6. Dynamic info: onTrigger('info') reads from metadata.info
+  7. Cache bypassed for testing
+
+✻ Cooked for 42s
+
+❯ ok i think we need a different approach.                                  
+                                                                            
+  check this script, it is able to do what I wanted:                        
+                                                                            
+  $folderPath = "C:\Path\To\Folder"                                         
+  $shell = New-Object -ComObject Shell.Application                          
+  $folder = $shell.Namespace($folderPath)                                   
+                                                                            
+  $results = @()                                                            
+                                                                            
+  foreach ($file in $folder.Items()) {                                      
+  $props = @{}                                                              
+  for ($i = 0; $i -lt 400; $i++) {   # 400 is arbitrary upper bound         
+  $key = $folder.GetDetailsOf($folder.Items, $i)                            
+  if (![string]::IsNullOrWhiteSpace($key)) {                                
+  $value = $folder.GetDetailsOf($file, $i)                                  
+  if (![string]::IsNullOrWhiteSpace($value)) {                              
+  $props[$key] = $value                                                     
+  }                                                                         
+  }                                                                         
+  }                                                                         
+  $results += [PSCustomObject]$props                                        
+  }                                                                         
+                                                                            
+  # Export to JSON                                                          
+  $results | ConvertTo-Json -Depth 3 | Out-File                             
+  "$folderPath\AppDetails.json"                                             
+                                                                            
+  analyze and report                                                        
+
+● This script uses GetDetailsOf to extract ALL shell extended properties. Let me
+   test it on shell:AppsFolder.
+
+● Bash(powershell -NoProfile -Command '
+      $shell = New-Object -ComObject Shell.Application…)
+  ⎿  {
+
+     }
+     … +3599 lines (ctrl+o to expand)
+
+● Escaping issue. Let me use encoded command:
+
+● Bash(powershell -NoProfile -Command '$shell = New-Object -ComObject
+      Shell.Application; $folder = $shell.Namespace("shell:AppsFolder"); $item =
+       $folder.Items() | Wher…)
+  ⎿  {
+         "Tags":  "Antigravity",
+         "Name":  "Antigravity",
+     … +2 lines (ctrl+o to expand)
+  ⎿  Interrupted · What should Claude do instead?
+
+❯ dont test for thouzands of files, just try for handful of files, use      
+  script since you dont know how to escape                                  
+
+● Write(test-shell-props.ps1)
+  ⎿  Wrote 1 lines to test-shell-props.ps1
+       1 $shell = New-Object -ComObject Shell.Application
+       2 $folder = $shell.Namespace("shell:AppsFolder")
+       3 
+       4 # Get just 5 apps to test
+       5 $items = $folder.Items() | Select-Object -First 5
+       6 
+       7 $results = @()
+       8 
+       9 foreach ($item in $items) {
+      10     $props = @{}
+
+● Bash(powershell -NoProfile -ExecutionPolicy Bypass -File
+      C:/Users/jigar/projects/launch-bar-v2/test-shell-props.ps1)
+  ⎿  [
+         {
+             "Tags":  "firefox",
+     … +24 lines (ctrl+o to expand)
+
+● shell:AppsFolder only exposes: Tags, Name, AppUserModelId
+
+  Let me test on a real folder with exe files:
+
+● Update(test-shell-props.ps1)
+  ⎿  Added 1 line, removed 1 line
+      1  $shell = New-Object -ComObject Shell.Application
+      2 -$folder = $shell.Namespace("shell:AppsFolder")                  
+      2 +$folder = $shell.Namespace("C:\Program Files\Git")              
+      3  
+      4  # Get just 5 apps to test
+      5  $items = $folder.Items() | Select-Object -First 5
+
+● Bash(powershell -NoProfile -ExecutionPolicy Bypass -File
+      C:/Users/jigar/projects/launch-bar-v2/test-shell-props.ps1)
+  ⎿  [
+         {
+             "Shared":  "No",
+     … +132 lines (ctrl+o to expand)
+
+● Analysis:
+  Source: shell:AppsFolder
+  Properties Available: Only: Tags, Name, AppUserModelId (virtual items)
+  ────────────────────────────────────────
+  Source: Real files (.exe)
+  Properties Available: Rich: Product version, Company, File description, Size,
+    Dates, etc.
+  Conclusion:
+  - shell:AppsFolder items are virtual - no file metadata available
+  - For Win32 apps, need to match to Uninstall registry (current approach) or
+  find actual exe
+  - For folder items (.lnk, .exe, .url), use GetDetailsOf on the file path for
+  rich info
+
+  Should I update folder item extraction to use GetDetailsOf approach?
+
+✻ Cogitated for 1m 12s
+
+❯ nopes we need to use another tech for sell apps                           
+                                                                            
+  $app = Get-AppxPackage -Name "Microsoft.WindowsCalculator"                
+  $manifestPath = Join-Path $app.InstallLocation "AppxManifest.xml"         
+                                                                            
+  [xml]$manifest = Get-Content $manifestPath                                
+  $manifest | ConvertTo-Json -Depth 10 | Out-File                           
+  "CalculatorAppDetails.json"                                               
+                                                                            
+
+● Write(test-appx-manifest.ps1)
+  ⎿  User rejected update to test-appx-manifest.ps1
+       2  if ($app) {
+       3      $manifestPath = Join-Path $app.InstallLocation "AppxManifes
+          t.xml"
+       4      [xml]$manifest = Get-Content $manifestPath
+       5 -    $manifest | ConvertTo-Json -Depth 10                       
+       5 +                                                               
+       6 +    # Extract key info                                         
+       7 +    $info = @{                                                 
+       8 +        PackageName = $app.Name                                
+       9 +        Version = $app.Version.ToString()                      
+      10 +        Publisher = $app.Publisher                             
+      11 +        InstallLocation = $app.InstallLocation                 
+      12 +        DisplayName = $manifest.Package.Properties.DisplayName 
+      13 +        Description = $manifest.Package.Properties.Description 
+      14 +        PublisherDisplayName = $manifest.Package.Properties.Pub
+         +lisherDisplayName                                              
+      15 +        Logo = $manifest.Package.Properties.Logo               
+      16 +    }                                                          
+      17 +                                                               
+      18 +    $info | ConvertTo-Json                                     
+      19  }
+
+❯ whay not get all properties? how do you know that these are the only      
+  proper that we are intrested in! first explain                            
+
+● You're right. I was prematurely filtering.
+
+  AppxManifest.xml is an XML file in each UWP app's install location containing:
+  - Package identity (name, version, publisher)
+  - Properties (display name, description, logo)
+  - Applications (entry points, visual elements)
+  - Capabilities (permissions)
+  - Dependencies
+  - And more...
+
+  I should dump the entire manifest first to see ALL available properties, then
+  we decide what's useful.
+
+  Let me write a script that outputs the full manifest structure:
+
+  $app = Get-AppxPackage -Name "Microsoft.WindowsCalculator"
+  $manifestPath = Join-Path $app.InstallLocation "AppxManifest.xml"
+  [xml]$manifest = Get-Content $manifestPath
+  $manifest.OuterXml  # Full XML
+
+  Want me to run this to explore the full structure?
+
+❯ ok 
+
+● Write(test-appx-manifest.ps1)
+  ⎿  Wrote 1 lines to test-appx-manifest.ps1
+      1 $app = Get-AppxPackage -Name "Microsoft.WindowsCalculator"
+      2 if ($app) {
+      3     $manifestPath = Join-Path $app.InstallLocation "AppxManifest.
+        xml"
+      4     [xml]$manifest = Get-Content $manifestPath
+      5     $manifest.OuterXml
+      6 }
+
+● Bash(powershell -NoProfile -ExecutionPolicy Bypass -File
+      C:/Users/jigar/projects/launch-bar-v2/test-appx-manifest.ps1)
+  ⎿ <?xml version="1.0" encoding="utf-8" standalone="yes"?><Package Ignorab
+    leNamespaces="uap uap3 uap5 mp desktop4 iot2 build" xmlns="http://schem
+    as.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://s
+    … +160 lines (ctrl+o to expand)
+
+
+
+
+● AppxManifest.xml Structure:
+
+  Package
+  ├── Identity
+  │   ├── Name: Microsoft.WindowsCalculator
+  │   ├── Publisher: CN=Microsoft Corporation...
+  │   ├── Version: 11.2508.4.0
+  │   └── ProcessorArchitecture: x64
+  ├── Properties
+  │   ├── DisplayName: ms-resource:AppStoreName (localized)
+  │   ├── PublisherDisplayName: Microsoft Corporation
+  │   └── Logo: Assets\CalculatorStoreLogo.png
+  ├── Applications
+  │   └── Application
+  │       ├── Id: App
+  │       ├── Executable: CalculatorApp.exe
+  │       ├── Description: ms-resource:AppDescription
+  │       └── Protocol handlers (calculator, ms-calculator)
+  ├── Dependencies (target device, package deps)
+  ├── Capabilities (internetClient)
+  └── Build Metadata (framework, VS version, OS)
+
+  Key observations:
+  1. Rich metadata available (version, publisher, executable, capabilities)
+  2. DisplayName/Description are localized refs (ms-resource:) - need resolving
+  3. Get-AppxPackage already resolves names, so combine both sources
+
+  Approach for UWP apps:
+  - Get-AppxPackage → Name, Version, Publisher, InstallLocation
+  - AppxManifest.xml → Executable, Capabilities, Dependencies, Architecture
+
+✻ Sautéed for 45s
+
+❯ we cant be sure that these are the properties will be same for all apps   
+  right? instead we should we use blacklist for properties that we dont     
+  want, also if we get json, will it be better, rather than xml? like I     
+  showed you in my example script!                                          
+
+● You're right on both points:
+
+  1. Blacklist approach: Extract ALL properties, filter out unwanted ones (build
+   metadata, internal stuff)
+  2. JSON conversion: Let PowerShell convert XML → JSON, preserves full
+  structure
+
+  Let me test your original approach:
+
+● Write(test-appx-manifest.ps1)
+  ⎿  Added 1 line, removed 1 line
+      2  if ($app) {
+      3      $manifestPath = Join-Path $app.InstallLocation "AppxManifest
+         .xml"
+      4      [xml]$manifest = Get-Content $manifestPath
+      5 -    $manifest.OuterXml                                          
+      5 +    $manifest | ConvertTo-Json -Depth 10                        
+      6  }
+
+● Bash(powershell -NoProfile -ExecutionPolicy Bypass -File
+      C:/Users/jigar/projects/launch-bar-v2/test-appx-manifest.ps1 2>&1 | head
+      -200)
+  ⎿  [
+         [
+     … +197 lines (ctrl+o to expand)
+
+● XML to JSON conversion produces empty arrays - not useful. Let me try
+  accessing XML properties directly:
+
+● Write(test-appx-manifest.ps1)
+  ⎿  User rejected update to test-appx-manifest.ps1
+       2  if ($app) {
+       3      $manifestPath = Join-Path $app.InstallLocation "AppxManifes
+          t.xml"
+       4      [xml]$manifest = Get-Content $manifestPath
+       5 -    $manifest | ConvertTo-Json -Depth 10                       
+       5 +                                                               
+       6 +    # Access XML nodes as objects                              
+       7 +    $pkg = $manifest.Package                                   
+       8 +                                                               
+       9 +    @{                                                         
+      10 +        Identity = @{                                          
+      11 +            Name = $pkg.Identity.Name                          
+      12 +            Publisher = $pkg.Identity.Publisher                
+      13 +            Version = $pkg.Identity.Version                    
+      14 +            ProcessorArchitecture = $pkg.Identity.ProcessorArch
+         +itecture                                                       
+      15 +        }                                                      
+      16 +        Properties = @{                                        
+      17 +            DisplayName = $pkg.Properties.DisplayName          
+      18 +            PublisherDisplayName = $pkg.Properties.PublisherDis
+         +playName                                                       
+      19 +            Logo = $pkg.Properties.Logo                        
+      20 +        }                                                      
+      21 +        Application = @{                                       
+      22 +            Id = $pkg.Applications.Application.Id              
+      23 +            Executable = $pkg.Applications.Application.Executab
+         +le                                                             
+      24 +            Description = $pkg.Applications.Application.VisualE
+         +lements.Description                                            
+      25 +        }                                                      
+      26 +        Capabilities = $pkg.Capabilities.Capability.Name       
+      27 +    } | ConvertTo-Json -Depth 5                                
+      28  }
+
+❯ what are you doing? 
+
+● Sorry - I was again hardcoding specific properties instead of following your
+  blacklist approach.
+
+  The issue: PowerShell's ConvertTo-Json on XML produces nested empty arrays
+  (doesn't work well).
+
+  Options:
+  1. Flatten XML to key-value pairs dynamically, then blacklist
+  2. Use a different technique to enumerate all XML properties
+  3. You have a working approach in mind?
+
+  How would you like me to proceed?
+
+❯ fast-xml-parser 
+
+● Use fast-xml-parser in Node.js to parse AppxManifest.xml - much cleaner.
+
+  Approach:
+  1. PowerShell: Get InstallLocation from Get-AppxPackage
+  2. Node.js: Read XML file, parse with fast-xml-parser
+  3. Apply blacklist to filter unwanted properties
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && pnpm add fast-xml-parser)
+  ⎿  Progress: resolved 0, reused 1, downloaded 0, added 0
+
+        ╭──────────────────────────────────────────╮
+     … +19 lines (ctrl+o to expand)
+
+● Installed. Now let me update the approach - parse XML in Node.js with
+  fast-xml-parser:
+
+● Read 1 file (ctrl+o to expand)
+
+● Update(src\main\providers\app-provider.ts)
+  ⎿  User rejected update to src\main\providers\app-provider.ts
+      3  import { join, extname, basename } from 'path'
+      4  import { readFile, writeFile, mkdir, stat } from 'fs/promises'
+      5  import { app, shell } from 'electron'
+      6 +import { XMLParser } from 'fast-xml-parser'                     
+      7  import { Item, Provider } from '@shared/types'
+      8  import { Icons } from '@shared/icons'
+      9  
+
+❯ test first in nodjs script, before integrating. 
+
+● Write(test-xml-parser.mjs)
+  ⎿  Wrote 1 lines to test-xml-parser.mjs
+      1 import { XMLParser } from 'fast-xml-parser'
+      2 import { readFile } from 'fs/promises'
+      3 import { execSync } from 'child_process'
+      4 
+      5 // Get Calculator app's install location via PowerShell
+      6 const psOutput = execSync(
+      7     'powershell -NoProfile -Command "(Get-AppxPackage -Name Micro
+        soft.WindowsCalculator).InstallLocation"',
+      8     { encoding: 'utf-8' }
+      9 ).trim()
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && node test-xml-parser.mjs 2>&1
+       | head -150)
+  ⎿ Manifest path: C:\Program Files\WindowsApps\Microsoft.WindowsCalculator
+    _11.2508.4.0_x64__8wekyb3d8bbwe\AppxManifest.xml
+    {
+    … +157 lines (ctrl+o to expand)
+
+
+● Works well. Now let me flatten it and apply blacklist approach:
+
+● Write(test-xml-parser.mjs)
+  ⎿  Added 53 lines, removed 2 lines
+       2  import { readFile } from 'fs/promises'
+       3  import { execSync } from 'child_process'
+       4  
+       5 +// Blacklist - properties to exclude                           
+       6 +const BLACKLIST = [                                            
+       7 +    'build:',           // Build metadata                      
+       8 +    'InProcessServer',  // Internal activation classes         
+       9 +    'ActivatableClass', // Internal                            
+      10 +    'PhoneIdentity',    // Phone specific                      
+      11 +    'ShowNameOnTiles',  // UI tiles                            
+      12 +    'SplashScreen',     // UI                                  
+      13 +    'DefaultTile',      // UI tiles                            
+      14 +    '?xml',             // XML declaration                     
+      15 +]                                                              
+      16 +                                                               
+      17 +// Flatten nested object to key-value pairs                    
+      18 +function flatten(obj, prefix = '', result = {}) {              
+      19 +    for (const [key, value] of Object.entries(obj)) {          
+      20 +        const newKey = prefix ? `${prefix}.${key}` : key       
+      21 +                                                               
+      22 +        if (value && typeof value === 'object' && !Array.isArra
+         +y(value)) {                                                    
+      23 +            flatten(value, newKey, result)                     
+      24 +        } else if (Array.isArray(value)) {                     
+      25 +            // For arrays, just note the count or flatten first
+         + item                                                          
+      26 +            if (value.length > 0 && typeof value[0] === 'object
+         +') {                                                           
+      27 +                result[`${newKey} (${value.length} items)`] = '
+         +...'                                                           
+      28 +            } else {                                           
+      29 +                result[newKey] = value.join(', ')              
+      30 +            }                                                  
+      31 +        } else {                                               
+      32 +            result[newKey] = value                             
+      33 +        }                                                      
+      34 +    }                                                          
+      35 +    return result                                              
+      36 +}                                                              
+      37 +                                                               
+      38 +// Filter by blacklist                                         
+      39 +function applyBlacklist(obj) {                                 
+      40 +    const filtered = {}                                        
+      41 +    for (const [key, value] of Object.entries(obj)) {          
+      42 +        const shouldExclude = BLACKLIST.some(bl => key.includes
+         +(bl))                                                          
+      43 +        if (!shouldExclude) {                                  
+      44 +            filtered[key] = value                              
+      45 +        }                                                      
+      46 +    }                                                          
+      47 +    return filtered                                            
+      48 +}                                                              
+      49 +                                                               
+      50  // Get Calculator app's install location via PowerShell
+      51  const psOutput = execSync(
+      52      'powershell -NoProfile -Command "(Get-AppxPackage -Name Mic
+          rosoft.WindowsCalculator).InstallLocation"',
+     ...
+      55  
+      56  const manifestPath = `${psOutput}\\AppxManifest.xml`
+      57  console.log('Manifest path:', manifestPath)
+      58 +console.log('')                                                
+      59  
+      60  // Read and parse XML
+      61  const xml = await readFile(manifestPath, 'utf-8')
+      62  const parser = new XMLParser({
+      63      ignoreAttributes: false,
+      18 -    attributeNamePrefix: '@_'                                  
+      64 +    attributeNamePrefix: ''                                    
+      65  })
+      66  const result = parser.parse(xml)
+      67  
+      22 -console.log(JSON.stringify(result, null, 2))                   
+      68 +// Flatten and filter                                          
+      69 +const flat = flatten(result.Package)                           
+      70 +const filtered = applyBlacklist(flat)                          
+      71 +                                                               
+      72 +console.log('=== Filtered Properties ===')                     
+      73 +console.log(JSON.stringify(filtered, null, 2))                 
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && node test-xml-parser.mjs)
+  ⎿ Manifest path: C:\Program Files\WindowsApps\Microsoft.WindowsCalculator
+    _11.2508.4.0_x64__8wekyb3d8bbwe\AppxManifest.xml
+    … +67 lines (ctrl+o to expand)
+
+
+● Working. Need to expand blacklist - xmlns, platform-specific stuff, UI assets:
+
+● Write(test-xml-parser.mjs)
+  ⎿  User rejected update to test-xml-parser.mjs
+        2  import { readFile } from 'fs/promises'
+        3  import { execSync } from 'child_process'
+        4  
+        5 +// Blacklist - properties to exclude                          
+        6 +const BLACKLIST = [                                           
+        7 +    'build:',           // Build metadata                     
+        8 +    'InProcessServer',  // Internal activation classes        
+        9 +    'ActivatableClass', // Internal                           
+       10 +    'PhoneIdentity',    // Phone specific                     
+       11 +    'ShowNameOnTiles',  // UI tiles                           
+       12 +    'SplashScreen',     // UI                                 
+       13 +    'DefaultTile',      // UI tiles                           
+       14 +    '?xml',             // XML declaration                    
+       15 +    'xmlns',            // XML namespaces                     
+       16 +    'IgnorableNamespaces',                                    
+       17 +    'uap3:AppExtension', // Internal extension                
+       18 +    'iot2:',            // IoT specific                       
+       19 +    'desktop4:',        // Desktop specific                   
+       20 +    'Logo',             // Asset paths                        
+       21 +    'Square',           // Tile assets                        
+       22 +    'Wide',             // Tile assets                        
+       23 +    'BackgroundColor',  // UI                                 
+       24 +    'EntryPoint',       // Internal                           
+       25 +    'Category',         // Internal                           
+       26 +    'Extension',        // Extension details                  
+       27 +    'Resource',         // Resources                          
+       28 +    'PackageDependency', // Dependencies                      
+       29 +    'TargetDeviceFamily', // Device family                    
+       30 +]                                                             
+       31 +                                                              
+       32 +// Flatten nested object to key-value pairs                   
+       33 +function flatten(obj, prefix = '', result = {}) {             
+       34 +    for (const [key, value] of Object.entries(obj)) {         
+       35 +        const newKey = prefix ? `${prefix}.${key}` : key      
+       36 +                                                              
+       37 +        if (value && typeof value === 'object' && !Array.isArr
+          +ay(value)) {                                                  
+       38 +            flatten(value, newKey, result)                    
+       39 +        } else if (Array.isArray(value)) {                    
+       40 +            // Skip arrays for now                            
+       41 +        } else {                                              
+       42 +            result[newKey] = value                            
+       43 +        }                                                     
+       44 +    }                                                         
+       45 +    return result                                             
+       46 +}                                                             
+       47 +                                                              
+       48 +// Filter by blacklist                                        
+       49 +function applyBlacklist(obj) {                                
+       50 +    const filtered = {}                                       
+       51 +    for (const [key, value] of Object.entries(obj)) {         
+       52 +        const shouldExclude = BLACKLIST.some(bl => key.include
+          +s(bl))                                                        
+       53 +        if (!shouldExclude && value) {                        
+       54 +            filtered[key] = value                             
+       55 +        }                                                     
+       56 +    }                                                         
+       57 +    return filtered                                           
+       58 +}                                                             
+       59 +                                                              
+       60 +// Simplify key names                                         
+       61 +function simplifyKeys(obj) {                                  
+       62 +    const simplified = {}                                     
+       63 +    for (const [key, value] of Object.entries(obj)) {         
+       64 +        // Remove common prefixes and namespace prefixes      
+       65 +        let newKey = key                                      
+       66 +            .replace(/^Package\./, '')                        
+       67 +            .replace(/^Identity\./, '')                       
+       68 +            .replace(/^Properties\./, '')                     
+       69 +            .replace(/^Applications\.Application\./, 'App.')  
+       70 +            .replace(/^Capabilities\.Capability\./, 'Capabilit
+          +y: ')                                                         
+       71 +            .replace(/uap:|uap3:|mp:/, '')                    
+       72 +        simplified[newKey] = value                            
+       73 +    }                                                         
+       74 +    return simplified                                         
+       75 +}                                                             
+       76 +                                                              
+       77 +// Get Calculator app's install location via PowerShell       
+       78  const psOutput = execSync(
+       79      'powershell -NoProfile -Command "(Get-AppxPackage -Name Mi
+           crosoft.WindowsCalculator).InstallLocation"',
+       80      { encoding: 'utf-8' }
+       81  ).trim()
+       82  
+       83  const manifestPath = `${psOutput}\\AppxManifest.xml`
+       84 +console.log('Manifest path:', manifestPath)                   
+       85 +console.log('')                                               
+       86 +                                                              
+       87 +// Read and parse XML                                         
+       88  const xml = await readFile(manifestPath, 'utf-8')
+       89 +const parser = new XMLParser({                                
+       90 +    ignoreAttributes: false,                                  
+       91 +    attributeNamePrefix: ''                                   
+       92 +})                                                            
+       93 +const result = parser.parse(xml)                              
+       94  
+       13 -// With @_ prefix                                             
+       14 -const parser1 = new XMLParser({ ignoreAttributes: false, attri
+          -buteNamePrefix: '@_' })                                       
+       15 -const result1 = parser1.parse(xml)                            
+       95 +// Flatten, filter, simplify                                  
+       96 +const flat = flatten(result.Package)                          
+       97 +const filtered = applyBlacklist(flat)                         
+       98 +const simplified = simplifyKeys(filtered)                     
+       99  
+       17 -// Without prefix                                             
+       18 -const parser2 = new XMLParser({ ignoreAttributes: false, attri
+          -buteNamePrefix: '' })                                         
+       19 -const result2 = parser2.parse(xml)                            
+       20 -                                                              
+       21 -console.log('=== WITH @_ prefix ===')                         
+       22 -console.log(JSON.stringify(result1.Package.Identity, null, 2))
+       23 -                                                              
+       24 -console.log('\n=== WITHOUT prefix ===')                       
+       25 -console.log(JSON.stringify(result2.Package.Identity, null, 2))
+      100 +console.log('=== App Info ===')                               
+      101 +console.log(JSON.stringify(simplified, null, 2))              
+
+❯ wait did we get all attributes tags that we found in xml? also other      
+  stuff like icon etc, which you are ignoring can be perhaps extracted      
+  media elements etc. it will make our interface richer, if we could        
+  navigate into it further!                                                 
+
+● You're right! I was prematurely filtering useful stuff:
+
+  1. Icons/Logos - could display or extract actual images
+  2. Visual elements - make UI richer
+  3. Dependencies, Extensions - could navigate INTO them (browse)
+  4. All attributes - should capture everything
+
+  Let me show ALL properties without filtering, then we decide what's truly
+  useless:
+
+● Write(test-xml-parser.mjs)
+  ⎿  Added 21 lines, removed 19 lines
+       2  import { readFile } from 'fs/promises'
+       3  import { execSync } from 'child_process'
+       4  
+       5 -// Blacklist - properties to exclude                           
+       5 +// Minimal blacklist - only truly internal/useless stuff       
+       6  const BLACKLIST = [
+       7 -    'build:',           // Build metadata                      
+       8 -    'InProcessServer',  // Internal activation classes         
+       9 -    'ActivatableClass', // Internal                            
+      10 -    'PhoneIdentity',    // Phone specific                      
+      11 -    'ShowNameOnTiles',  // UI tiles                            
+      12 -    'SplashScreen',     // UI                                  
+      13 -    'DefaultTile',      // UI tiles                            
+       7 +    'xmlns',            // XML namespaces (technical)          
+       8 +    'IgnorableNamespaces', // XML technical                    
+       9      '?xml',             // XML declaration
+      10  ]
+      11  
+      17 -// Flatten nested object to key-value pairs                    
+      12 +// Flatten nested object - preserve structure info             
+      13  function flatten(obj, prefix = '', result = {}) {
+      14      for (const [key, value] of Object.entries(obj)) {
+      15          const newKey = prefix ? `${prefix}.${key}` : key
+     ...
+      17          if (value && typeof value === 'object' && !Array.isArra
+          y(value)) {
+      18              flatten(value, newKey, result)
+      19          } else if (Array.isArray(value)) {
+      25 -            // For arrays, just note the count or flatten first
+         - item                                                          
+      26 -            if (value.length > 0 && typeof value[0] === 'object
+         -') {                                                           
+      27 -                result[`${newKey} (${value.length} items)`] = '
+         -...'                                                           
+      28 -            } else {                                           
+      29 -                result[newKey] = value.join(', ')              
+      30 -            }                                                  
+      31 -        } else {                                               
+      20 +            // Show array items                                
+      21 +            value.forEach((item, idx) => {                     
+      22 +                if (typeof item === 'object') {                
+      23 +                    flatten(item, `${newKey}[${idx}]`, result) 
+      24 +                } else {                                       
+      25 +                    result[`${newKey}[${idx}]`] = item         
+      26 +                }                                              
+      27 +            })                                                 
+      28 +        } else if (value !== null && value !== undefined && val
+         +ue !== '') {                                                   
+      29              result[newKey] = value
+      30          }
+      31      }
+     ...
+      52  
+      53  const manifestPath = `${psOutput}\\AppxManifest.xml`
+      54  console.log('Manifest path:', manifestPath)
+      55 +console.log('Install location:', psOutput)                     
+      56  console.log('')
+      57  
+      58  // Read and parse XML
+      59  const xml = await readFile(manifestPath, 'utf-8')
+      60  const parser = new XMLParser({
+      61      ignoreAttributes: false,
+      64 -    attributeNamePrefix: ''                                    
+      62 +    attributeNamePrefix: ''  // No prefix for attributes       
+      63  })
+      64  const result = parser.parse(xml)
+      65  
+     ...
+      67  const flat = flatten(result.Package)
+      68  const filtered = applyBlacklist(flat)
+      69  
+      72 -console.log('=== Filtered Properties ===')                     
+      73 -console.log(JSON.stringify(filtered, null, 2))                 
+      70 +console.log('=== ALL Properties ===')                          
+      71 +for (const [key, value] of Object.entries(filtered)) {         
+      72 +    console.log(`${key}: ${value}`)                            
+      73 +}                                                              
+      74 +console.log('')                                                
+      75 +console.log(`Total: ${Object.keys(filtered).length} properties`
+         +)                                                              
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && node test-xml-parser.mjs)
+  ⎿ Manifest path: C:\Program Files\WindowsApps\Microsoft.WindowsCalculator
+    _11.2508.4.0_x64__8wekyb3d8bbwe\AppxManifest.xml
+    Install location: C:\Program Files\WindowsApps\Microsoft.WindowsCalcula
+    … +366 lines (ctrl+o to expand)
+
+
+
+● 212 properties total. Now I can see what's useful:
+
+  Keep (display in info):
+  - Identity.* (Name, Publisher, Version, Architecture)
+  - Properties.* (DisplayName, Logo)
+  - Application.Executable, Description
+  - Protocol handlers (calculator, ms-calculator)
+  - Capabilities
+  - Languages
+
+  Could browse into:
+  - Dependencies (5 packages)
+  - Visual assets (logos)
+  - Protocol extensions
+
+  Blacklist (truly internal):
+  - build:Metadata.* (build flags)
+  - InProcessServer/ActivatableClass (COM internals)
+  - mp:PhoneIdentity (phone specific)
+  - ThreadingModel, uap:ShowNameOnTiles
+
+  Should I update the blacklist and show a cleaner view?
+
+✻ Crunched for 1m 0s
+
+❯  mp:PhoneIdentity (phone specific) why dont we want phone and contacts    
+  integration!                                                              
+
+● You're right! I assumed "phone" meant mobile, but it could be phone/contacts
+  integration on Windows (calling, dialer, etc.).
+
+  Truly internal/technical only:
+  - xmlns (XML namespace declarations)
+  - build:Metadata (compiler flags, build tools)
+  - InProcessServer/ActivatableClass (COM class registration)
+  - ThreadingModel (implementation detail)
+
+  Everything else could be useful to someone. Minimal blacklist approach - only
+  exclude what's genuinely technical noise.
+
+❯ show me what its values were? phone stuff 
+
+● From the output:
+
+  mp:PhoneIdentity.PhoneProductId: b58171c6-c70c-4266-a2e8-8f9c994f4456
+  mp:PhoneIdentity.PhonePublisherId: 95d94207-0c7c-47ed-82db-d75c81153c35
+
+  Just GUIDs - internal identifiers for Windows Phone store compatibility
+  (legacy). Not actual phone/contacts integration.
+
+  You're right to question though - I shouldn't assume. These specific ones are
+  just store IDs, but the principle stands: only blacklist what we verify is
+  useless.
+
+❯ so these are useless 
+
+● Yes. Updated blacklist:
+
+  - xmlns - XML namespace declarations
+  - build:Metadata - compiler/build flags
+  - InProcessServer/ActivatableClass/ThreadingModel - COM internals
+  - mp:PhoneIdentity - legacy Windows Phone store GUIDs
+
+  Everything else stays. Want me to update the test script with this final
+  blacklist?
+
+❯ InProcessServer/ActivatableClass/ThreadingModel why are you usnging       
+  slash? also why did we remove @_ prefix?                                  
+
+● Good catches:
+
+  1. Slash - I meant them as separate items, not a path. Should list separately:
+    - InProcessServer
+    - ActivatableClass
+    - ThreadingModel
+  2. @_ prefix - I removed it with attributeNamePrefix: ''. But it's useful to
+  distinguish:
+    - @_Name = XML attribute (<Identity Name="..."/>)
+    - Name = XML element (<Name>...</Name>)
+
+  Should keep @_ prefix to preserve that distinction. Let me fix:
+
+● Update(test-xml-parser.mjs)
+  ⎿  (No changes)
+
+❯ show output, with/without @_ and keep output list to minimum,  
+
+● Write(test-xml-parser.mjs)
+  ⎿  Added 12 lines, removed 62 lines
+       2  import { readFile } from 'fs/promises'
+       3  import { execSync } from 'child_process'
+       4  
+       5 -// Minimal blacklist - only truly internal/useless stuff       
+       6 -const BLACKLIST = [                                            
+       7 -    'xmlns',            // XML namespaces (technical)          
+       8 -    'IgnorableNamespaces', // XML technical                    
+       9 -    '?xml',             // XML declaration                     
+      10 -]                                                              
+      11 -                                                               
+      12 -// Flatten nested object - preserve structure info             
+      13 -function flatten(obj, prefix = '', result = {}) {              
+      14 -    for (const [key, value] of Object.entries(obj)) {          
+      15 -        const newKey = prefix ? `${prefix}.${key}` : key       
+      16 -                                                               
+      17 -        if (value && typeof value === 'object' && !Array.isArra
+         -y(value)) {                                                    
+      18 -            flatten(value, newKey, result)                     
+      19 -        } else if (Array.isArray(value)) {                     
+      20 -            // Show array items                                
+      21 -            value.forEach((item, idx) => {                     
+      22 -                if (typeof item === 'object') {                
+      23 -                    flatten(item, `${newKey}[${idx}]`, result) 
+      24 -                } else {                                       
+      25 -                    result[`${newKey}[${idx}]`] = item         
+      26 -                }                                              
+      27 -            })                                                 
+      28 -        } else if (value !== null && value !== undefined && val
+         -ue !== '') {                                                   
+      29 -            result[newKey] = value                             
+      30 -        }                                                      
+      31 -    }                                                          
+      32 -    return result                                              
+      33 -}                                                              
+      34 -                                                               
+      35 -// Filter by blacklist                                         
+      36 -function applyBlacklist(obj) {                                 
+      37 -    const filtered = {}                                        
+      38 -    for (const [key, value] of Object.entries(obj)) {          
+      39 -        const shouldExclude = BLACKLIST.some(bl => key.includes
+         -(bl))                                                          
+      40 -        if (!shouldExclude) {                                  
+      41 -            filtered[key] = value                              
+      42 -        }                                                      
+      43 -    }                                                          
+      44 -    return filtered                                            
+      45 -}                                                              
+      46 -                                                               
+      47 -// Get Calculator app's install location via PowerShell        
+       5  const psOutput = execSync(
+       6      'powershell -NoProfile -Command "(Get-AppxPackage -Name Mic
+          rosoft.WindowsCalculator).InstallLocation"',
+       7      { encoding: 'utf-8' }
+       8  ).trim()
+       9  
+      10  const manifestPath = `${psOutput}\\AppxManifest.xml`
+      54 -console.log('Manifest path:', manifestPath)                    
+      55 -console.log('Install location:', psOutput)                     
+      56 -console.log('')                                                
+      57 -                                                               
+      58 -// Read and parse XML                                          
+      11  const xml = await readFile(manifestPath, 'utf-8')
+      60 -const parser = new XMLParser({                                 
+      61 -    ignoreAttributes: false,                                   
+      62 -    attributeNamePrefix: ''  // No prefix for attributes       
+      63 -})                                                             
+      64 -const result = parser.parse(xml)                               
+      12  
+      66 -// Flatten and filter                                          
+      67 -const flat = flatten(result.Package)                           
+      68 -const filtered = applyBlacklist(flat)                          
+      13 +// With @_ prefix                                              
+      14 +const parser1 = new XMLParser({ ignoreAttributes: false, attrib
+         +uteNamePrefix: '@_' })                                         
+      15 +const result1 = parser1.parse(xml)                             
+      16  
+      70 -console.log('=== ALL Properties ===')                          
+      71 -for (const [key, value] of Object.entries(filtered)) {         
+      72 -    console.log(`${key}: ${value}`)                            
+      73 -}                                                              
+      74 -console.log('')                                                
+      75 -console.log(`Total: ${Object.keys(filtered).length} properties`
+         -)                                                              
+      17 +// Without prefix                                              
+      18 +const parser2 = new XMLParser({ ignoreAttributes: false, attrib
+         +uteNamePrefix: '' })                                           
+      19 +const result2 = parser2.parse(xml)                             
+      20 +                                                               
+      21 +console.log('=== WITH @_ prefix ===')                          
+      22 +console.log(JSON.stringify(result1.Package.Identity, null, 2)) 
+      23 +                                                               
+      24 +console.log('\n=== WITHOUT prefix ===')                        
+      25 +console.log(JSON.stringify(result2.Package.Identity, null, 2)) 
+
+● Bash(cd /c/Users/jigar/projects/launch-bar-v2 && node test-xml-parser.mjs)
+  ⎿  === WITH @_ prefix ===
+     {
+       "@_Name": "Microsoft.WindowsCalculator",
+     … +14 lines (ctrl+o to expand)
+
+● With @_: Shows these are XML attributes
+  "@_Name": "Microsoft.WindowsCalculator"
+
+  Without: Cleaner for display
+  "Name": "Microsoft.WindowsCalculator"
+
+  For user-facing info display, cleaner (no prefix) is better. The distinction
+  (attribute vs element) doesn't matter to end users.
+
+  Keep without prefix?
+
+✻ Churned for 46s
+
+❯ sure, now you need to document this design,                               
+  docs/design-item-details-view.md, keep cruciat points, serve as reference 
+  when we will implement it in future, dont tightly couple with app, show   
+  outline line for approva                                                  
+
+● Outline: docs/design-item-details-view.md
+
+  1. Overview
+    - Info trigger (Ctrl+I) shows item metadata as navigable list
+  2. Data Sources by Item Type
+    - UWP apps: AppxManifest.xml via fast-xml-parser
+    - Win32 apps: Uninstall registry
+    - Folder items (.lnk, .url, .exe): Shell GetDetailsOf / fs.stat
+  3. Extraction Approach
+    - Extract ALL properties, apply blacklist
+    - Blacklist: xmlns, build:Metadata, InProcessServer, ActivatableClass,
+  ThreadingModel, mp:PhoneIdentity
+  4. Data Structure
+    - metadata.info: Record<string, unknown> - flat or nested
+    - Nested structures allow "browse into" (dependencies, extensions)
+  5. Display
+    - Each property as list item: Key: Value
+    - Nested objects → browsable (pushList)
+    - Asset paths (logos) → could resolve to images
+  6. Tools/Dependencies
+    - fast-xml-parser for XML→JSON
+    - PowerShell for registry/shell queries
+
+  Approve?
+
+❯ show all ways in which we can get info for all item types, files folders, 
+  etc. since every file also has properties menu with general and detail    
+  tabs. perhaps it should be part of 2. also you are going to include code  
+  snippets right?                                                           
+
+● You're right - need comprehensive coverage. Updated outline:
+
+  Outline: docs/design-item-details-view.md
+
+  1. Overview
+    - Info trigger (Ctrl+I) shows item metadata as navigable list
+    - Goal: expose same info as Windows Properties dialog (General + Details
+  tabs)
+  2. Data Sources by Item Type
+
+  2. 2.1 Universal (Any File/Folder)
+    - Shell.Application GetDetailsOf - 300+ properties, same as Explorer
+    - Node.js fs.stat() - size, dates, permissions
+    - Code snippets for both
+
+  2.2 UWP Apps (shell:AppsFolder with !)
+    - AppxManifest.xml via fast-xml-parser
+    - Get-AppxPackage cmdlet (backup)
+    - Code snippets
+
+  2.3 Win32 Apps (shell:AppsFolder without !)
+    - Uninstall registry lookup
+    - Shell GetDetailsOf (limited for virtual items)
+    - Code snippets
+
+  2.4 Shortcuts (.lnk)
+    - Electron shell.readShortcutLink() - target, args, cwd, icon
+    - Shell GetDetailsOf
+    - Code snippets
+
+  2.5 URL Files (.url)
+    - Parse INI format for URL=
+    - fs.stat for dates
+    - Code snippets
+
+  2.6 Executables (.exe)
+    - PowerShell VersionInfo - version, company, product
+    - Shell GetDetailsOf
+    - Code snippets
+
+  2.7 Media/Documents
+    - Shell GetDetailsOf - rich metadata (dimensions, duration, author, etc.)
+  3. Extraction Approach
+    - Extract ALL, apply blacklist
+    - Blacklist: xmlns, build:Metadata, InProcessServer, ActivatableClass,
+  ThreadingModel, mp:PhoneIdentity
+  4. Data Structure
+    - metadata.info: Record<string, unknown>
+    - Nested → browsable
+  5. Display
+    - Key: Value list items
+    - Nested → pushList
+    - Asset paths → resolve to images
+  6. Dependencies
+    - fast-xml-parser
+    - PowerShell scripts
+
+  Approve?
+
+❯ can you spawn off an agent to do this job, or it wont share context and   
+  might do poor job! discuss. my conscern is that we are almost reaching    
+  end of context availabe for conversation, I dont want midfile writing     
+  cuttoff.                                                                  
+
+● Good concern. Let me discuss options:
+
+  Spawned agent limitations:
+  - Doesn't inherit our conversation context automatically
+  - Would need detailed prompt with ALL context we discussed
+  - Risk: might miss nuances, produce generic output
+
+  Options:
+
+  1. Save context first, then write: 
+    - Write our discussion points to a temp file
+    - Then write the actual design doc (or spawn agent that reads context file)
+  2. Write now, keep it concise:
+    - Our outline is solid - I can write a focused doc now
+    - Risk: cutoff mid-write
+  3. Spawn agent with detailed prompt:
+    - Include all code snippets and decisions in prompt
+    - Agent writes the doc
+    - Risk: loses nuance, may need corrections
+
+  My recommendation: Option 1 - save context to temp file first, then write the
+  design doc. If cutoff happens, context is preserved for next session.
+
+  Or: Write now since outline is approved and doc structure is clear - it's ~200
+   lines max, should complete.
+
+  Your call?
