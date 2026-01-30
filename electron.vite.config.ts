@@ -8,19 +8,27 @@ import { resolve } from 'path'
 
 const sharedPlugins = [tsconfigPaths(), checker({ typescript: true })]
 
-const copyDll = () => ({
-  name: 'copy-dll',
+const copyAssets = () => ({
+  name: 'copy-assets',
   closeBundle() {
     copyFileSync(
       resolve(__dirname, 'src/main/ShellIcon.dll'),
       resolve(__dirname, 'out/main/ShellIcon.dll')
+    )
+    copyFileSync(
+      resolve(__dirname, 'src/main/providers/fetch-shell-apps.ps1'),
+      resolve(__dirname, 'out/main/fetch-shell-apps.ps1')
+    )
+    copyFileSync(
+      resolve(__dirname, 'src/main/providers/fetch-app-details.ps1'),
+      resolve(__dirname, 'out/main/fetch-app-details.ps1')
     )
   }
 })
 
 export default defineConfig({
   main: {
-    plugins: [...sharedPlugins, copyDll()],
+    plugins: [...sharedPlugins, copyAssets()],
     build: {
       rollupOptions: {
         input: 'src/main/main.ts',
