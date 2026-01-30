@@ -3,7 +3,7 @@ import { channels, UIEvent, Frame, ListFrame, Item, Trigger, Provider, Response 
 import { appProvider } from './providers/app-provider'
 import { fsProvider } from './providers/fs-provider'
 import { websearchProvider } from './providers/websearch-provider'
-import { systemProvider } from './providers/system-provider'
+import { systemCommandsProvider } from './providers/system-commands-provider'
 import { Ranking } from './ranking'
 
 // === Providers ===
@@ -14,7 +14,7 @@ type Providers = {
 
 const Providers = {
     init: (): Providers => {
-        const list = [appProvider, fsProvider, websearchProvider, systemProvider]
+        const list = [appProvider, fsProvider, websearchProvider, systemCommandsProvider]
         return { registry: new Map(list.map(p => [p.id, p])) }
     },
 

@@ -22,6 +22,6 @@ export const Icons = {
     launchbar: toBase64(createSvg('<path d="m9 18 6-6-6-6"/>', '#d4872e')),
     chevron: toBase64(createSvg('<path d="m9 18 6-6-6-6"/>')),
     action: toBase64(createSvg('<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>')),
-    system: toBase64(createSvg('<path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" x2="12" y1="2" y2="12"/>')),
+    power: toBase64(createSvg('<path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" x2="12" y1="2" y2="12"/>')),
     default: toBase64(createSvg('<rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/>')),
 }

@@ -4,60 +4,60 @@ import { Icons } from '@shared/icons'
 
 const POWER_ACTIONS: Item[] = [
     {
-        id: 'power:shutdown',
+        id: 'system-commands:shutdown',
         name: 'Shut Down',
-        icon: Icons.system,
-        moduleId: 'system',
+        icon: Icons.power,
+        moduleId: 'system-commands',
         metadata: { category: 'power', cmd: 'shutdown /s /t 0' },
         triggers: ['execute'],
     },
     {
-        id: 'power:restart',
+        id: 'system-commands:restart',
         name: 'Restart',
-        icon: Icons.system,
-        moduleId: 'system',
+        icon: Icons.power,
+        moduleId: 'system-commands',
         metadata: { category: 'power', cmd: 'shutdown /r /t 0' },
         triggers: ['execute'],
     },
     {
-        id: 'power:sleep',
+        id: 'system-commands:sleep',
         name: 'Sleep',
-        icon: Icons.system,
-        moduleId: 'system',
+        icon: Icons.power,
+        moduleId: 'system-commands',
         metadata: { category: 'power', cmd: 'rundll32.exe powrprof.dll,SetSuspendState 0,1,0' },
         triggers: ['execute'],
     },
     {
-        id: 'power:lock',
+        id: 'system-commands:lock',
         name: 'Lock',
-        icon: Icons.system,
-        moduleId: 'system',
+        icon: Icons.power,
+        moduleId: 'system-commands',
         metadata: { category: 'power', cmd: 'rundll32.exe user32.dll,LockWorkStation' },
         triggers: ['execute'],
     },
     {
-        id: 'power:signout',
+        id: 'system-commands:signout',
         name: 'Sign Out',
-        icon: Icons.system,
-        moduleId: 'system',
+        icon: Icons.power,
+        moduleId: 'system-commands',
         metadata: { category: 'power', cmd: 'shutdown /l' },
         triggers: ['execute'],
     },
 ]
 
-const POWER_CATEGORY: Item = {
-    id: 'power:category',
+const PowerCategoryItem: Item = {
+    id: 'system-commands:category:power',
     name: 'Power Commands',
-    icon: Icons.system,
-    moduleId: 'system',
-    metadata: { kind: 'power-category' },
+    icon: Icons.power,
+    moduleId: 'system-commands',
+    metadata: {},
     triggers: ['browse'],
 }
 
-export const systemProvider: Provider = {
-    id: 'system',
+export const systemCommandsProvider: Provider = {
+    id: 'system-commands',
 
-    getRootItems: async () => [...POWER_ACTIONS, POWER_CATEGORY],
+    getRootItems: async () => [...POWER_ACTIONS, PowerCategoryItem],
 
     onTrigger: async (item, trigger) => {
         if (trigger.type === 'execute') {
@@ -66,7 +66,7 @@ export const systemProvider: Provider = {
             return { type: 'resetAndHide' }
         }
 
-        if (trigger.type === 'browse' && item.metadata.kind === 'power-category') {
+        if (trigger.type === 'browse' && item.id === PowerCategoryItem.id) {
             return { type: 'pushList', items: POWER_ACTIONS }
         }
 
