@@ -5,8 +5,8 @@ import {exec} from 'child_process'
 import {join} from 'path'
 import {readFile, writeFile, mkdir} from 'fs/promises'
 import {app, shell} from 'electron'
-import {ListItem} from '@shared/types'
-import {Icons} from '@shared/icons'
+import {ListItem} from 'src/shared/types'
+import {Icons} from 'src/shared/icons'
 
 const execAsync = promisify(exec)
 const SHELL_ICON_DLL = app.isPackaged
