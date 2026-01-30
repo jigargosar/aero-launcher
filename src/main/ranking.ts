@@ -66,6 +66,7 @@ type UnifiedScored = {
     gaps: number // number of skipped segments (lower = better)
 }
 
+
 type Matcher = (
     items: SearchableItem[],
     query: string,
@@ -209,7 +210,29 @@ const matchUnified: Matcher = (items, query, context) => {
     return pipe(scored, A.sort(order), A.map(s => s.item))
 }
 
-const matchers: Matcher[] = [matchLearned, matchUnified]
+const matchSubsequence: Matcher = (items, query) => {
+    const scored: {item: SearchableItem; matched: number; start: number; spread: number}[] = []
+
+    for (const si of items) {
+        let qi = 0, start = -1, end = 0
+        for (let i = 0; i < si.normalized.length && qi < query.length; i++) {
+            if (si.normalized[i] === query[qi]) {
+                if (start === -1) start = i
+                end = i
+                qi++
+            }
+        }
+        if (qi > 0) {
+            scored.push({item: si, matched: qi, start, spread: end - start + (query.length - qi)})
+        }
+    }
+
+    return scored
+        .sort((a, b) => b.matched - a.matched || a.start - b.start || a.spread - b.spread || a.item.name.localeCompare(b.item.name))
+        .map(s => s.item)
+}
+
+const matchers: Matcher[] = [matchLearned, matchUnified, matchSubsequence]
 
 // --- Main ---
 
