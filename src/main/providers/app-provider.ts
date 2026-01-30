@@ -9,6 +9,99 @@ import { Icons } from '@shared/icons'
 
 const execAsync = promisify(exec)
 
+// === Settings Deep Links ===
+
+const SETTINGS_DEEP_LINKS: Item[] = [
+    {
+        id: 'settings:display',
+        name: 'Display Settings',
+        icon: Icons.settings,
+        moduleId: 'app',
+        metadata: { category: 'settings', cmd: 'start ms-settings:display' },
+        triggers: ['execute'],
+    },
+    {
+        id: 'settings:bluetooth',
+        name: 'Bluetooth Settings',
+        icon: Icons.settings,
+        moduleId: 'app',
+        metadata: { category: 'settings', cmd: 'start ms-settings:bluetooth' },
+        triggers: ['execute'],
+    },
+    {
+        id: 'settings:wifi',
+        name: 'WiFi Settings',
+        icon: Icons.settings,
+        moduleId: 'app',
+        metadata: { category: 'settings', cmd: 'start ms-settings:network-wifi' },
+        triggers: ['execute'],
+    },
+    {
+        id: 'settings:personalization',
+        name: 'Personalization',
+        icon: Icons.settings,
+        moduleId: 'app',
+        metadata: { category: 'settings', cmd: 'start ms-settings:personalization' },
+        triggers: ['execute'],
+    },
+    {
+        id: 'settings:colors',
+        name: 'Colors & Accent',
+        icon: Icons.settings,
+        moduleId: 'app',
+        metadata: { category: 'settings', cmd: 'start ms-settings:colors' },
+        triggers: ['execute'],
+    },
+    {
+        id: 'settings:notifications',
+        name: 'Notifications',
+        icon: Icons.settings,
+        moduleId: 'app',
+        metadata: { category: 'settings', cmd: 'start ms-settings:notifications' },
+        triggers: ['execute'],
+    },
+    {
+        id: 'settings:defaultapps',
+        name: 'Default Apps',
+        icon: Icons.settings,
+        moduleId: 'app',
+        metadata: { category: 'settings', cmd: 'start ms-settings:defaultapps' },
+        triggers: ['execute'],
+    },
+    {
+        id: 'settings:powersleep',
+        name: 'Power & Sleep',
+        icon: Icons.settings,
+        moduleId: 'app',
+        metadata: { category: 'settings', cmd: 'start ms-settings:powersleep' },
+        triggers: ['execute'],
+    },
+    {
+        id: 'settings:storage',
+        name: 'Storage Settings',
+        icon: Icons.settings,
+        moduleId: 'app',
+        metadata: { category: 'settings', cmd: 'start ms-settings:storagesense' },
+        triggers: ['execute'],
+    },
+    {
+        id: 'settings:sound',
+        name: 'Sound Settings',
+        icon: Icons.settings,
+        moduleId: 'app',
+        metadata: { category: 'settings', cmd: 'start ms-settings:sound' },
+        triggers: ['execute'],
+    },
+    {
+        id: 'settings:privacy',
+        name: 'Privacy & Security',
+        icon: Icons.settings,
+        moduleId: 'app',
+        metadata: { category: 'settings', cmd: 'start ms-settings:privacy' },
+        triggers: ['execute'],
+    },
+]
+
 const SHELL_ICON_DLL = app.isPackaged
     ? join(process.resourcesPath, 'ShellIcon.dll')
     : join(__dirname, 'ShellIcon.dll')
@@ -111,17 +204,22 @@ async function fetchAppsFolder(): Promise<Item[]> {
 
     const items = JSON.parse(stdout.trim()) as ShellItemRaw[]
 
-    return items.map((i) => ({
-        id: `app:${i.Path}`,
-        name: i.Name,
-        icon: Icons.app,
-        moduleId: 'app',
-        metadata: {
-            appId: i.Path,
-            category: i.Category,
-        },
-        triggers: ['execute', 'actionMenu'], // TODO: add 'info' back when manifest blacklist is finalized
-    }))
+    return items.map((i) => {
+        const isSettingsApp = i.Name === 'Settings'
+        return {
+            id: `app:${i.Path}`,
+            name: i.Name,
+            icon: Icons.app,
+            moduleId: 'app',
+            metadata: {
+                appId: i.Path,
+                category: i.Category,
+            },
+            triggers: isSettingsApp
+                ? ['execute', 'browse', 'actionMenu']
+                : ['execute', 'actionMenu'], // TODO: add 'info' back when manifest blacklist is finalized
+        }
+    })
 }
 
 async function fetchAppDetails(appPath: string, category: string): Promise<AppInfo> {
@@ -219,9 +317,16 @@ export const appProvider: Provider = {
         const kind = item.metadata.kind as string | undefined
         const appId = item.metadata.appId as string
         const category = item.metadata.category as string
+        const cmd = item.metadata.cmd as string | undefined
 
         const execApp = () => {
             exec(`start "" "shell:AppsFolder\\${appId}"`)
+        }
+
+        // Settings deep links
+        if (category === 'settings' && trigger.type === 'execute' && cmd) {
+            exec(cmd)
+            return { type: 'resetAndHide' }
         }
 
         if (kind === 'action') {
@@ -242,6 +347,11 @@ export const appProvider: Provider = {
         if (trigger.type === 'execute') {
             execApp()
             return { type: 'resetAndHide' }
+        }
+
+        // Settings app browse → show deep links
+        if (trigger.type === 'browse' && item.name === 'Settings') {
+            return { type: 'pushList', items: SETTINGS_DEEP_LINKS }
         }
 
         if (trigger.type === 'actionMenu') {
