@@ -6,6 +6,8 @@
 
 # Next Actions
 
+- remove selection on mouse hover.
+
 # Done
 
 - pending integration: Add info trigger with mock data (Ctrl+I shows metadata list)
