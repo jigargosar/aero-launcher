@@ -3,10 +3,9 @@
 # Ready
 
 # Next Actions
-- Populate real metadata for app items (info trigger) - extract all fields per item type (.lnk, .url, .exe, AppsFolder)
 
 # Done
-- Add info trigger with mock data (Ctrl+I shows metadata list)
+- pending integration: Add info trigger with mock data (Ctrl+I shows metadata list)
 - Add desktop items to app provider (shell:AppsFolder + Desktop .lnk/.url/.exe with proper dedup)
 - Implement real app provider (Get-StartApps, icons, caching, async getRootItems)
 - Enforce input frame can only be at top of stack (pushList/pushInput check)
@@ -22,6 +21,7 @@
 - ISI, root frame is separate, not part of stack
 
 # SomeDay/Maybe
+- integration pending: Populate real metadata for app items (info trigger) - extract all fields per item type (.lnk, .url, .exe, AppsFolder)
 
 - Decouple Frame from UIState - Split internal/external types
     - UI state/Frame is abhorrently used UI, we need to send proper ViewModel. to remove convoluted code.

@@ -1,0 +1,942 @@
+[
+    {
+        "Category":  "HasTarget",
+        "Name":  "Firefox",
+        "TargetPath":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Firefox Private Browsing",
+        "TargetPath":  "C:\\Program Files\\Mozilla Firefox\\private_browsing.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "AutoHotkey Dash",
+        "TargetPath":  "C:\\Program Files\\AutoHotkey\\UX\\AutoHotkeyUX.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "AutoHotkey Window Spy",
+        "TargetPath":  "C:\\Program Files\\AutoHotkey\\UX\\AutoHotkeyUX.exe"
+    },
+    {
+        "Category":  "FilePath",
+        "Name":  "ITGmania",
+        "TargetPath":  "C:\\Games\\ITGmania\\Program\\ITGmania.exe"
+    },
+    {
+        "Category":  "FilePath",
+        "Name":  "StepMania 5",
+        "TargetPath":  "C:\\Games\\StepMania 5\\Program\\StepMania.exe"
+    },
+    {
+        "Category":  "FilePath",
+        "Name":  "Play Wuchang Fallen Feathers",
+        "TargetPath":  "C:\\Games\\Wuchang Fallen Feathers\\Project_Plague.exe"
+    },
+    {
+        "Category":  "FilePath",
+        "Name":  "Laragon",
+        "TargetPath":  "C:\\laragon\\laragon.exe"
+    },
+    {
+        "Category":  "FilePath",
+        "Name":  "Interactive Ruby",
+        "TargetPath":  "C:\\Ruby34-x64\\bin\\irb.bat"
+    },
+    {
+        "Category":  "FilePath",
+        "Name":  "Ruby 3.4.4 API Reference",
+        "TargetPath":  "C:\\Ruby34-x64\\share\\doc\\ruby\\html\\index.html"
+    },
+    {
+        "Category":  "FilePath",
+        "Name":  "Uninstall Ruby 3.4.4-2-x64",
+        "TargetPath":  "C:\\Ruby34-x64\\unins000.exe"
+    },
+    {
+        "Category":  "FilePath",
+        "Name":  "Uninstall Free Download Manager",
+        "TargetPath":  "C:\\Users\\jigar\\AppData\\Local\\Softdeluxe\\Free Download Manager\\unins000.exe"
+    },
+    {
+        "Category":  "FilePath",
+        "Name":  "Uninstall SKlauncher",
+        "TargetPath":  "C:\\Users\\jigar\\AppData\\Roaming\\sklauncher\\unins000.exe"
+    },
+    {
+        "Category":  "FilePath",
+        "Name":  "7-Zip",
+        "TargetPath":  "C:\\Users\\jigar\\scoop\\apps\\7zip\\current\\7zFM.exe"
+    },
+    {
+        "Category":  "FilePath",
+        "Name":  "WinDirStat",
+        "TargetPath":  "C:\\Users\\jigar\\scoop\\apps\\windirstat\\2.2.2\\WinDirStat.exe"
+    },
+    {
+        "Category":  "FilePath",
+        "Name":  "WinDirStat",
+        "TargetPath":  "C:\\Users\\jigar\\scoop\\apps\\windirstat\\current\\WinDirStat.exe"
+    },
+    {
+        "Category":  "FilePath",
+        "Name":  "XAMPP htdocs folder",
+        "TargetPath":  "C:\\xampp\\htdocs"
+    },
+    {
+        "Category":  "FilePath",
+        "Name":  "XAMPP Control Panel",
+        "TargetPath":  "C:\\xampp\\xampp-control.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Google Chrome",
+        "TargetPath":  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Chrome Remote Desktop",
+        "TargetPath":  "C:\\Program Files\\Google\\Chrome\\Application\\chrome_proxy.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Vortex",
+        "TargetPath":  "C:\\Program Files\\Black Tree Gaming Ltd\\Vortex\\Vortex.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "NVIDIA App",
+        "TargetPath":  "C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\CEF\\NVIDIA App.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Hyper",
+        "TargetPath":  "C:\\Users\\jigar\\AppData\\Local\\Programs\\Hyper\\Hyper.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Aero Launcher",
+        "TargetPath":  "C:\\Users\\jigar\\AppData\\Local\\aero-launcher\\Aero Launcher.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Claude",
+        "TargetPath":  "C:\\Users\\jigar\\AppData\\Local\\AnthropicClaude\\claude.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Electron Fiddle",
+        "TargetPath":  "C:\\Users\\jigar\\AppData\\Local\\electron-fiddle\\electron-fiddle.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "WebTorrent",
+        "TargetPath":  "C:\\Users\\jigar\\AppData\\Local\\WebTorrent\\WebTorrent.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Docker Desktop",
+        "TargetPath":  "C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "TheiaIDE",
+        "TargetPath":  "C:\\Users\\jigar\\AppData\\Local\\Programs\\TheiaIDE\\TheiaIDE.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Free Download Manager",
+        "TargetPath":  "C:\\Users\\jigar\\AppData\\Local\\Softdeluxe\\Free Download Manager\\fdm.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Git for Windows",
+        "TargetPath":  "C:\\Program Files\\Git\\mingw64\\bin\\wintoast.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Antigravity",
+        "TargetPath":  "C:\\Users\\jigar\\AppData\\Local\\Programs\\Antigravity\\Antigravity.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Steam Support Center",
+        "TargetPath":  "http://support.steampowered.com/"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Visit homepage",
+        "TargetPath":  "http://www.rapidee.com/"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Bitnami for XAMPP",
+        "TargetPath":  "https://bitnami.com/stack/xampp?utm_source=bitnami\u0026utm_medium=installer\u0026utm_campaign=XAMPP%2BInstaller"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Git FAQs (Frequently Asked Questions)",
+        "TargetPath":  "https://gitforwindows.org/faq"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Vim Online",
+        "TargetPath":  "https://www.vim.org/"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Kiro",
+        "TargetPath":  "C:\\Users\\jigar\\AppData\\Local\\Programs\\Kiro\\Kiro.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "IDLE (Python 3.13 64-bit)",
+        "TargetPath":  "C:\\Program Files\\Python313\\pythonw.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Python 3.13 Module Docs (64-bit)",
+        "TargetPath":  "C:\\Program Files\\Python313\\python.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "gVim Diff",
+        "TargetPath":  "C:\\Program Files\\Vim\\vim91\\gvim.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Nushell",
+        "TargetPath":  "C:\\Users\\jigar\\scoop\\apps\\nu\\current\\nu.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Git Bash",
+        "TargetPath":  "C:\\Program Files\\Git\\git-bash.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "gVim Read-only",
+        "TargetPath":  "C:\\Program Files\\Vim\\vim91\\gvim.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Vim Read-only",
+        "TargetPath":  "C:\\Program Files\\Vim\\vim91\\vim.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Git CMD",
+        "TargetPath":  "C:\\Program Files\\Git\\git-cmd.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Ubuntu",
+        "TargetPath":  "C:\\Program Files\\WSL\\wsl.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "VLC media player skinned",
+        "TargetPath":  "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Start Command Prompt with Ruby",
+        "TargetPath":  "C:\\Windows\\System32\\cmd.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Uninstall Neovim",
+        "TargetPath":  "C:\\Windows\\SysWOW64\\msiexec.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "VLC media player - reset preferences and cache files",
+        "TargetPath":  "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Vim Diff",
+        "TargetPath":  "C:\\Program Files\\Vim\\vim91\\vim.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Performance Monitor",
+        "TargetPath":  "C:\\Windows\\system32\\perfmon.msc"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Computer Management",
+        "TargetPath":  "C:\\Windows\\system32\\compmgmt.msc"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "SKlauncher",
+        "TargetPath":  "C:\\Users\\jigar\\AppData\\Roaming\\sklauncher\\jre\\bin\\javaw.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Task Manager",
+        "TargetPath":  "C:\\Windows\\system32\\taskmgr.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "gVim Easy",
+        "TargetPath":  "C:\\Program Files\\Vim\\vim91\\gvim.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "RubyGems Documentation Server",
+        "TargetPath":  "C:\\Ruby34-x64\\bin\\gem.cmd"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Event Viewer",
+        "TargetPath":  "C:\\Windows\\system32\\eventvwr.msc"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Help",
+        "TargetPath":  "C:\\Program Files\\Vim\\vim91\\gvim.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Task Scheduler",
+        "TargetPath":  "C:\\Windows\\system32\\taskschd.msc"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Resource Monitor",
+        "TargetPath":  "C:\\Windows\\system32\\perfmon.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Visual Studio Installer",
+        "TargetPath":  "C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\setup.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Visual Studio Code",
+        "TargetPath":  "C:\\Users\\jigar\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Visual Studio Code - Insiders",
+        "TargetPath":  "C:\\Users\\jigar\\AppData\\Local\\Programs\\Microsoft VS Code Insiders\\Code - Insiders.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Windows Tools",
+        "TargetPath":  "C:\\Windows\\system32\\control.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Control Panel",
+        "TargetPath":  "::{5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0}"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "File Explorer",
+        "TargetPath":  "::{52205FD8-5DFB-447D-801A-D0B52F2E83E1}"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Windows Media Player Legacy",
+        "TargetPath":  "C:\\Program Files (x86)\\Windows Media Player\\wmplayer.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Remote Desktop Connection",
+        "TargetPath":  "C:\\Windows\\system32\\mstsc.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Run",
+        "TargetPath":  "::{2559A1F3-21D7-11D4-BDAF-00C04F60B9F0}"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "WSL",
+        "TargetPath":  "C:\\Program Files\\WSL\\wsl.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Microsoft Edge",
+        "TargetPath":  "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Opera Browser",
+        "TargetPath":  "C:\\Users\\jigar\\AppData\\Local\\Programs\\Opera\\opera.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "WezTerm",
+        "TargetPath":  "C:\\Program Files\\WezTerm\\wezterm-gui.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "SnoreToast",
+        "TargetPath":  "C:\\Users\\jigar\\projects\\from-scratch-blog\\node_modules\\.pnpm\\node-notifier@10.0.1\\node_modules\\node-notifier\\vendor\\snoreToast\\snoretoast-x64.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "No Man\u0027s Sky",
+        "TargetPath":  "steam://rungameid/275850"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "X4 Foundations",
+        "TargetPath":  "steam://rungameid/392160"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Ubisoft Connect",
+        "TargetPath":  "C:\\Program Files (x86)\\Ubisoft\\Ubisoft Game Launcher\\UbisoftConnect.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Character Map",
+        "TargetPath":  "C:\\Windows\\system32\\charmap.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Disk Cleanup",
+        "TargetPath":  "C:\\Windows\\system32\\cleanmgr.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Command Prompt",
+        "TargetPath":  "C:\\Windows\\system32\\cmd.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Component Services",
+        "TargetPath":  "C:\\Windows\\system32\\comexp.msc"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Defragment and Optimize Drives",
+        "TargetPath":  "C:\\Windows\\system32\\dfrgui.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "iSCSI Initiator",
+        "TargetPath":  "C:\\Windows\\system32\\iscsicpl.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Live captions",
+        "TargetPath":  "C:\\Windows\\system32\\LiveCaptions.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Magnifier",
+        "TargetPath":  "C:\\Windows\\system32\\magnify.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Windows Memory Diagnostic",
+        "TargetPath":  "C:\\Windows\\system32\\MdSched.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "System Configuration",
+        "TargetPath":  "C:\\Windows\\system32\\msconfig.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "System Information",
+        "TargetPath":  "C:\\Windows\\system32\\msinfo32.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Narrator",
+        "TargetPath":  "C:\\Windows\\system32\\narrator.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "ODBC Data Sources (64-bit)",
+        "TargetPath":  "C:\\Windows\\system32\\odbcad32.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "On-Screen Keyboard",
+        "TargetPath":  "C:\\Windows\\system32\\osk.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Steps Recorder",
+        "TargetPath":  "C:\\Windows\\system32\\psr.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Recovery Drive",
+        "TargetPath":  "C:\\Windows\\system32\\RecoveryDrive.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Services",
+        "TargetPath":  "C:\\Windows\\system32\\services.msc"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Voice access",
+        "TargetPath":  "C:\\Windows\\system32\\voiceaccess.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Windows Defender Firewall with Advanced Security",
+        "TargetPath":  "C:\\Windows\\system32\\WF.msc"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Windows PowerShell",
+        "TargetPath":  "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\powershell.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Windows PowerShell ISE",
+        "TargetPath":  "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\PowerShell_ISE.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Alienware Command Center",
+        "TargetPath":  "C:\\Program Files\\Alienware\\Alienware Command Center\\AWCC\\AWCC.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Cloudflare WARP",
+        "TargetPath":  "C:\\Program Files\\Cloudflare\\Cloudflare WARP\\Cloudflare WARP.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Git GUI",
+        "TargetPath":  "C:\\Program Files\\Git\\cmd\\git-gui.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Git Release Notes",
+        "TargetPath":  "C:\\Program Files\\Git\\ReleaseNotes.html"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "IntelliJ IDEA Ultimate",
+        "TargetPath":  "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2025.1\\bin\\idea64.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "PhpStorm",
+        "TargetPath":  "C:\\Program Files\\JetBrains\\PhpStorm 2025.1.0.1\\bin\\phpstorm64.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "WebStorm 2025.3.1.1",
+        "TargetPath":  "C:\\Program Files\\JetBrains\\WebStorm 2025.3\\bin\\webstorm64.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Malwarebytes",
+        "TargetPath":  "C:\\Program Files\\Malwarebytes\\Anti-Malware\\Malwarebytes.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Meta Spatial Editor v11",
+        "TargetPath":  "C:\\Program Files\\Meta Spatial Editor\\v11\\MetaSpatialEditor.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Neovim",
+        "TargetPath":  "C:\\Program Files\\Neovim\\bin\\nvim.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "OBS Studio (64bit)",
+        "TargetPath":  "C:\\Program Files\\obs-studio\\bin\\64bit\\obs64.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Python 3.13 Manuals (64-bit)",
+        "TargetPath":  "C:\\Program Files\\Python313\\Doc\\html\\index.html"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Python 3.13 (64-bit)",
+        "TargetPath":  "C:\\Program Files\\Python313\\python.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "qBittorrent",
+        "TargetPath":  "C:\\Program Files\\qBittorrent\\qbittorrent.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "History.rus.txt",
+        "TargetPath":  "C:\\Program Files\\Rapid Environment Editor\\history.rus.txt"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "History.txt",
+        "TargetPath":  "C:\\Program Files\\Rapid Environment Editor\\history.txt"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "License.txt",
+        "TargetPath":  "C:\\Program Files\\Rapid Environment Editor\\license.txt"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Rapid Environment Editor",
+        "TargetPath":  "C:\\Program Files\\Rapid Environment Editor\\RapidEE.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Documentation",
+        "TargetPath":  "C:\\Program Files\\VideoLAN\\VLC\\Documentation.url"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Release Notes",
+        "TargetPath":  "C:\\Program Files\\VideoLAN\\VLC\\NEWS.txt"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "VideoLAN Website",
+        "TargetPath":  "C:\\Program Files\\VideoLAN\\VLC\\VideoLAN Website.url"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "VLC media player",
+        "TargetPath":  "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "gVim",
+        "TargetPath":  "C:\\Program Files\\Vim\\vim91\\gvim.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Vim",
+        "TargetPath":  "C:\\Program Files\\Vim\\vim91\\vim.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Vim tutor",
+        "TargetPath":  "C:\\Program Files\\Vim\\vim91\\vimtutor.bat"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "WSL Settings",
+        "TargetPath":  "C:\\Program Files\\WSL\\wslsettings\\wslsettings.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "AirDroid",
+        "TargetPath":  "C:\\Program Files (x86)\\AirDroid\\AirDroid.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Uninstall",
+        "TargetPath":  "C:\\Program Files (x86)\\AirDroid\\uninst.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Steam",
+        "TargetPath":  "C:\\Program Files (x86)\\Steam\\steam.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Ubisoft Connect",
+        "TargetPath":  "C:\\Program Files (x86)\\Ubisoft\\Ubisoft Game Launcher\\UbisoftConnect.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Uninstall",
+        "TargetPath":  "C:\\Program Files (x86)\\Ubisoft\\Ubisoft Game Launcher\\Uninstall.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "ODBC Data Sources (32-bit)",
+        "TargetPath":  "C:\\Windows\\syswow64\\odbcad32.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Windows PowerShell (x86)",
+        "TargetPath":  "C:\\Windows\\syswow64\\WindowsPowerShell\\v1.0\\powershell.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Windows PowerShell ISE (x86)",
+        "TargetPath":  "C:\\Windows\\syswow64\\WindowsPowerShell\\v1.0\\PowerShell_ISE.exe"
+    },
+    {
+        "Category":  "HasTarget",
+        "Name":  "Registry Editor",
+        "TargetPath":  "C:\\Windows\\regedit.exe"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Settings",
+        "ManifestPath":  "C:\\Windows\\ImmersiveControlPanel\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Quick Assist",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\MicrosoftCorporationII.QuickAssist_2.0.29.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Dell Customer Connect",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\DellInc.DellCustomerConnect_5.5.5.0_x64__htrsf667h5kn2\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Microsoft Teams",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\MSTeams_25044.2208.3471.2155_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Thunderbolt™ Control Center",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\AppUp.ThunderboltControlCenter_1.0.37.0_x64__8j3eq9eme6ctt\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Intel® Graphics Command Center",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\AppUp.IntelGraphicsExperience_1.100.5688.0_x64__8j3eq9eme6ctt\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Outlook (new)",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.OutlookForWindows_1.2025.319.100_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Family",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\MicrosoftCorporationII.MicrosoftFamily_0.2.40.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "News",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.BingNews_4.55.62231.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Sticky Notes",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.MicrosoftStickyNotes_6.1.4.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Filelight",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\KDEe.V.Filelight_25.800.1836.0_x64__7vt06qxq7ptv8\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Dell Digital Delivery",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\DellInc.DellDigitalDelivery_5.6.3.0_x64__htrsf667h5kn2\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "EarTrumpet",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\40459File-New-Project.EarTrumpet_2.3.0.0_x86__1sdd7yawvg6ne\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Windows Security",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.SecHealthUI_1000.29429.1000.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Weather",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.BingWeather_4.54.63029.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "PowerShell",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.5.4.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "NVIDIA Control Panel",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\NVIDIACorp.NVIDIAControlPanel_8.1.969.0_x64__56jybvy8sckqj\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Game Bar",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.XboxGamingOverlay_7.325.11061.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Get Started",
+        "ManifestPath":  "C:\\Windows\\SystemApps\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Windows Backup",
+        "ManifestPath":  "C:\\Windows\\SystemApps\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Camera",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.WindowsCamera_2025.2510.2.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Sound Recorder",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.WindowsSoundRecorder_1.1.47.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Dell SupportAssist",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Dell.SupportAssistforPCs_4.10.6.0_x64__18ctm2993j0dg\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Calculator",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.WindowsCalculator_11.2508.4.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Snipping Tool",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.ScreenSketch_11.2510.31.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Get Help",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.GetHelp_10.2409.33293.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Phone Link",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.YourPhone_1.25112.36.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "WhatsApp",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\5319275A.WhatsAppDesktop_2.2587.9.0_x64__cv1g1gvanyjgm\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Photos",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.Windows.Photos_2025.11120.5001.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Intel® Killer™ Performance Suite",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\RivetNetworks.KillerControlCenter_40.25.725.0_x64__rh07ty8m5nkag\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Terminal",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.WindowsTerminal_1.23.13503.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Dolby Access",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\DolbyLaboratories.DolbyAccess_3.27.6410.0_x64__rz1tebttyb220\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Pieces OS",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\com.MeshIntelligentTechnologi.PiecesOS_12.3.3.0_x64__84gz00a5z79wr\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Pieces Desktop",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\com.MeshIntelligentTechnologi.PiecesDesktop_5.0.0.0_x64__84gz00a5z79wr\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Intel® Graphics Software",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\AppUp.IntelArcSoftware_25.44.2010.0_x64__8j3eq9eme6ctt\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Feedback Hub",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.WindowsFeedbackHub_1.2512.16303.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Paint",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.Paint_11.2511.291.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Microsoft To Do",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.Todos_2.153.5851.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Intel® Rapid Storage Technology Application",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\AppUp.IntelOptaneMemoryandStorageManagement_20.0.1024.0_x64__8j3eq9eme6ctt\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Notepad",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.WindowsNotepad_11.2510.14.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Copilot",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.Copilot_1.25121.73.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Xbox",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.GamingApp_2512.1001.36.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Microsoft Clipchamp",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Clipchamp.Clipchamp_4.5.10020.0_x64__yxz26nhyzhsrt\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "intelliGo Neptune",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\IntelligoTechnologyInc.intelliGoNeptune_1.0.157.0_x64__zzw691tb7va64\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Microsoft Store",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.WindowsStore_22512.1401.5.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Solitaire \u0026 Casual Games",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.MicrosoftSolitaireCollection_4.25.1129.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Mixed Reality Link",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.MixedRealityLink_26.1150.1060.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Power Automate",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.PowerAutomateDesktop_1.0.2058.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Raycast",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Raycast.Raycast_0.42.3.0_x64__qypenmj9wpt2a\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Click to Do",
+        "ManifestPath":  "C:\\Windows\\SystemApps\\MicrosoftWindows.Client.CoreAI_cw5n1h2txyewy\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Clock",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.WindowsAlarms_11.2512.0.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Microsoft 365 Copilot",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.MicrosoftOfficeHub_19.2601.56031.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    },
+    {
+        "Category":  "UWP",
+        "Name":  "Media Player",
+        "ManifestPath":  "C:\\Program Files\\WindowsApps\\Microsoft.ZuneMusic_11.2512.10.0_x64__8wekyb3d8bbwe\\AppxManifest.xml"
+    }
+]

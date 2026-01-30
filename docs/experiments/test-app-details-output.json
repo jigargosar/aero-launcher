@@ -1,0 +1,1940 @@
+[
+    {
+        "Properties":  {
+                           "File:Publisher":  "Mozilla Corporation",
+                           "Shell:Name":  "Firefox",
+                           "File:Description":  "Firefox",
+                           "File:Version":  "143.0",
+                           "File:Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Mozilla Corporation",
+                           "Shell:Name":  "Firefox Private Browsing",
+                           "File:Description":  "Firefox",
+                           "File:Version":  "143.0",
+                           "File:Path":  "C:\\Program Files\\Mozilla Firefox\\private_browsing.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\AutoHotkey\\UX\\AutoHotkeyUX.exe",
+                           "File:Description":  "AutoHotkey 64-bit",
+                           "File:Arguments":  "\"C:\\Program Files\\AutoHotkey\\UX\\ui-dash.ahk\"",
+                           "Shell:Name":  "AutoHotkey Dash",
+                           "File:Publisher":  "AutoHotkey Foundation LLC",
+                           "File:Version":  "2.0.19"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\AutoHotkey\\UX\\AutoHotkeyUX.exe",
+                           "File:Description":  "AutoHotkey 64-bit",
+                           "File:Arguments":  "\"C:\\Program Files\\AutoHotkey\\UX\\WindowSpy.ahk\"",
+                           "Shell:Name":  "AutoHotkey Window Spy",
+                           "File:Publisher":  "AutoHotkey Foundation LLC",
+                           "File:Version":  "2.0.19"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "ITGmania Team \n https://www.itgmania.com/",
+                           "Shell:Name":  "ITGmania",
+                           "File:Description":  "ITGmania",
+                           "File:Version":  "1.1.0",
+                           "File:Path":  "C:\\Games\\ITGmania\\Program\\ITGmania.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "StepMania Team \n http://www.stepmania.com/",
+                           "Shell:Name":  "StepMania 5",
+                           "File:Description":  "StepMania",
+                           "File:Version":  "5, 0, 0, 0",
+                           "File:Path":  "C:\\Games\\StepMania 5\\Program\\StepMania.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "",
+                           "Shell:Name":  "Play Wuchang Fallen Feathers",
+                           "File:Description":  "",
+                           "File:Version":  "",
+                           "File:Path":  "C:\\Games\\Wuchang Fallen Feathers\\Project_Plague.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Le Ngoc Khoa",
+                           "Shell:Name":  "Laragon",
+                           "File:Description":  "Laragon - The Dev Environment for Entrepreneurs",
+                           "File:Version":  "8.0.0.1003",
+                           "File:Path":  "C:\\laragon\\laragon.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "Interactive Ruby",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Ruby34-x64\\bin\\irb.bat"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "Ruby 3.4.4 API Reference",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Ruby34-x64\\share\\doc\\ruby\\html\\index.html"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "RubyInstaller Team                                          ",
+                           "Shell:Name":  "Uninstall Ruby 3.4.4-2-x64",
+                           "File:Description":  "Setup/Uninstall",
+                           "File:Version":  "51.1052.0.0",
+                           "File:Path":  "C:\\Ruby34-x64\\unins000.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Softdeluxe                                                  ",
+                           "Shell:Name":  "Uninstall Free Download Manager",
+                           "File:Description":  "Setup/Uninstall",
+                           "File:Version":  "51.1052.0.0",
+                           "File:Path":  "C:\\Users\\jigar\\AppData\\Local\\Softdeluxe\\Free Download Manager\\unins000.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "skmedix.pl                                                  ",
+                           "Shell:Name":  "Uninstall SKlauncher",
+                           "File:Description":  "Setup/Uninstall",
+                           "File:Version":  "51.1053.0.0",
+                           "File:Path":  "C:\\Users\\jigar\\AppData\\Roaming\\sklauncher\\unins000.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Igor Pavlov",
+                           "Shell:Name":  "7-Zip",
+                           "File:Description":  "7-Zip File Manager",
+                           "File:Version":  "24.09",
+                           "File:Path":  "C:\\Users\\jigar\\scoop\\apps\\7zip\\current\\7zFM.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "WinDirStat Team",
+                           "Shell:Name":  "WinDirStat",
+                           "File:Description":  "Windows Directory Statistics (WinDirStat)",
+                           "File:Version":  "2.2.2.1041",
+                           "File:Path":  "C:\\Users\\jigar\\scoop\\apps\\windirstat\\2.2.2\\WinDirStat.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "WinDirStat Team",
+                           "Shell:Name":  "WinDirStat",
+                           "File:Description":  "Windows Directory Statistics (WinDirStat)",
+                           "File:Version":  "2.2.2.1041",
+                           "File:Path":  "C:\\Users\\jigar\\scoop\\apps\\windirstat\\current\\WinDirStat.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "Shell:Name":  "XAMPP htdocs folder",
+                           "File:Path":  "C:\\xampp\\htdocs"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "",
+                           "Shell:Name":  "XAMPP Control Panel",
+                           "File:Description":  "",
+                           "File:Version":  "3.3.0.0",
+                           "File:Path":  "C:\\xampp\\xampp-control.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Google LLC",
+                           "Shell:Name":  "Google Chrome",
+                           "File:Description":  "Google Chrome",
+                           "File:Version":  "144.0.7559.97",
+                           "File:Path":  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\Google\\Chrome\\Application\\chrome_proxy.exe",
+                           "File:Description":  "Google Chrome",
+                           "File:Arguments":  " --profile-directory=Default --app-id=cmkncekebbebpfilplodngbpllndjkfo",
+                           "Shell:Name":  "Chrome Remote Desktop",
+                           "File:Publisher":  "Google LLC",
+                           "File:Version":  "144.0.7559.97"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Black Tree Gaming Ltd.",
+                           "Shell:Name":  "Vortex",
+                           "File:Description":  "Vortex",
+                           "File:Version":  "1.15.2",
+                           "File:Path":  "C:\\Program Files\\Black Tree Gaming Ltd\\Vortex\\Vortex.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "NVIDIA Corporation",
+                           "Shell:Name":  "NVIDIA App",
+                           "File:Description":  "NVIDIA App",
+                           "File:Version":  "128.4.13.14",
+                           "File:Path":  "C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\CEF\\NVIDIA App.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "Shell:Name":  "Hyper",
+                           "Shell:AppUserModelID":  "com.quineglobal.hyper",
+                           "Shell:Path":  "com.quineglobal.hyper"
+                       },
+        "Type":  "Unknown"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Jigar Gosar",
+                           "Shell:Name":  "Aero Launcher",
+                           "File:Description":  "Aero Launcher",
+                           "File:Version":  "1.0.0",
+                           "File:Path":  "C:\\Users\\jigar\\AppData\\Local\\aero-launcher\\Aero Launcher.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Anthropic",
+                           "Shell:Name":  "Claude",
+                           "File:Description":  "Claude",
+                           "File:Version":  "1.0.3218",
+                           "File:Path":  "C:\\Users\\jigar\\AppData\\Local\\AnthropicClaude\\claude.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Electron Community",
+                           "Shell:Name":  "Electron Fiddle",
+                           "File:Description":  "Electron Fiddle",
+                           "File:Version":  "0.37.3",
+                           "File:Path":  "C:\\Users\\jigar\\AppData\\Local\\electron-fiddle\\electron-fiddle.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "WebTorrent",
+                           "Shell:Name":  "WebTorrent",
+                           "File:Description":  "WebTorrent",
+                           "File:Version":  "0.108.6",
+                           "File:Path":  "C:\\Users\\jigar\\AppData\\Local\\WebTorrent\\WebTorrent.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Docker Inc.",
+                           "Shell:Name":  "Docker Desktop",
+                           "File:Description":  "Docker Desktop Launcher",
+                           "File:Version":  "4.54.0.212467",
+                           "File:Path":  "C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Eclipse Theia",
+                           "Shell:Name":  "TheiaIDE",
+                           "File:Description":  "TheiaIDE",
+                           "File:Version":  "1.66.200.63",
+                           "File:Path":  "C:\\Users\\jigar\\AppData\\Local\\Programs\\TheiaIDE\\TheiaIDE.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Softdeluxe",
+                           "Shell:Name":  "Free Download Manager",
+                           "File:Description":  "Free Download Manager",
+                           "File:Version":  "6.28.0.6294",
+                           "File:Path":  "C:\\Users\\jigar\\AppData\\Local\\Softdeluxe\\Free Download Manager\\fdm.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "Git for Windows",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Program Files\\Git\\mingw64\\bin\\wintoast.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Google LLC",
+                           "Shell:Name":  "Antigravity",
+                           "File:Description":  "Antigravity",
+                           "File:Version":  "1.11.14",
+                           "File:Path":  "C:\\Users\\jigar\\AppData\\Local\\Programs\\Antigravity\\Antigravity.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "Shell:Name":  "Steam Support Center",
+                           "Shell:AppUserModelID":  "http://support.steampowered.com/",
+                           "Shell:Path":  "http://support.steampowered.com/"
+                       },
+        "Type":  "Unknown"
+    },
+    {
+        "Properties":  {
+                           "Shell:Name":  "Visit homepage",
+                           "Shell:AppUserModelID":  "http://www.rapidee.com/",
+                           "Shell:Path":  "http://www.rapidee.com/"
+                       },
+        "Type":  "Unknown"
+    },
+    {
+        "Properties":  {
+                           "Shell:Name":  "Bitnami for XAMPP",
+                           "Shell:AppUserModelID":  "https://bitnami.com/stack/xampp?utm_source=bitnami\u0026utm_medium=installer\u0026utm_campaign=XAMPP%2BInstaller",
+                           "Shell:Path":  "https://bitnami.com/stack/xampp?utm_source=bitnami\u0026utm_medium=installer\u0026utm_campaign=XAMPP%2BInstaller"
+                       },
+        "Type":  "Unknown"
+    },
+    {
+        "Properties":  {
+                           "Shell:Name":  "Git FAQs (Frequently Asked Questions)",
+                           "Shell:AppUserModelID":  "https://gitforwindows.org/faq",
+                           "Shell:Path":  "https://gitforwindows.org/faq"
+                       },
+        "Type":  "Unknown"
+    },
+    {
+        "Properties":  {
+                           "Shell:Name":  "Vim Online",
+                           "Shell:AppUserModelID":  "https://www.vim.org/",
+                           "Shell:Path":  "https://www.vim.org/"
+                       },
+        "Type":  "Unknown"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Amazon.com",
+                           "Shell:Name":  "Kiro",
+                           "File:Description":  "Kiro",
+                           "File:Version":  "0.7.21",
+                           "File:Path":  "C:\\Users\\jigar\\AppData\\Local\\Programs\\Kiro\\Kiro.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\Python313\\pythonw.exe",
+                           "File:Description":  "Python",
+                           "File:Arguments":  "\"C:\\Program Files\\Python313\\Lib\\idlelib\\idle.pyw\"",
+                           "Shell:Name":  "IDLE (Python 3.13 64-bit)",
+                           "File:Publisher":  "Python Software Foundation",
+                           "File:Version":  "3.13.2"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\Python313\\python.exe",
+                           "File:Description":  "Python",
+                           "File:Arguments":  "-m pydoc -b",
+                           "Shell:Name":  "Python 3.13 Module Docs (64-bit)",
+                           "File:Publisher":  "Python Software Foundation",
+                           "File:Version":  "3.13.2"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\Vim\\vim91\\gvim.exe",
+                           "File:Description":  "Vi Improved - A Text Editor",
+                           "File:Arguments":  "-d",
+                           "Shell:Name":  "gVim Diff",
+                           "File:Publisher":  "Vim Developers",
+                           "File:Version":  "9.1.0"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Users\\jigar\\scoop\\apps\\nu\\current\\nu.exe",
+                           "File:Description":  "Nushell",
+                           "File:Arguments":  "--execute \"cd ~\"",
+                           "Shell:Name":  "Nushell",
+                           "File:Publisher":  "",
+                           "File:Version":  "0.107.0"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\Git\\git-bash.exe",
+                           "File:Description":  "Git for Windows",
+                           "File:Arguments":  "--cd-to-home",
+                           "Shell:Name":  "Git Bash",
+                           "File:Publisher":  "The Git Development Community",
+                           "File:Version":  "2.50.1.windows.1"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\Vim\\vim91\\gvim.exe",
+                           "File:Description":  "Vi Improved - A Text Editor",
+                           "File:Arguments":  "-R",
+                           "Shell:Name":  "gVim Read-only",
+                           "File:Publisher":  "Vim Developers",
+                           "File:Version":  "9.1.0"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\Vim\\vim91\\vim.exe",
+                           "File:Description":  "Vi Improved - A Text Editor",
+                           "File:Arguments":  "-R",
+                           "Shell:Name":  "Vim Read-only",
+                           "File:Publisher":  "Vim Developers",
+                           "File:Version":  "9.1.0"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\Git\\git-cmd.exe",
+                           "File:Description":  "Git for Windows",
+                           "File:Arguments":  "--cd-to-home",
+                           "Shell:Name":  "Git CMD",
+                           "File:Publisher":  "The Git Development Community",
+                           "File:Version":  "2.50.1.windows.1"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\WSL\\wsl.exe",
+                           "File:Description":  "Windows Subsystem for Linux",
+                           "File:Arguments":  "--distribution-id {65e4d2b5-90bb-4350-89a5-fbaac78b87d8} --cd ~",
+                           "Shell:Name":  "Ubuntu",
+                           "File:Publisher":  "Microsoft Corporation",
+                           "File:Version":  "2.4.13.0"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe",
+                           "File:Description":  "VLC media player",
+                           "File:Arguments":  "-Iskins",
+                           "Shell:Name":  "VLC media player skinned",
+                           "File:Publisher":  "VideoLAN",
+                           "File:Version":  "3.0.21"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Windows\\System32\\cmd.exe",
+                           "File:Description":  "Windows Command Processor",
+                           "File:Arguments":  "/E:ON /K C:\\Ruby34-x64\\bin\\ridk enable",
+                           "Shell:Name":  "Start Command Prompt with Ruby",
+                           "File:Publisher":  "Microsoft Corporation",
+                           "File:Version":  "10.0.26100.1 (WinBuild.160101.0800)"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Windows\\SysWOW64\\msiexec.exe",
+                           "File:Description":  "Windows® installer",
+                           "File:Arguments":  "/x {1A970528-007D-40EF-BE2E-D7DFB974152B}",
+                           "Shell:Name":  "Uninstall Neovim",
+                           "File:Publisher":  "Microsoft Corporation",
+                           "File:Version":  "5.0.26100.5074 (WinBuild.160101.0800)"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe",
+                           "File:Description":  "VLC media player",
+                           "File:Arguments":  "--reset-config --reset-plugins-cache vlc://quit",
+                           "Shell:Name":  "VLC media player - reset preferences and cache files",
+                           "File:Publisher":  "VideoLAN",
+                           "File:Version":  "3.0.21"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\Vim\\vim91\\vim.exe",
+                           "File:Description":  "Vi Improved - A Text Editor",
+                           "File:Arguments":  "-d",
+                           "Shell:Name":  "Vim Diff",
+                           "File:Publisher":  "Vim Developers",
+                           "File:Version":  "9.1.0"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Windows\\system32\\perfmon.msc",
+                           "File:Description":  null,
+                           "File:Arguments":  "/s",
+                           "Shell:Name":  "Performance Monitor",
+                           "File:Publisher":  null,
+                           "File:Version":  null
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Windows\\system32\\compmgmt.msc",
+                           "File:Description":  null,
+                           "File:Arguments":  "/s",
+                           "Shell:Name":  "Computer Management",
+                           "File:Publisher":  null,
+                           "File:Version":  null
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Users\\jigar\\AppData\\Roaming\\sklauncher\\jre\\bin\\javaw.exe",
+                           "File:Description":  "Zulu Platform x64 Architecture",
+                           "File:Arguments":  "-Xmx512M -jar \"C:\\Users\\jigar\\AppData\\Roaming\\sklauncher\\SKlauncher.jar\"",
+                           "Shell:Name":  "SKlauncher",
+                           "File:Publisher":  "Azul Systems Inc.",
+                           "File:Version":  "21.0.9"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Windows\\system32\\taskmgr.exe",
+                           "File:Description":  "Task Manager",
+                           "File:Arguments":  "/7",
+                           "Shell:Name":  "Task Manager",
+                           "File:Publisher":  "Microsoft Corporation",
+                           "File:Version":  "10.0.26100.7462 (WinBuild.160101.0800)"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\Vim\\vim91\\gvim.exe",
+                           "File:Description":  "Vi Improved - A Text Editor",
+                           "File:Arguments":  "-y",
+                           "Shell:Name":  "gVim Easy",
+                           "File:Publisher":  "Vim Developers",
+                           "File:Version":  "9.1.0"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Ruby34-x64\\bin\\gem.cmd",
+                           "File:Description":  null,
+                           "File:Arguments":  "install --conservative webrick rubygems-server \u0026 C:\\Ruby34-x64\\bin\\gem.cmd server --launch",
+                           "Shell:Name":  "RubyGems Documentation Server",
+                           "File:Publisher":  null,
+                           "File:Version":  null
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Windows\\system32\\eventvwr.msc",
+                           "File:Description":  null,
+                           "File:Arguments":  "/s",
+                           "Shell:Name":  "Event Viewer",
+                           "File:Publisher":  null,
+                           "File:Version":  null
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\Vim\\vim91\\gvim.exe",
+                           "File:Description":  "Vi Improved - A Text Editor",
+                           "File:Arguments":  "-c h",
+                           "Shell:Name":  "Help",
+                           "File:Publisher":  "Vim Developers",
+                           "File:Version":  "9.1.0"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Windows\\system32\\taskschd.msc",
+                           "File:Description":  null,
+                           "File:Arguments":  "/s",
+                           "Shell:Name":  "Task Scheduler",
+                           "File:Publisher":  null,
+                           "File:Version":  null
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Windows\\system32\\perfmon.exe",
+                           "File:Description":  "Resource and Performance Monitor",
+                           "File:Arguments":  "/res",
+                           "Shell:Name":  "Resource Monitor",
+                           "File:Publisher":  "Microsoft Corporation",
+                           "File:Version":  "10.00"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft",
+                           "Shell:Name":  "Visual Studio Installer",
+                           "File:Description":  "Visual Studio Installer",
+                           "File:Version":  "3.14.2086.54749",
+                           "File:Path":  "C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\setup.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Visual Studio Code",
+                           "File:Description":  "Visual Studio Code",
+                           "File:Version":  "1.108.2",
+                           "File:Path":  "C:\\Users\\jigar\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Visual Studio Code - Insiders",
+                           "File:Description":  "Visual Studio Code - Insiders",
+                           "File:Version":  "1.109.0-insider",
+                           "File:Path":  "C:\\Users\\jigar\\AppData\\Local\\Programs\\Microsoft VS Code Insiders\\Code - Insiders.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Windows\\system32\\control.exe",
+                           "File:Description":  "Windows Control Panel",
+                           "File:Arguments":  "/name Microsoft.AdministrativeTools",
+                           "Shell:Name":  "Windows Tools",
+                           "File:Publisher":  "Microsoft Corporation",
+                           "File:Version":  "10.0.26100.4202 (WinBuild.160101.0800)"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "Shell:Name":  "Control Panel",
+                           "Shell:AppUserModelID":  "Microsoft.Windows.ControlPanel",
+                           "Shell:Path":  "Microsoft.Windows.ControlPanel"
+                       },
+        "Type":  "Unknown"
+    },
+    {
+        "Properties":  {
+                           "Shell:Name":  "File Explorer",
+                           "Shell:AppUserModelID":  "Microsoft.Windows.Explorer",
+                           "Shell:Path":  "Microsoft.Windows.Explorer"
+                       },
+        "Type":  "Unknown"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files (x86)\\Windows Media Player\\wmplayer.exe",
+                           "File:Description":  "Windows Media Player",
+                           "File:Arguments":  "/prefetch:1",
+                           "Shell:Name":  "Windows Media Player Legacy",
+                           "File:Publisher":  "Microsoft Corporation",
+                           "File:Version":  "12.0.26100.1 (WinBuild.160101.0800)"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Remote Desktop Connection",
+                           "File:Description":  "Remote Desktop Connection",
+                           "File:Version":  "10.0.26100.1 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\mstsc.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "Shell:Name":  "Run",
+                           "Shell:AppUserModelID":  "Microsoft.Windows.Shell.RunDialog",
+                           "Shell:Path":  "Microsoft.Windows.Shell.RunDialog"
+                       },
+        "Type":  "Unknown"
+    },
+    {
+        "Properties":  {
+                           "File:Path":  "C:\\Program Files\\WSL\\wsl.exe",
+                           "File:Description":  "Windows Subsystem for Linux",
+                           "File:Arguments":  "--cd ~",
+                           "Shell:Name":  "WSL",
+                           "File:Publisher":  "Microsoft Corporation",
+                           "File:Version":  "2.4.13.0"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Microsoft Edge",
+                           "File:Description":  "Microsoft Edge",
+                           "File:Version":  "144.0.3719.92",
+                           "File:Path":  "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Opera Software",
+                           "Shell:Name":  "Opera Browser",
+                           "File:Description":  "Opera Internet Browser",
+                           "File:Version":  "126.0.5750.59",
+                           "File:Path":  "C:\\Users\\jigar\\AppData\\Local\\Programs\\Opera\\opera.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Wez Furlong",
+                           "Shell:Name":  "WezTerm",
+                           "File:Description":  "WezTerm - Wez\u0027s Terminal Emulator",
+                           "File:Version":  "20240203-110809-5046fc22",
+                           "File:Path":  "C:\\Program Files\\WezTerm\\wezterm-gui.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "SnoreToast",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Users\\jigar\\projects\\from-scratch-blog\\node_modules\\.pnpm\\node-notifier@10.0.1\\node_modules\\node-notifier\\vendor\\snoreToast\\snoretoast-x64.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "Shell:Name":  "No Man\u0027s Sky",
+                           "Shell:AppUserModelID":  "steam://rungameid/275850",
+                           "Shell:Path":  "steam://rungameid/275850"
+                       },
+        "Type":  "Unknown"
+    },
+    {
+        "Properties":  {
+                           "Shell:Name":  "X4 Foundations",
+                           "Shell:AppUserModelID":  "steam://rungameid/392160",
+                           "Shell:Path":  "steam://rungameid/392160"
+                       },
+        "Type":  "Unknown"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Ubisoft",
+                           "Shell:Name":  "Ubisoft Connect",
+                           "File:Description":  "Ubisoft Connect",
+                           "File:Version":  "3.0.0",
+                           "File:Path":  "C:\\Program Files (x86)\\Ubisoft\\Ubisoft Game Launcher\\UbisoftConnect.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Character Map",
+                           "File:Description":  "Character Map",
+                           "File:Version":  "5.2.3668.0",
+                           "File:Path":  "C:\\Windows\\system32\\charmap.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Disk Cleanup",
+                           "File:Description":  "Disk Space Cleanup Manager for Windows",
+                           "File:Version":  "10.0.26100.1 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\cleanmgr.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Command Prompt",
+                           "File:Description":  "Windows Command Processor",
+                           "File:Version":  "10.0.26100.1 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\cmd.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "Component Services",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Windows\\system32\\comexp.msc"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Defragment and Optimize Drives",
+                           "File:Description":  "Microsoft® Drive Optimizer",
+                           "File:Version":  "10.0.26100.1 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\dfrgui.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "iSCSI Initiator",
+                           "File:Description":  "Microsoft iSCSI Initiator Configuration Tool",
+                           "File:Version":  "10.0.26100.1 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\iscsicpl.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Live captions",
+                           "File:Description":  "Live captions",
+                           "File:Version":  "10.0.26100.7309 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\LiveCaptions.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Magnifier",
+                           "File:Description":  "Microsoft Screen Magnifier",
+                           "File:Version":  "10.0.26100.4202 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\magnify.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Windows Memory Diagnostic",
+                           "File:Description":  "Windows Memory Diagnostics Tool",
+                           "File:Version":  "10.0.26100.5074 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\MdSched.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "System Configuration",
+                           "File:Description":  "System Configuration Utility",
+                           "File:Version":  "10.0.26100.1591 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\msconfig.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "System Information",
+                           "File:Description":  "System Information",
+                           "File:Version":  "10.0.26100.7019 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\msinfo32.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Narrator",
+                           "File:Description":  "Screen Reader",
+                           "File:Version":  "10.0.26100.7309 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\narrator.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "ODBC Data Sources (64-bit)",
+                           "File:Description":  "ODBC Administrator",
+                           "File:Version":  "10.0.26100.1 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\odbcad32.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "On-Screen Keyboard",
+                           "File:Description":  "Accessibility On-Screen Keyboard",
+                           "File:Version":  "10.0.26100.1 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\osk.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Steps Recorder",
+                           "File:Description":  "Steps Recorder",
+                           "File:Version":  "10.0.26100.3037 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\psr.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Recovery Drive",
+                           "File:Description":  "Recovery Media Creator",
+                           "File:Version":  "10.0.26100.1 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\RecoveryDrive.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "Services",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Windows\\system32\\services.msc"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Voice access",
+                           "File:Description":  "Voice access",
+                           "File:Version":  "10.0.26100.3323 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\voiceaccess.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "Windows Defender Firewall with Advanced Security",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Windows\\system32\\WF.msc"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Windows PowerShell",
+                           "File:Description":  "Windows PowerShell",
+                           "File:Version":  "10.0.26100.5074 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\powershell.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Windows PowerShell ISE",
+                           "File:Description":  "Windows PowerShell ISE",
+                           "File:Version":  "10.0.26100.1591 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\PowerShell_ISE.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "AWCC",
+                           "Shell:Name":  "Alienware Command Center",
+                           "File:Description":  "AWCC",
+                           "File:Version":  "6.10.15.0",
+                           "File:Path":  "C:\\Program Files\\Alienware\\Alienware Command Center\\AWCC\\AWCC.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Cloudflare",
+                           "Shell:Name":  "Cloudflare WARP",
+                           "File:Description":  "Cloudflare WARP",
+                           "File:Version":  "2025.8.779.0",
+                           "File:Path":  "C:\\Program Files\\Cloudflare\\Cloudflare WARP\\Cloudflare WARP.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "The Git Development Community",
+                           "Shell:Name":  "Git GUI",
+                           "File:Description":  "Git for Windows",
+                           "File:Version":  "2.50.1.windows.1",
+                           "File:Path":  "C:\\Program Files\\Git\\cmd\\git-gui.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "Git Release Notes",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Program Files\\Git\\ReleaseNotes.html"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "JetBrains s.r.o.",
+                           "Shell:Name":  "IntelliJ IDEA Ultimate",
+                           "File:Description":  "IntelliJ IDEA Ultimate Edition",
+                           "File:Version":  "1.0.0",
+                           "File:Path":  "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2025.1\\bin\\idea64.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "JetBrains s.r.o.",
+                           "Shell:Name":  "PhpStorm",
+                           "File:Description":  "PhpStorm",
+                           "File:Version":  "1.0.0",
+                           "File:Path":  "C:\\Program Files\\JetBrains\\PhpStorm 2025.1.0.1\\bin\\phpstorm64.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "JetBrains s.r.o.",
+                           "Shell:Name":  "WebStorm 2025.3.1.1",
+                           "File:Description":  "WebStorm",
+                           "File:Version":  "1.0.0",
+                           "File:Path":  "C:\\Program Files\\JetBrains\\WebStorm 2025.3\\bin\\webstorm64.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Malwarebytes",
+                           "Shell:Name":  "Malwarebytes",
+                           "File:Description":  "Malwarebytes",
+                           "File:Version":  "5.0.0.1163",
+                           "File:Path":  "C:\\Program Files\\Malwarebytes\\Anti-Malware\\Malwarebytes.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Meta Platforms, Inc.",
+                           "Shell:Name":  "Meta Spatial Editor v11",
+                           "File:Description":  "Meta Spatial Editor",
+                           "File:Version":  "11.0.0.10.576",
+                           "File:Path":  "C:\\Program Files\\Meta Spatial Editor\\v11\\MetaSpatialEditor.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "Neovim",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Program Files\\Neovim\\bin\\nvim.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "OBS",
+                           "Shell:Name":  "OBS Studio (64bit)",
+                           "File:Description":  "OBS Studio",
+                           "File:Version":  "31.0.4",
+                           "File:Path":  "C:\\Program Files\\obs-studio\\bin\\64bit\\obs64.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "Python 3.13 Manuals (64-bit)",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Program Files\\Python313\\Doc\\html\\index.html"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Python Software Foundation",
+                           "Shell:Name":  "Python 3.13 (64-bit)",
+                           "File:Description":  "Python",
+                           "File:Version":  "3.13.2",
+                           "File:Path":  "C:\\Program Files\\Python313\\python.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "The qBittorrent Project",
+                           "Shell:Name":  "qBittorrent",
+                           "File:Description":  "qBittorrent - A Bittorrent Client",
+                           "File:Version":  "v5.0.4",
+                           "File:Path":  "C:\\Program Files\\qBittorrent\\qbittorrent.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "History.rus.txt",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Program Files\\Rapid Environment Editor\\history.rus.txt"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "History.txt",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Program Files\\Rapid Environment Editor\\history.txt"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "License.txt",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Program Files\\Rapid Environment Editor\\license.txt"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "RapidEE.com",
+                           "Shell:Name":  "Rapid Environment Editor",
+                           "File:Description":  "Rapid Environment Editor",
+                           "File:Version":  "9.2.0.937",
+                           "File:Path":  "C:\\Program Files\\Rapid Environment Editor\\RapidEE.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "Documentation",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Program Files\\VideoLAN\\VLC\\Documentation.url"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "Release Notes",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Program Files\\VideoLAN\\VLC\\NEWS.txt"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "VideoLAN Website",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Program Files\\VideoLAN\\VLC\\VideoLAN Website.url"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "VideoLAN",
+                           "Shell:Name":  "VLC media player",
+                           "File:Description":  "VLC media player",
+                           "File:Version":  "3.0.21",
+                           "File:Path":  "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Vim Developers",
+                           "Shell:Name":  "gVim",
+                           "File:Description":  "Vi Improved - A Text Editor",
+                           "File:Version":  "9.1.0",
+                           "File:Path":  "C:\\Program Files\\Vim\\vim91\\gvim.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Vim Developers",
+                           "Shell:Name":  "Vim",
+                           "File:Description":  "Vi Improved - A Text Editor",
+                           "File:Version":  "9.1.0",
+                           "File:Path":  "C:\\Program Files\\Vim\\vim91\\vim.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "Vim tutor",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Program Files\\Vim\\vim91\\vimtutor.bat"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "WSL Settings",
+                           "File:Description":  "Windows Subsystem for Linux Settings",
+                           "File:Version":  "2.4.13.0",
+                           "File:Path":  "C:\\Program Files\\WSL\\wslsettings\\wslsettings.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Sand Studio",
+                           "Shell:Name":  "AirDroid",
+                           "File:Description":  "AirDroid",
+                           "File:Version":  "3.8.0.4",
+                           "File:Path":  "C:\\Program Files (x86)\\AirDroid\\AirDroid.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  null,
+                           "Shell:Name":  "Uninstall",
+                           "File:Description":  null,
+                           "File:Version":  null,
+                           "File:Path":  "C:\\Program Files (x86)\\AirDroid\\uninst.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Valve Corporation",
+                           "Shell:Name":  "Steam",
+                           "File:Description":  "Steam",
+                           "File:Version":  "10.33.56.27",
+                           "File:Path":  "C:\\Program Files (x86)\\Steam\\steam.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Ubisoft",
+                           "Shell:Name":  "Ubisoft Connect",
+                           "File:Description":  "Ubisoft Connect",
+                           "File:Version":  "3.0.0",
+                           "File:Path":  "C:\\Program Files (x86)\\Ubisoft\\Ubisoft Game Launcher\\UbisoftConnect.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Ubisoft",
+                           "Shell:Name":  "Uninstall",
+                           "File:Description":  "Ubisoft Connect Installer",
+                           "File:Version":  "162.0.0.11687",
+                           "File:Path":  "C:\\Program Files (x86)\\Ubisoft\\Ubisoft Game Launcher\\Uninstall.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "ODBC Data Sources (32-bit)",
+                           "File:Description":  "ODBC Administrator",
+                           "File:Version":  "10.0.26100.7019 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\syswow64\\odbcad32.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Windows PowerShell (x86)",
+                           "File:Description":  "Windows PowerShell",
+                           "File:Version":  "10.0.26100.5074 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\syswow64\\WindowsPowerShell\\v1.0\\powershell.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Windows PowerShell ISE (x86)",
+                           "File:Description":  "Windows PowerShell ISE",
+                           "File:Version":  "10.0.26100.1591 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\syswow64\\WindowsPowerShell\\v1.0\\PowerShell_ISE.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "File:Publisher":  "Microsoft Corporation",
+                           "Shell:Name":  "Registry Editor",
+                           "File:Description":  "Registry Editor",
+                           "File:Version":  "10.0.26100.1 (WinBuild.160101.0800)",
+                           "File:Path":  "C:\\Windows\\regedit.exe"
+                       },
+        "Type":  "Win32Exe"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "10.0.8.1000",
+                           "Appx:PackageFamily":  "windows.immersivecontrolpanel_cw5n1h2txyewy",
+                           "Shell:AppUserModelID":  "windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel",
+                           "Manifest:PublisherDisplayName":  "ms-resource:PublisherDisplayName",
+                           "Shell:Name":  "Settings",
+                           "Manifest:DisplayName":  "ms-resource:DisplayName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "2.0.29.0",
+                           "Appx:PackageFamily":  "MicrosoftCorporationII.QuickAssist_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "MicrosoftCorporationII.QuickAssist_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corp.",
+                           "Shell:Name":  "Quick Assist",
+                           "Manifest:DisplayName":  "ms-resource://MicrosoftCorporationII.QuickAssist/resources/APP_WINDOW_NAME"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "5.5.5.0",
+                           "Appx:PackageFamily":  "DellInc.DellCustomerConnect_htrsf667h5kn2",
+                           "Shell:AppUserModelID":  "DellInc.DellCustomerConnect_htrsf667h5kn2!App",
+                           "Manifest:PublisherDisplayName":  "Dell Inc",
+                           "Shell:Name":  "Dell Customer Connect",
+                           "Manifest:DisplayName":  "Dell Customer Connect"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "25044.2208.3471.2155",
+                           "Appx:PackageFamily":  "MSTeams_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "MSTeams_8wekyb3d8bbwe!MSTeams",
+                           "Manifest:PublisherDisplayName":  "Microsoft",
+                           "Shell:Name":  "Microsoft Teams",
+                           "Manifest:DisplayName":  "Microsoft Teams"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "1.0.37.0",
+                           "Appx:PackageFamily":  "AppUp.ThunderboltControlCenter_8j3eq9eme6ctt",
+                           "Shell:AppUserModelID":  "AppUp.ThunderboltControlCenter_8j3eq9eme6ctt!App",
+                           "Manifest:PublisherDisplayName":  "INTEL CORP",
+                           "Shell:Name":  "Thunderbolt™ Control Center",
+                           "Manifest:DisplayName":  "ms-resource:PACKAGE_DISPLAY_NAME"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "1.100.5688.0",
+                           "Appx:PackageFamily":  "AppUp.IntelGraphicsExperience_8j3eq9eme6ctt",
+                           "Shell:AppUserModelID":  "AppUp.IntelGraphicsExperience_8j3eq9eme6ctt!App",
+                           "Manifest:PublisherDisplayName":  "INTEL CORP",
+                           "Shell:Name":  "Intel® Graphics Command Center",
+                           "Manifest:DisplayName":  "ms-resource:System_Item_Title_IntelGraphicsControlPanel"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "1.2025.319.100",
+                           "Appx:PackageFamily":  "Microsoft.OutlookForWindows_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.OutlookForWindows_8wekyb3d8bbwe!Microsoft.OutlookforWindows",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Outlook (new)",
+                           "Manifest:DisplayName":  "Outlook for Windows"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "0.2.40.0",
+                           "Appx:PackageFamily":  "MicrosoftCorporationII.MicrosoftFamily_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "MicrosoftCorporationII.MicrosoftFamily_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corp.",
+                           "Shell:Name":  "Family",
+                           "Manifest:DisplayName":  "Microsoft Family"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "4.55.62231.0",
+                           "Appx:PackageFamily":  "Microsoft.BingNews_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.BingNews_8wekyb3d8bbwe!AppexNews",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "News",
+                           "Manifest:DisplayName":  "ms-resource:ApplicationTitleWithTagline"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "6.1.4.0",
+                           "Appx:PackageFamily":  "Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Sticky Notes",
+                           "Manifest:DisplayName":  "ms-resource:StickyNotesStoreAppName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "25.800.1836.0",
+                           "Appx:PackageFamily":  "KDEe.V.Filelight_7vt06qxq7ptv8",
+                           "Shell:AppUserModelID":  "KDEe.V.Filelight_7vt06qxq7ptv8!KDEe.V.Filelight",
+                           "Manifest:PublisherDisplayName":  "KDE e.V.",
+                           "Shell:Name":  "Filelight",
+                           "Manifest:DisplayName":  "Filelight"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "5.6.3.0",
+                           "Appx:PackageFamily":  "DellInc.DellDigitalDelivery_htrsf667h5kn2",
+                           "Shell:AppUserModelID":  "DellInc.DellDigitalDelivery_htrsf667h5kn2!App",
+                           "Manifest:PublisherDisplayName":  "Dell Inc",
+                           "Shell:Name":  "Dell Digital Delivery",
+                           "Manifest:DisplayName":  "Dell Digital Delivery"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "2.3.0.0",
+                           "Appx:PackageFamily":  "40459File-New-Project.EarTrumpet_1sdd7yawvg6ne",
+                           "Shell:AppUserModelID":  "40459File-New-Project.EarTrumpet_1sdd7yawvg6ne!EarTrumpet",
+                           "Manifest:PublisherDisplayName":  "File-New-Project",
+                           "Shell:Name":  "EarTrumpet",
+                           "Manifest:DisplayName":  "EarTrumpet"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "1000.29429.1000.0",
+                           "Appx:PackageFamily":  "Microsoft.SecHealthUI_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.SecHealthUI_8wekyb3d8bbwe!SecHealthUI",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Windows Security",
+                           "Manifest:DisplayName":  "ms-resource:PackageDisplayName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "4.54.63029.0",
+                           "Appx:PackageFamily":  "Microsoft.BingWeather_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.BingWeather_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Weather",
+                           "Manifest:DisplayName":  "ms-resource:ApplicationTitleWithBranding"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "7.5.4.0",
+                           "Appx:PackageFamily":  "Microsoft.PowerShell_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.PowerShell_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "PowerShell",
+                           "Manifest:DisplayName":  "PowerShell"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "8.1.969.0",
+                           "Appx:PackageFamily":  "NVIDIACorp.NVIDIAControlPanel_56jybvy8sckqj",
+                           "Shell:AppUserModelID":  "NVIDIACorp.NVIDIAControlPanel_56jybvy8sckqj!NVIDIACorp.NVIDIAControlPanel",
+                           "Manifest:PublisherDisplayName":  "NVIDIA Corp.",
+                           "Shell:Name":  "NVIDIA Control Panel",
+                           "Manifest:DisplayName":  "NVIDIA Control Panel"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "7.325.11061.0",
+                           "Appx:PackageFamily":  "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Game Bar",
+                           "Manifest:DisplayName":  "Game Bar"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "1000.26100.275.0",
+                           "Appx:PackageFamily":  "MicrosoftWindows.Client.CBS_cw5n1h2txyewy",
+                           "Shell:AppUserModelID":  "MicrosoftWindows.Client.CBS_cw5n1h2txyewy!WebExperienceHost",
+                           "Manifest:PublisherDisplayName":  "Microsoft Windows",
+                           "Shell:Name":  "Get Started",
+                           "Manifest:DisplayName":  "ms-resource:ProductPkgDisplayName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "1000.26100.275.0",
+                           "Appx:PackageFamily":  "MicrosoftWindows.Client.CBS_cw5n1h2txyewy",
+                           "Shell:AppUserModelID":  "MicrosoftWindows.Client.CBS_cw5n1h2txyewy!WindowsBackup",
+                           "Manifest:PublisherDisplayName":  "Microsoft Windows",
+                           "Shell:Name":  "Windows Backup",
+                           "Manifest:DisplayName":  "ms-resource:ProductPkgDisplayName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "2025.2510.2.0",
+                           "Appx:PackageFamily":  "Microsoft.WindowsCamera_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.WindowsCamera_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Camera",
+                           "Manifest:DisplayName":  "ms-resource:LensSDK/Resources/AppStoreName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "1.1.47.0",
+                           "Appx:PackageFamily":  "Microsoft.WindowsSoundRecorder_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.WindowsSoundRecorder_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Sound Recorder",
+                           "Manifest:DisplayName":  "ms-resource:AppStoreName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "4.10.6.0",
+                           "Appx:PackageFamily":  "Dell.SupportAssistforPCs_18ctm2993j0dg",
+                           "Shell:AppUserModelID":  "Dell.SupportAssistforPCs_18ctm2993j0dg!App",
+                           "Manifest:PublisherDisplayName":  "Dell Inc",
+                           "Shell:Name":  "Dell SupportAssist",
+                           "Manifest:DisplayName":  "Dell SupportAssist"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "11.2508.4.0",
+                           "Appx:PackageFamily":  "Microsoft.WindowsCalculator_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.WindowsCalculator_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Calculator",
+                           "Manifest:DisplayName":  "ms-resource:AppStoreName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "11.2510.31.0",
+                           "Appx:PackageFamily":  "Microsoft.ScreenSketch_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.ScreenSketch_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Snipping Tool",
+                           "Manifest:DisplayName":  "ms-resource:AppStoreName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "10.2409.33293.0",
+                           "Appx:PackageFamily":  "Microsoft.GetHelp_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.GetHelp_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Get Help",
+                           "Manifest:DisplayName":  "ms-resource:appDisplayName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "1.25112.36.0",
+                           "Appx:PackageFamily":  "Microsoft.YourPhone_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.YourPhone_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Phone Link",
+                           "Manifest:DisplayName":  "ms-resource:AppName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "2.2587.9.0",
+                           "Appx:PackageFamily":  "5319275A.WhatsAppDesktop_cv1g1gvanyjgm",
+                           "Shell:AppUserModelID":  "5319275A.WhatsAppDesktop_cv1g1gvanyjgm!App",
+                           "Manifest:PublisherDisplayName":  "WhatsApp Inc.",
+                           "Shell:Name":  "WhatsApp",
+                           "Manifest:DisplayName":  "WhatsApp"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "2025.11120.5001.0",
+                           "Appx:PackageFamily":  "Microsoft.Windows.Photos_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.Windows.Photos_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Photos",
+                           "Manifest:DisplayName":  "ms-resource:AppStoreName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "40.25.725.0",
+                           "Appx:PackageFamily":  "RivetNetworks.KillerControlCenter_rh07ty8m5nkag",
+                           "Shell:AppUserModelID":  "RivetNetworks.KillerControlCenter_rh07ty8m5nkag!RivetNetworks.KillerControlCenter",
+                           "Manifest:PublisherDisplayName":  "INTEL CORP",
+                           "Shell:Name":  "Intel® Killer™ Performance Suite",
+                           "Manifest:DisplayName":  "Intel® Killer™ Performance Suite"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "1.23.13503.0",
+                           "Appx:PackageFamily":  "Microsoft.WindowsTerminal_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.WindowsTerminal_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Terminal",
+                           "Manifest:DisplayName":  "ms-resource:AppStoreName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "3.27.6410.0",
+                           "Appx:PackageFamily":  "DolbyLaboratories.DolbyAccess_rz1tebttyb220",
+                           "Shell:AppUserModelID":  "DolbyLaboratories.DolbyAccess_rz1tebttyb220!App",
+                           "Manifest:PublisherDisplayName":  "Dolby Laboratories",
+                           "Shell:Name":  "Dolby Access",
+                           "Manifest:DisplayName":  "Dolby Access"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "12.3.3.0",
+                           "Appx:PackageFamily":  "com.MeshIntelligentTechnologi.PiecesOS_84gz00a5z79wr",
+                           "Shell:AppUserModelID":  "com.MeshIntelligentTechnologi.PiecesOS_84gz00a5z79wr!osserver",
+                           "Manifest:PublisherDisplayName":  "Mesh Intelligent Technologies, Inc.",
+                           "Shell:Name":  "Pieces OS",
+                           "Manifest:DisplayName":  "Pieces OS"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "5.0.0.0",
+                           "Appx:PackageFamily":  "com.MeshIntelligentTechnologi.PiecesDesktop_84gz00a5z79wr",
+                           "Shell:AppUserModelID":  "com.MeshIntelligentTechnologi.PiecesDesktop_84gz00a5z79wr!piecesforx",
+                           "Manifest:PublisherDisplayName":  "Mesh Intelligent Technologies, Inc.",
+                           "Shell:Name":  "Pieces Desktop",
+                           "Manifest:DisplayName":  "Pieces Desktop"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "25.44.2010.0",
+                           "Appx:PackageFamily":  "AppUp.IntelArcSoftware_8j3eq9eme6ctt",
+                           "Shell:AppUserModelID":  "AppUp.IntelArcSoftware_8j3eq9eme6ctt!INTELGRAPHICSSOFTWARE",
+                           "Manifest:PublisherDisplayName":  "INTEL CORP",
+                           "Shell:Name":  "Intel® Graphics Software",
+                           "Manifest:DisplayName":  "Intel® Graphics Software"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "1.2512.16303.0",
+                           "Appx:PackageFamily":  "Microsoft.WindowsFeedbackHub_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.WindowsFeedbackHub_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Feedback Hub",
+                           "Manifest:DisplayName":  "ms-resource:AppStoreName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "11.2511.291.0",
+                           "Appx:PackageFamily":  "Microsoft.Paint_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.Paint_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Paint",
+                           "Manifest:DisplayName":  "ms-resource:AppDisplayName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "2.153.5851.0",
+                           "Appx:PackageFamily":  "Microsoft.Todos_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.Todos_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Microsoft To Do",
+                           "Manifest:DisplayName":  "ms-resource:app_name_ms_todo"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "20.0.1024.0",
+                           "Appx:PackageFamily":  "AppUp.IntelOptaneMemoryandStorageManagement_8j3eq9eme6ctt",
+                           "Shell:AppUserModelID":  "AppUp.IntelOptaneMemoryandStorageManagement_8j3eq9eme6ctt!App",
+                           "Manifest:PublisherDisplayName":  "INTEL CORP",
+                           "Shell:Name":  "Intel® Rapid Storage Technology Application",
+                           "Manifest:DisplayName":  "Intel® Rapid Storage Technology Application"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "11.2510.14.0",
+                           "Appx:PackageFamily":  "Microsoft.WindowsNotepad_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.WindowsNotepad_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Notepad",
+                           "Manifest:DisplayName":  "ms-resource:Resources/AppStoreName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "1.25121.73.0",
+                           "Appx:PackageFamily":  "Microsoft.Copilot_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.Copilot_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Copilot",
+                           "Manifest:DisplayName":  "Copilot"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "2512.1001.36.0",
+                           "Appx:PackageFamily":  "Microsoft.GamingApp_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.GamingApp_8wekyb3d8bbwe!Microsoft.Xbox.App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Xbox",
+                           "Manifest:DisplayName":  "Xbox"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "4.5.10020.0",
+                           "Appx:PackageFamily":  "Clipchamp.Clipchamp_yxz26nhyzhsrt",
+                           "Shell:AppUserModelID":  "Clipchamp.Clipchamp_yxz26nhyzhsrt!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corp.",
+                           "Shell:Name":  "Microsoft Clipchamp",
+                           "Manifest:DisplayName":  "ms-resource:Clipchamp/AppName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "1.0.157.0",
+                           "Appx:PackageFamily":  "IntelligoTechnologyInc.intelliGoNeptune_zzw691tb7va64",
+                           "Shell:AppUserModelID":  "IntelligoTechnologyInc.intelliGoNeptune_zzw691tb7va64!App",
+                           "Manifest:PublisherDisplayName":  "Intelligo Technology Inc.",
+                           "Shell:Name":  "intelliGo Neptune",
+                           "Manifest:DisplayName":  "intelliGo Neptune"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "22512.1401.5.0",
+                           "Appx:PackageFamily":  "Microsoft.WindowsStore_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.WindowsStore_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Microsoft Store",
+                           "Manifest:DisplayName":  "Microsoft Store"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "4.25.1129.0",
+                           "Appx:PackageFamily":  "Microsoft.MicrosoftSolitaireCollection_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.MicrosoftSolitaireCollection_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Studios",
+                           "Shell:Name":  "Solitaire \u0026 Casual Games",
+                           "Manifest:DisplayName":  "Solitaire \u0026 Casual Games"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "26.1150.1060.0",
+                           "Appx:PackageFamily":  "Microsoft.MixedRealityLink_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.MixedRealityLink_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Mixed Reality Link",
+                           "Manifest:DisplayName":  "ms-resource:ProductDisplayName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "1.0.2058.0",
+                           "Appx:PackageFamily":  "Microsoft.PowerAutomateDesktop_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.PowerAutomateDesktop_8wekyb3d8bbwe!PAD.Console",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Power Automate",
+                           "Manifest:DisplayName":  "ms-resource:AppStoreName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "0.42.3.0",
+                           "Appx:PackageFamily":  "Raycast.Raycast_qypenmj9wpt2a",
+                           "Shell:AppUserModelID":  "Raycast.Raycast_qypenmj9wpt2a!Raycast",
+                           "Manifest:PublisherDisplayName":  "Raycast Technologies Ltd.",
+                           "Shell:Name":  "Raycast",
+                           "Manifest:DisplayName":  "Raycast"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "1000.26100.7627.0",
+                           "Appx:PackageFamily":  "MicrosoftWindows.Client.CoreAI_cw5n1h2txyewy",
+                           "Shell:AppUserModelID":  "MicrosoftWindows.Client.CoreAI_cw5n1h2txyewy!ClickToDoApp",
+                           "Manifest:PublisherDisplayName":  "Microsoft Windows",
+                           "Shell:Name":  "Click to Do",
+                           "Manifest:DisplayName":  "ms-resource:AIXHost/ClickToDo/AppDisplayName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "11.2512.0.0",
+                           "Appx:PackageFamily":  "Microsoft.WindowsAlarms_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.WindowsAlarms_8wekyb3d8bbwe!App",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Clock",
+                           "Manifest:DisplayName":  "ms-resource:AppStoreName"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "19.2601.56031.0",
+                           "Appx:PackageFamily":  "Microsoft.MicrosoftOfficeHub_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.MicrosoftOfficeHub_8wekyb3d8bbwe!Microsoft.MicrosoftOfficeHub",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Microsoft 365 Copilot",
+                           "Manifest:DisplayName":  "Microsoft 365 Copilot"
+                       },
+        "Type":  "UWP"
+    },
+    {
+        "Properties":  {
+                           "Appx:Version":  "11.2512.10.0",
+                           "Appx:PackageFamily":  "Microsoft.ZuneMusic_8wekyb3d8bbwe",
+                           "Shell:AppUserModelID":  "Microsoft.ZuneMusic_8wekyb3d8bbwe!Microsoft.ZuneMusic",
+                           "Manifest:PublisherDisplayName":  "Microsoft Corporation",
+                           "Shell:Name":  "Media Player",
+                           "Manifest:DisplayName":  "ms-resource:AppStoreName"
+                       },
+        "Type":  "UWP"
+    }
+]

@@ -1,16 +1,21 @@
-# Item Details View Design
+# Simplified
 
-## 1. Overview
+---
 
-Info trigger (Ctrl+I) displays item metadata as a navigable list. Goal: expose the same information available in Windows Properties dialog (General + Details tabs).
+Archived
+
+# 1. Overview
+
+Info trigger (Ctrl+I) displays item metadata as a navigable list. Goal: expose the same information available in Windows
+Properties dialog (General + Details tabs).
 
 Each property becomes a list item. Nested structures (dependencies, extensions) can be browsed into via pushList.
 
 ---
 
-## 2. Data Sources by Item Type
+# 2. Data Sources by Item Type
 
-### 2.1 Universal (Any File/Folder)
+## 2.1 Universal (Any File/Folder)
 
 **Shell.Application GetDetailsOf** - 300+ properties, same as Windows Explorer Properties dialog.
 
@@ -42,7 +47,7 @@ const stats = await stat(filePath)
 // stats.size, stats.mtime, stats.birthtime, stats.mode
 ```
 
-### 2.2 UWP Apps (shell:AppsFolder with `!` in path)
+## 2.2 UWP Apps (shell:AppsFolder with `!` in path)
 
 UWP apps have paths like `Microsoft.WindowsCalculator_8wekyb3d8bbwe!App`.
 
@@ -56,14 +61,14 @@ import { execSync } from 'child_process'
 // Get install location
 const installLocation = execSync(
     `powershell -NoProfile -Command "(Get-AppxPackage -Name Microsoft.WindowsCalculator).InstallLocation"`,
-    { encoding: 'utf-8' }
+    { encoding: 'utf-8' },
 ).trim()
 
 // Parse manifest
 const xml = await readFile(`${installLocation}\\AppxManifest.xml`, 'utf-8')
 const parser = new XMLParser({
     ignoreAttributes: false,
-    attributeNamePrefix: ''  // Clean keys for display
+    attributeNamePrefix: '', // Clean keys for display
 })
 const manifest = parser.parse(xml)
 
@@ -81,7 +86,7 @@ Get-AppxPackage -Name "Microsoft.WindowsCalculator" |
     Select-Object Name, Version, Publisher, InstallLocation, PackageFamilyName
 ```
 
-### 2.3 Win32 Apps (shell:AppsFolder without `!`)
+## 2.3 Win32 Apps (shell:AppsFolder without `!`)
 
 Win32 apps have paths like `Google.Antigravity` or `308046B0AF4A39CB`.
 
@@ -98,7 +103,7 @@ Match by name (fuzzy) since AppID doesn't directly map to registry key.
 
 **Shell GetDetailsOf** - Limited for virtual shell:AppsFolder items (only Name, Tags, AppUserModelId).
 
-### 2.4 Shortcuts (.lnk)
+## 2.4 Shortcuts (.lnk)
 
 **Electron shell.readShortcutLink** - Target, arguments, working directory, icon.
 
@@ -116,7 +121,7 @@ const shortcut = shell.readShortcutLink(lnkPath)
 
 **Shell GetDetailsOf** - Additional properties from shell.
 
-### 2.5 URL Files (.url)
+## 2.5 URL Files (.url)
 
 **Parse INI format** - Extract target URL.
 
@@ -128,7 +133,7 @@ const url = match ? match[1].trim() : null
 
 **fs.stat** - File dates.
 
-### 2.6 Executables (.exe)
+## 2.6 Executables (.exe)
 
 **PowerShell VersionInfo** - Version, company, product name.
 
@@ -144,7 +149,7 @@ Product version, Company, File description, Size, Date modified/created,
 Language, Copyright, etc.
 ```
 
-### 2.7 Media/Documents
+## 2.7 Media/Documents
 
 **Shell GetDetailsOf** - Rich metadata varies by file type:
 
@@ -155,22 +160,22 @@ Language, Copyright, etc.
 
 ---
 
-## 3. Extraction Approach
+# 3. Extraction Approach
 
 **Principle**: Extract ALL properties, apply blacklist to remove noise.
 
-### Blacklist (truly internal/useless)
+## Blacklist (truly internal/useless)
 
-| Pattern | Reason |
-|---------|--------|
-| `xmlns` | XML namespace declarations |
-| `build:Metadata` | Compiler flags, build tools |
-| `InProcessServer` | COM class registration |
-| `ActivatableClass` | COM activation internals |
-| `ThreadingModel` | Implementation detail |
+| Pattern            | Reason                           |
+| ------------------ | -------------------------------- |
+| `xmlns`            | XML namespace declarations       |
+| `build:Metadata`   | Compiler flags, build tools      |
+| `InProcessServer`  | COM class registration           |
+| `ActivatableClass` | COM activation internals         |
+| `ThreadingModel`   | Implementation detail            |
 | `mp:PhoneIdentity` | Legacy Windows Phone store GUIDs |
 
-### Flatten Helper
+## Flatten Helper
 
 ```typescript
 function flatten(obj: unknown, prefix = '', result: Record<string, string> = {}) {
@@ -189,23 +194,28 @@ function flatten(obj: unknown, prefix = '', result: Record<string, string> = {})
 }
 ```
 
-### Apply Blacklist
+## Apply Blacklist
 
 ```typescript
-const BLACKLIST = ['xmlns', 'build:Metadata', 'InProcessServer', 'ActivatableClass', 'ThreadingModel', 'mp:PhoneIdentity']
+const BLACKLIST = [
+    'xmlns',
+    'build:Metadata',
+    'InProcessServer',
+    'ActivatableClass',
+    'ThreadingModel',
+    'mp:PhoneIdentity',
+]
 
 function applyBlacklist(props: Record<string, string>) {
     return Object.fromEntries(
-        Object.entries(props).filter(([key]) =>
-            !BLACKLIST.some(bl => key.includes(bl))
-        )
+        Object.entries(props).filter(([key]) => !BLACKLIST.some((bl) => key.includes(bl))),
     )
 }
 ```
 
 ---
 
-## 4. Data Structure
+# 4. Data Structure
 
 ```typescript
 type Item = {
@@ -213,8 +223,8 @@ type Item = {
     name: string
     // ...
     metadata: {
-        appId: string           // For execution
-        info: Record<string, unknown>  // For display
+        appId: string // For execution
+        info: Record<string, unknown> // For display
     }
 }
 ```
@@ -224,9 +234,9 @@ type Item = {
 
 ---
 
-## 5. Display
+# 5. Display
 
-### Basic: Key-Value List
+## Basic: Key-Value List
 
 ```typescript
 const infoItems = Object.entries(item.metadata.info).map(([key, value]) => ({
@@ -235,33 +245,33 @@ const infoItems = Object.entries(item.metadata.info).map(([key, value]) => ({
     icon: Icons.info,
     moduleId: item.moduleId,
     metadata: { kind: 'info', key, value },
-    triggers: ['execute'],  // Copy to clipboard
+    triggers: ['execute'], // Copy to clipboard
 }))
 return { type: 'pushList', items: infoItems }
 ```
 
-### Nested: Browse Into
+## Nested: Browse Into
 
 For nested objects (Dependencies, Extensions), return items that themselves have `browse` trigger to drill down.
 
-### Assets: Resolve Paths
+## Assets: Resolve Paths
 
 Logo/icon paths like `Assets\Logo.png` are relative to InstallLocation. Could resolve and display actual images.
 
 ---
 
-## 6. Dependencies
+# 6. Dependencies
 
-| Package | Purpose |
-|---------|---------|
-| `fast-xml-parser` | Parse AppxManifest.xml |
-| PowerShell | Registry, shell queries, version info |
-| Electron `shell` | readShortcutLink for .lnk files |
-| Node.js `fs` | File stats, read files |
+| Package           | Purpose                               |
+| ----------------- | ------------------------------------- |
+| `fast-xml-parser` | Parse AppxManifest.xml                |
+| PowerShell        | Registry, shell queries, version info |
+| Electron `shell`  | readShortcutLink for .lnk files       |
+| Node.js `fs`      | File stats, read files                |
 
 ---
 
-## 7. Future Considerations
+# 7. Future Considerations
 
 - **Caching**: Info extraction can be slow; cache in `metadata.info` during indexing
 - **Lazy loading**: Extract info on-demand (when Ctrl+I pressed) vs upfront
