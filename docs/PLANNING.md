@@ -2,16 +2,19 @@
 
 # Ready
 
+- use caps for providers
+
 # Next Actions
 
 # Done
+
 - pending integration: Add info trigger with mock data (Ctrl+I shows metadata list)
 - Add desktop items to app provider (shell:AppsFolder + Desktop .lnk/.url/.exe with proper dedup)
 - Implement real app provider (Get-StartApps, icons, caching, async getRootItems)
 - Enforce input frame can only be at top of stack (pushList/pushInput check)
 - pop return null instead of erroring out. and back clears query when backing out of root with query.
 - back, should cleary query on root frame.
-- Clear naming of UIEvent and ProviderResponse tags. 
+- Clear naming of UIEvent and ProviderResponse tags.
 - bug back navigation closes window.
 - each escape key should, reset, clear query if exists, then close app. in order.
 - Header should always show selected item
@@ -21,7 +24,9 @@
 - ISI, root frame is separate, not part of stack
 
 # SomeDay/Maybe
-- integration pending: Populate real metadata for app items (info trigger) - extract all fields per item type (.lnk, .url, .exe, AppsFolder)
+
+- integration pending: Populate real metadata for app items (info trigger) - extract all fields per item type (.lnk,
+  .url, .exe, AppsFolder)
 
 - Decouple Frame from UIState - Split internal/external types
     - UI state/Frame is abhorrently used UI, we need to send proper ViewModel. to remove convoluted code.
