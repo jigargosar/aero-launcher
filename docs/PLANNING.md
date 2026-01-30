@@ -2,9 +2,9 @@
 
 # Ready
 
-- use caps for providers
-
 # Next Actions
+
+- use caps for providers
 
 # Done
 

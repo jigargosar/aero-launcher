@@ -1,9 +1,9 @@
 import { BrowserWindow, ipcMain } from 'electron'
 import { channels, UIEvent, Frame, ListFrame, Item, Trigger, Provider, Response } from '@shared/types'
-import { appProvider } from './providers/app-provider'
-import { fsProvider } from './providers/fs-provider'
-import { websearchProvider } from './providers/websearch-provider'
-import { systemCommandsProvider } from './providers/system-commands-provider'
+import { AppProvider } from './providers/app-provider'
+import { FsProvider } from './providers/fs-provider'
+import { WebsearchProvider } from './providers/websearch-provider'
+import { SystemCommandsProvider } from './providers/system-commands-provider'
 import { Ranking } from './ranking'
 
 // === Providers ===
@@ -14,7 +14,7 @@ type Providers = {
 
 const Providers = {
     init: (): Providers => {
-        const list = [appProvider, fsProvider, websearchProvider, systemCommandsProvider]
+        const list = [AppProvider, FsProvider, WebsearchProvider, SystemCommandsProvider]
         return { registry: new Map(list.map(p => [p.id, p])) }
     },
 

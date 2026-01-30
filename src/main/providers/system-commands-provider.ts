@@ -54,7 +54,7 @@ const PowerCategoryItem: Item = {
     triggers: ['browse'],
 }
 
-export const systemCommandsProvider: Provider = {
+export const SystemCommandsProvider: Provider = {
     id: 'system-commands',
 
     getRootItems: async () => [...POWER_ACTIONS, PowerCategoryItem],

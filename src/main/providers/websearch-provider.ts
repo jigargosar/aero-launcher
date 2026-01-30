@@ -63,7 +63,7 @@ const WEB_SEARCH_CATEGORY: Item = {
     triggers: ['browse'],
 }
 
-export const websearchProvider: Provider = {
+export const WebsearchProvider: Provider = {
     id: 'websearch',
 
     getRootItems: async () => [WEB_SEARCH_CATEGORY, ...SEARCH_TEMPLATES],

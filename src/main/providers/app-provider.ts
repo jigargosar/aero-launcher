@@ -301,7 +301,7 @@ async function writeCache(items: Item[]): Promise<void> {
 
 // === Provider ===
 
-export const appProvider: Provider = {
+export const AppProvider: Provider = {
     id: 'app',
 
     getRootItems: async () => {

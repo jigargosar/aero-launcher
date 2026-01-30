@@ -8,7 +8,7 @@ const MOCK_FS: Item[] = [
     { id: 'fs-projects', name: 'Projects', icon: Icons.folder, moduleId: 'fs', metadata: { path: 'C:\\Users\\jigar\\projects', kind: 'folder' }, triggers: ['execute', 'browse', 'actionMenu'] },
 ]
 
-export const fsProvider: Provider = {
+export const FsProvider: Provider = {
     id: 'fs',
 
     getRootItems: async () => MOCK_FS,
